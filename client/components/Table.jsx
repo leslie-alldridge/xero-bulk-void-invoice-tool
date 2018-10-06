@@ -26,24 +26,21 @@ function createData(name, calories, fat, carbs, protein) {
   return { id, name, calories, fat, carbs, protein };
 }
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9)
-];
-
 class SimpleTable extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      rows: [],
+      invoices: ''
+    };
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
     request.get('/invoices').then(res => {
-      console.log(res.body);
+      this.setState({
+        invoices: res.body.Invoices
+      });
     });
   }
 
@@ -55,15 +52,15 @@ class SimpleTable extends React.Component {
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell numeric>Calories</TableCell>
-              <TableCell numeric>Fat (g)</TableCell>
-              <TableCell numeric>Carbs (g)</TableCell>
-              <TableCell numeric>Protein (g)</TableCell>
+              <TableCell>Void?</TableCell>
+              <TableCell numeric>Invoice Number</TableCell>
+              <TableCell numeric>Date</TableCell>
+              <TableCell numeric>Due Date</TableCell>
+              <TableCell numeric>Total</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map(row => {
+            {this.state.rows.map(row => {
               return (
                 <TableRow key={row.id}>
                   <TableCell component="th" scope="row">
