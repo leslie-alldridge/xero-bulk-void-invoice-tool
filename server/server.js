@@ -2,7 +2,7 @@ const express = require('express');
 const XeroClient = require('xero-node').AccountingAPIClient;
 const config = require('../config.json');
 const path = require('path');
-const app = express();
+let app = express();
 
 let lastRequestToken = null;
 let xeroClient = new XeroClient(config);
@@ -12,6 +12,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 app.get('/connect', async function(req, res) {
   lastRequestToken = await xeroClient.oauth1Client.getRequestToken();
+
   let authoriseUrl = xeroClient.oauth1Client.buildAuthoriseUrl(
     lastRequestToken
   );
