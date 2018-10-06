@@ -1,4 +1,5 @@
 import React from 'react';
+import request from 'superagent';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -33,40 +34,55 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9)
 ];
 
-function SimpleTable(props) {
-  const { classes } = props;
+class SimpleTable extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.handleClick = this.handleClick.bind(this);
+  }
 
-  return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell numeric>Calories</TableCell>
-            <TableCell numeric>Fat (g)</TableCell>
-            <TableCell numeric>Carbs (g)</TableCell>
-            <TableCell numeric>Protein (g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map(row => {
-            return (
-              <TableRow key={row.id}>
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell numeric>{row.calories}</TableCell>
-                <TableCell numeric>{row.fat}</TableCell>
-                <TableCell numeric>{row.carbs}</TableCell>
-                <TableCell numeric>{row.protein}</TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-      <a href="/connect">Connect to Xero</a>
-    </Paper>
-  );
+  handleClick() {
+    request.get('/help').then(res => {
+      alert('yay got ' + JSON.stringify(res.body));
+    });
+  }
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <Paper className={classes.root}>
+        <Table className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Dessert (100g serving)</TableCell>
+              <TableCell numeric>Calories</TableCell>
+              <TableCell numeric>Fat (g)</TableCell>
+              <TableCell numeric>Carbs (g)</TableCell>
+              <TableCell numeric>Protein (g)</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map(row => {
+              return (
+                <TableRow key={row.id}>
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell numeric>{row.calories}</TableCell>
+                  <TableCell numeric>{row.fat}</TableCell>
+                  <TableCell numeric>{row.carbs}</TableCell>
+                  <TableCell numeric>{row.protein}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+        <a href="/connect">Connect to Xero</a>
+        <button onClick={this.handleClick}>Click me pls</button>
+      </Paper>
+    );
+  }
 }
 
 SimpleTable.propTypes = {
