@@ -24116,8 +24116,8 @@ function SimpleTable(props) {
     ),
     _react2.default.createElement(
       'a',
-      { href: '/xero' },
-      'click me'
+      { href: '/connect' },
+      'Connect to Xero'
     )
   );
 }
