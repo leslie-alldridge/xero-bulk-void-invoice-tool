@@ -8,7 +8,6 @@ const words = (state = [], action) => {
           word: action.word
         }
       ]
-
     default:
       return state
   }
