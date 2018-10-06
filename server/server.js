@@ -26,23 +26,15 @@ app.get('/callback', async function(req, res) {
     oauth_verifier
   );
   res.redirect('/');
-  // let organisations = await xeroClient.organisations.get();
-  // let invoices = await xeroClient.invoices.get();
-
-  // let lastInvoiceNumber = invoices.Invoices[0].InvoiceNumber;
-  // res.send(
-  //   'Hello, ' +
-  //     organisations.Organisations[0].Name +
-  //     ". You're last invoice was " +
-  //     lastInvoiceNumber
-  // );
 });
 
 app.get('/help', async function(req, res) {
   let organisations = await xeroClient.organisations.get();
-  let invoices = await xeroClient.invoices.get();
-  console.log(organisations);
-  console.log(invoices);
+  let invoices = await xeroClient.invoices.get({
+    Statuses: 'AUTHORISED',
+    page: '1'
+  });
+  console.log(invoices.Invoices.length);
 });
 
 module.exports = app;
