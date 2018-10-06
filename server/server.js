@@ -28,13 +28,12 @@ app.get('/callback', async function(req, res) {
   res.redirect('/');
 });
 
-app.get('/help', async function(req, res) {
-  let organisations = await xeroClient.organisations.get();
+app.get('/invoices', async function(req, res) {
   let invoices = await xeroClient.invoices.get({
     Statuses: 'AUTHORISED',
     page: '1'
   });
-  console.log(invoices.Invoices.length);
+  res.json(invoices);
 });
 
 module.exports = app;

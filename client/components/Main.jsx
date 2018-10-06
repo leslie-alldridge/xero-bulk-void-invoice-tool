@@ -1,92 +1,133 @@
 import React from 'react';
-import request from 'superagent';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowRight from '@material-ui/icons/ArrowRight';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import IntroStepper from './IntroStepper';
 
 const styles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto'
+  layout: {
+    width: 'auto',
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    [theme.breakpoints.up(1100 + theme.spacing.unit * 3 * 2)]: {
+      width: 1100,
+      marginLeft: 'auto',
+      marginRight: 'auto'
+    }
   },
-  table: {
-    minWidth: 700
+  toolbarMain: {
+    borderBottom: `1px solid ${theme.palette.grey[300]}`
+  },
+  toolbarTitle: {
+    flex: 1
+  },
+  toolbarSecondary: {
+    justifyContent: 'space-between'
+  },
+  mainFeaturedPost: {
+    backgroundColor: theme.palette.grey[800],
+    color: theme.palette.common.white,
+    marginBottom: theme.spacing.unit * 4
+  },
+  mainFeaturedPostContent: {
+    padding: `${theme.spacing.unit * 6}px`,
+    [theme.breakpoints.up('md')]: {
+      paddingRight: 0
+    }
+  },
+  mainGrid: {
+    marginTop: theme.spacing.unit * 3
+  },
+  card: {
+    display: 'flex'
+  },
+  cardDetails: {
+    flex: 1
+  },
+  cardMedia: {
+    width: 160
+  },
+  markdown: {
+    padding: `${theme.spacing.unit * 3}px 0`
+  },
+  sidebarAboutBox: {
+    padding: theme.spacing.unit * 2,
+    backgroundColor: theme.palette.grey[200]
+  },
+  sidebarSection: {
+    marginTop: theme.spacing.unit * 3
+  },
+  header: {
+    backgroundColor: theme.palette.background.paper,
+    marginTop: theme.spacing.unit * 8,
+    marginBottom: theme.spacing.unit * 8,
+    padding: `${theme.spacing.unit * 6}px 0`
+  },
+  content: {
+    backgroundColor: theme.palette.background.paper,
+    padding: `${theme.spacing.unit * 6}px 0`
   }
 });
 
-let id = 0;
-function createData(name, calories, fat, carbs, protein) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
+function Blog(props) {
+  const { classes } = props;
+
+  return (
+    <React.Fragment>
+      <CssBaseline />
+      <div className={classes.layout}>
+        <Toolbar className={classes.toolbarMain}>
+          <Typography
+            component="h2"
+            variant="headline"
+            color="inherit"
+            align="center"
+            noWrap
+            className={classes.toolbarTitle}
+          >
+            Xero Bulk Invoice Void Tool V2
+          </Typography>
+        </Toolbar>
+        <Toolbar variant="dense" className={classes.toolbarSecondary} />
+        <main />
+      </div>
+
+      <Typography
+        className={classes.content}
+        variant="title"
+        align="center"
+        gutterBottom
+      >
+        Void multiple invoices with a single button
+      </Typography>
+      <Typography
+        className={classes.content}
+        variant="title"
+        align="center"
+        gutterBottom
+      >
+        Instructions:
+      </Typography>
+      <IntroStepper />
+      <Typography
+        className={classes.content}
+        variant="title"
+        align="center"
+        gutterBottom
+      >
+        Disclaimer
+      </Typography>
+    </React.Fragment>
+  );
 }
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9)
-];
-
-class SimpleTable extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    request.get('/help').then(res => {
-      alert('yay got ' + JSON.stringify(res.body));
-    });
-  }
-
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <Paper className={classes.root}>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Dessert (100g serving)</TableCell>
-              <TableCell numeric>Calories</TableCell>
-              <TableCell numeric>Fat (g)</TableCell>
-              <TableCell numeric>Carbs (g)</TableCell>
-              <TableCell numeric>Protein (g)</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map(row => {
-              return (
-                <TableRow key={row.id}>
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell numeric>{row.calories}</TableCell>
-                  <TableCell numeric>{row.fat}</TableCell>
-                  <TableCell numeric>{row.carbs}</TableCell>
-                  <TableCell numeric>{row.protein}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-        <a href="/connect">Connect to Xero</a>
-        <button onClick={this.handleClick}>Click me pls</button>
-      </Paper>
-    );
-  }
-}
-
-SimpleTable.propTypes = {
+Blog.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(SimpleTable);
+export default withStyles(styles)(Blog);
