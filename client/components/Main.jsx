@@ -64,6 +64,7 @@ function SimpleTable(props) {
           })}
         </TableBody>
       </Table>
+      <a href="/xero">click me</a>
     </Paper>
   );
 }
