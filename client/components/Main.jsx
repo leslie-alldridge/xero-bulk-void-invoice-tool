@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import ArrowRight from '@material-ui/icons/ArrowRight';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import IntroStepper from './IntroStepper';
+import { Button } from '@material-ui/core';
 
 const styles = theme => ({
   layout: {
@@ -76,60 +74,90 @@ const styles = theme => ({
   }
 });
 
-function Blog(props) {
-  const { classes } = props;
+class Title extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { confirm: false };
+    this.confirmed = this.confirmed.bind(this);
+  }
 
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <div className={classes.layout}>
-        <Toolbar className={classes.toolbarMain}>
-          <Typography
-            component="h2"
-            variant="headline"
-            color="inherit"
-            align="center"
-            noWrap
-            className={classes.toolbarTitle}
-          >
-            Xero Bulk Invoice Void Tool V2
-          </Typography>
-        </Toolbar>
-        <Toolbar variant="dense" className={classes.toolbarSecondary} />
-        <main />
-      </div>
+  confirmed() {
+    this.setState({
+      confirm: true
+    });
+  }
 
-      <Typography
-        className={classes.content}
-        variant="title"
-        align="center"
-        gutterBottom
-      >
-        Void multiple invoices with a single button
-      </Typography>
+  render() {
+    const { classes } = this.props;
 
-      <IntroStepper />
-      <Typography
-        //className={classes.header}
-        align="center"
-        gutterBottom
-      >
-        <h2>Disclaimer:</h2>
-        <p style={{ fontSize: '1em', margin: '0 auto', maxWidth: '30%' }}>
-          This application is not supported nor made by Xero Ltd. I have
-          personally created this application to test out the Xero API. Please
-          use at your own risk. I recommend voiding in batches of 60 invoices or
-          less, and checking your organisation after each bulk void. I'm
-          available for contact{' '}
-          <a href="mailto:leslie.alldridge@gmail.com">here</a>.
-        </p>
-      </Typography>
-    </React.Fragment>
-  );
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <div className={classes.layout}>
+          <Toolbar className={classes.toolbarMain}>
+            <Typography
+              component="h2"
+              variant="headline"
+              color="inherit"
+              align="center"
+              noWrap
+              className={classes.toolbarTitle}
+            >
+              Xero Bulk Invoice Void Tool V2
+            </Typography>
+          </Toolbar>
+          <Toolbar variant="dense" className={classes.toolbarSecondary} />
+          <main />
+        </div>
+
+        <Typography
+          className={classes.content}
+          variant="title"
+          align="center"
+          gutterBottom
+        >
+          Void multiple invoices with a single button
+        </Typography>
+
+        <IntroStepper />
+
+        {this.state.confirm == false ? (
+          <div>
+            <h2 style={{ textAlign: 'center', margin: '0 auto' }}>
+              Disclaimer:
+            </h2>
+
+            <Typography
+              style={{ fontSize: '1em', margin: '0 auto', maxWidth: '30%' }}
+              align="center"
+              gutterBottom
+            >
+              This application is not supported nor made by Xero Ltd. I have
+              personally created this application to test out the Xero API.
+              Please use at your own risk. I recommend voiding in batches of 60
+              invoices or less, and checking your organisation after each bulk
+              void. I'm available for contact{' '}
+              <a href="mailto:leslie.alldridge@gmail.com">here</a>.<br />
+              <Button
+                style={{ marginTop: '3%' }}
+                variant="contained"
+                color="primary"
+                onClick={this.confirmed}
+              >
+                I understand
+              </Button>
+            </Typography>
+          </div>
+        ) : (
+          <div />
+        )}
+      </React.Fragment>
+    );
+  }
 }
 
-Blog.propTypes = {
+Title.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Blog);
+export default withStyles(styles)(Title);

@@ -6,7 +6,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-
+import Table from './Table';
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -48,7 +48,8 @@ class IntroStepper extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeStep: 0
+      activeStep: 0,
+      showTable: false
     };
     this.handleBack = this.handleBack.bind(this);
     this.handleReset = this.handleReset.bind(this);
@@ -56,6 +57,12 @@ class IntroStepper extends React.Component {
   }
 
   handleNext() {
+    if (this.state.activeStep == 2) {
+      this.setState({
+        showTable: true
+      });
+    }
+
     this.setState(state => ({
       activeStep: state.activeStep + 1
     }));
@@ -80,57 +87,63 @@ class IntroStepper extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Typography
-          className={classes.content}
-          variant="title"
-          align="center"
-          gutterBottom
-        >
-          Instructions:
-        </Typography>
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {steps.map(label => {
-            return (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
-        <div className={classes.instructions}>
-          {this.state.activeStep === steps.length ? (
-            <div align="center">
-              <Typography className={classes.instructions}>
-                Press Reset to read again
-              </Typography>
-              <Button onClick={this.handleReset}>Reset</Button>
+        {this.state.showTable == true ? (
+          <Table />
+        ) : (
+          <div>
+            <Typography
+              className={classes.content}
+              variant="title"
+              align="center"
+              gutterBottom
+            >
+              Instructions:
+            </Typography>
+            <Stepper activeStep={activeStep} alternativeLabel>
+              {steps.map(label => {
+                return (
+                  <Step key={label}>
+                    <StepLabel>{label}</StepLabel>
+                  </Step>
+                );
+              })}
+            </Stepper>
+            <div className={classes.instructions}>
+              {this.state.activeStep === steps.length ? (
+                <div align="center">
+                  <Typography className={classes.instructions}>
+                    Press Reset to read again
+                  </Typography>
+                  <Button onClick={this.handleReset}>Reset</Button>
+                </div>
+              ) : (
+                <div>
+                  <Typography align="center" className={classes.instructions}>
+                    {getStepContent(activeStep)}
+                  </Typography>
+                  <div align="center">
+                    <Button
+                      align="center"
+                      disabled={activeStep === 0}
+                      onClick={this.handleBack}
+                      className={classes.backButton}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      align="center"
+                      variant="contained"
+                      color="primary"
+                      onClick={this.handleNext}
+                    >
+                      {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
-          ) : (
-            <div>
-              <Typography align="center" className={classes.instructions}>
-                {getStepContent(activeStep)}
-              </Typography>
-              <div align="center">
-                <Button
-                  align="center"
-                  disabled={activeStep === 0}
-                  onClick={this.handleBack}
-                  className={classes.backButton}
-                >
-                  Back
-                </Button>
-                <Button
-                  align="center"
-                  variant="contained"
-                  color="primary"
-                  onClick={this.handleNext}
-                >
-                  {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                </Button>
-              </div>
-            </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     );
   }
