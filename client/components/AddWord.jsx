@@ -15,6 +15,7 @@ const AddWord = (props) => (
     onKeyUp={e => {
       // the connect() call below puts
       // dispatch directly on props
+      //test
       submitWord(e, props.dispatch)
     }}
   />
