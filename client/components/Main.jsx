@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IntroStepper from './IntroStepper';
 import { Button } from '@material-ui/core';
-
+import { get, set } from '../utils/localstorage';
 const styles = theme => ({
   layout: {
     width: 'auto',
@@ -77,7 +77,7 @@ const styles = theme => ({
 class Title extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { confirm: false };
+    this.state = { confirm: get('confirmed') || false };
     this.confirmed = this.confirmed.bind(this);
   }
 
@@ -85,6 +85,7 @@ class Title extends React.Component {
     this.setState({
       confirm: true
     });
+    set('confirmed', true);
   }
 
   render() {

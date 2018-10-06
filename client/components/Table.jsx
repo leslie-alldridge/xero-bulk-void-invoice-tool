@@ -31,7 +31,7 @@ class SimpleTable extends React.Component {
     super(props);
     this.state = {
       rows: [],
-      invoices: ''
+      invoices: []
     };
     this.handleClick = this.handleClick.bind(this);
   }
@@ -60,16 +60,18 @@ class SimpleTable extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.state.rows.map(row => {
+            {this.state.invoices.map(invoice => {
+              console.log(invoice);
+
               return (
-                <TableRow key={row.id}>
+                <TableRow key={invoice.InvoiceID}>
                   <TableCell component="th" scope="row">
-                    {row.name}
+                    {invoice.InvoiceNumber}
                   </TableCell>
-                  <TableCell numeric>{row.calories}</TableCell>
-                  <TableCell numeric>{row.fat}</TableCell>
+                  <TableCell numeric>{invoice.Date}</TableCell>
+                  {/* <TableCell numeric>{row.fat}</TableCell>
                   <TableCell numeric>{row.carbs}</TableCell>
-                  <TableCell numeric>{row.protein}</TableCell>
+                  <TableCell numeric>{row.protein}</TableCell> */}
                 </TableRow>
               );
             })}

@@ -7,6 +7,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Table from './Table';
+import { get, set } from '../utils/localstorage';
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -49,7 +50,7 @@ class IntroStepper extends React.Component {
     super(props);
     this.state = {
       activeStep: 0,
-      showTable: false
+      showTable: JSON.parse(get('steps'))
     };
     this.handleBack = this.handleBack.bind(this);
     this.handleReset = this.handleReset.bind(this);
@@ -61,6 +62,7 @@ class IntroStepper extends React.Component {
       this.setState({
         showTable: true
       });
+      set('steps', true);
     }
 
     this.setState(state => ({
