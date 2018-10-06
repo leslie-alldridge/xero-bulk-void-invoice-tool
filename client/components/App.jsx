@@ -1,13 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-import Words from './Words'
-import AddWord from './AddWord'
+import Main from './Main';
 
 const App = () => (
-  <div className='app-container'>
-    <Words />
-    <AddWord />
+  <div className="app-container">
+    <Main />
   </div>
-)
+);
 
-export default App
+export default App;
