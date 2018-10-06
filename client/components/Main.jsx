@@ -70,7 +70,9 @@ const styles = theme => ({
   },
   content: {
     backgroundColor: theme.palette.background.paper,
-    padding: `${theme.spacing.unit * 6}px 0`
+    padding: `${theme.spacing.unit * 6}px 0`,
+    borderBottom: '1px solid #3f51b5',
+    borderTop: '1px solid #3f51b5'
   }
 });
 
@@ -105,22 +107,22 @@ function Blog(props) {
       >
         Void multiple invoices with a single button
       </Typography>
-      <Typography
-        className={classes.content}
-        variant="title"
-        align="center"
-        gutterBottom
-      >
-        Instructions:
-      </Typography>
+
       <IntroStepper />
       <Typography
-        className={classes.content}
-        variant="title"
+        //className={classes.header}
         align="center"
         gutterBottom
       >
-        Disclaimer
+        <h2>Disclaimer:</h2>
+        <p style={{ fontSize: '1em', margin: '0 auto', maxWidth: '30%' }}>
+          This application is not supported nor made by Xero Ltd. I have
+          personally created this application to test out the Xero API. Please
+          use at your own risk. I recommend voiding in batches of 60 invoices or
+          less, and checking your organisation after each bulk void. I'm
+          available for contact{' '}
+          <a href="mailto:leslie.alldridge@gmail.com">here</a>.
+        </p>
       </Typography>
     </React.Fragment>
   );

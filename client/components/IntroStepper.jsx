@@ -10,7 +10,6 @@ import Typography from '@material-ui/core/Typography';
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    // marginTop: theme.spacing.unit * 8,
     marginBottom: theme.spacing.unit * 8,
     padding: `${theme.spacing.unit * 6}px 0`
   },
@@ -81,6 +80,14 @@ class IntroStepper extends React.Component {
 
     return (
       <div className={classes.root}>
+        <Typography
+          className={classes.content}
+          variant="title"
+          align="center"
+          gutterBottom
+        >
+          Instructions:
+        </Typography>
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map(label => {
             return (
