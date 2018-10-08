@@ -1,4 +1,4 @@
-# xero-bulk-void-tool-react
+# xero-bulk-void-invoice-tool-v2-react
 
 ## Goals
 
