@@ -9,6 +9,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import SwitchToggle from './Switch';
 
 const styles = theme => ({
   root: {
@@ -96,6 +97,7 @@ class SimpleTable extends React.Component {
         {this.state.loading && <Loading />}
         <a href="/connect">Connect to Xero</a>
         <button onClick={this.handleClick}>Click me pls</button>
+        <SwitchToggle />
       </Paper>
     );
   }
