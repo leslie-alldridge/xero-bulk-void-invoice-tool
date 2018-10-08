@@ -1,6 +1,7 @@
 import React from 'react';
 import request from 'superagent';
 import PropTypes from 'prop-types';
+import Loading from './Loading';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -31,14 +32,19 @@ class SimpleTable extends React.Component {
     super(props);
     this.state = {
       rows: [],
-      invoices: []
+      invoices: [],
+      loading: false
     };
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
+    this.setState({
+      loading: true
+    });
     request.get('/invoices').then(res => {
       this.setState({
+        loading: false,
         invoices: res.body.Invoices
       });
     });
@@ -49,34 +55,45 @@ class SimpleTable extends React.Component {
 
     return (
       <Paper className={classes.root}>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Void?</TableCell>
-              <TableCell numeric>Invoice Number</TableCell>
-              <TableCell numeric>Date</TableCell>
-              <TableCell numeric>Due Date</TableCell>
-              <TableCell numeric>Total</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {this.state.invoices.map(invoice => {
-              console.log(invoice);
-
-              return (
-                <TableRow key={invoice.InvoiceID}>
-                  <TableCell component="th" scope="row">
-                    {invoice.InvoiceNumber}
-                  </TableCell>
-                  <TableCell numeric>{invoice.Date}</TableCell>
-                  {/* <TableCell numeric>{row.fat}</TableCell>
-                  <TableCell numeric>{row.carbs}</TableCell>
-                  <TableCell numeric>{row.protein}</TableCell> */}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+        {!this.state.loading && (
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
+                <TableCell>Void?</TableCell>
+                <TableCell numeric>Invoice Number</TableCell>
+                <TableCell numeric>Date</TableCell>
+                <TableCell numeric>Due Date</TableCell>
+                <TableCell numeric>Total</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.state.invoices.map(invoice => {
+                console.log(invoice);
+                if (invoice.InvoiceNumber !== 'Expense Claims') {
+                  return (
+                    <TableRow key={invoice.InvoiceID}>
+                      <TableCell component="th" scope="row" />
+                      <TableCell numeric>
+                        <a
+                          href={`https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=${
+                            invoice.InvoiceID
+                          }`}
+                          target="_blank"
+                        >
+                          {invoice.InvoiceNumber}
+                        </a>
+                      </TableCell>
+                      <TableCell numeric>{invoice.DateString}</TableCell>
+                      <TableCell numeric>{invoice.DueDateString}</TableCell>
+                      <TableCell numeric>{invoice.Total}</TableCell>
+                    </TableRow>
+                  );
+                }
+              })}
+            </TableBody>
+          </Table>
+        )}
+        {this.state.loading && <Loading />}
         <a href="/connect">Connect to Xero</a>
         <button onClick={this.handleClick}>Click me pls</button>
       </Paper>
