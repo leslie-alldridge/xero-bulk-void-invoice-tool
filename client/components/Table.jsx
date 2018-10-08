@@ -22,21 +22,18 @@ const styles = theme => ({
   }
 });
 
-let id = 0;
-function createData(name, calories, fat, carbs, protein) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
-}
-
 class SimpleTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       rows: [],
       invoices: [],
-      loading: false
+      type: 'ACCREC',
+      loading: false,
+      checkedA: true
     };
     this.handleClick = this.handleClick.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
   }
 
   handleClick() {
@@ -49,6 +46,14 @@ class SimpleTable extends React.Component {
         invoices: res.body.Invoices
       });
     });
+  }
+
+  handleToggle(name, e) {
+    this.setState({
+      type: this.state.type == 'ACCREC' ? 'ACCPAY' : 'ACCREC',
+      checkedA: !this.state.checkedA
+    });
+    console.log(this.state);
   }
 
   render() {
@@ -70,7 +75,10 @@ class SimpleTable extends React.Component {
             <TableBody>
               {this.state.invoices.map(invoice => {
                 console.log(invoice);
-                if (invoice.InvoiceNumber !== 'Expense Claims') {
+                if (
+                  invoice.InvoiceNumber !== 'Expense Claims' &&
+                  this.state.type == invoice.Type
+                ) {
                   return (
                     <TableRow key={invoice.InvoiceID}>
                       <TableCell component="th" scope="row" />
@@ -97,7 +105,10 @@ class SimpleTable extends React.Component {
         {this.state.loading && <Loading />}
         <a href="/connect">Connect to Xero</a>
         <button onClick={this.handleClick}>Click me pls</button>
-        <SwitchToggle />
+        <SwitchToggle
+          checked={this.state.checkedA}
+          toggle={this.handleToggle}
+        />
       </Paper>
     );
   }

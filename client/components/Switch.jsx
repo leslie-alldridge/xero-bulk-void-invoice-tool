@@ -34,9 +34,7 @@ class SwitchToggle extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(name, e) {
-    this.setState({ [name]: e.target.checked });
-  }
+  handleChange(name, e) {}
 
   render() {
     const { classes } = this.props;
@@ -46,9 +44,9 @@ class SwitchToggle extends React.Component {
         <FormControlLabel
           control={
             <Switch
-              checked={this.state.checkedA}
+              checked={this.props.checked}
               onChange={e => {
-                this.handleChange('checkedA', e);
+                this.props.toggle('checkedA', e);
               }}
               value="checkedA"
               classes={{
