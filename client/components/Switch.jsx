@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import purple from '@material-ui/core/colors/purple';
+import indigo from '@material-ui/core/colors/indigo';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
 const styles = theme => ({
   colorSwitchBase: {
-    color: purple[300],
+    color: indigo[300],
     '&$colorChecked': {
-      color: purple[500],
+      color: indigo[500],
       '& + $colorBar': {
-        backgroundColor: purple[500]
+        backgroundColor: indigo[500]
       }
     }
   },

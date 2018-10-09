@@ -34,10 +34,13 @@ class SimpleTable extends React.Component {
       invoices: [],
       type: 'ACCREC',
       loading: false,
-      checkedA: true
+      checkedA: true,
+      selected: []
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
+    this.handleSelectAllClick = this.handleSelectAllClick.bind(this);
+    const rows = this.state.invoices.length;
   }
 
   handleClick() {
@@ -60,9 +63,18 @@ class SimpleTable extends React.Component {
     console.log(this.state);
   }
 
+  handleSelectAllClick(event) {
+    if (event.target.checked) {
+      this.setState({ selected: this.state.invoices.map(n => n.id) });
+      return;
+    }
+    this.setState({ selected: [] });
+  }
+
   render() {
     const { classes } = this.props;
-
+    const numSelected = this.state.selected.length;
+    const rowCount = this.state.invoices.length;
     return (
       <div>
         {!this.state.loading && (
@@ -81,9 +93,9 @@ class SimpleTable extends React.Component {
                 <TableRow>
                   <TableCell padding="checkbox">
                     <Checkbox
-                    // indeterminate={numSelected > 0 && numSelected < rowCount}
-                    // checked={numSelected === rowCount}
-                    // onChange={onSelectAllClick}
+                      indeterminate={numSelected > 0 && numSelected < rowCount}
+                      checked={numSelected === rowCount}
+                      onChange={this.handleSelectAllClick}
                     />
                   </TableCell>
                   <TableCell numeric>Invoice Number</TableCell>
@@ -101,7 +113,10 @@ class SimpleTable extends React.Component {
                   ) {
                     return (
                       <TableRow key={invoice.InvoiceID}>
-                        <TableCell component="th" scope="row" />
+                        <TableCell padding="checkbox">
+                          <Checkbox />
+                        </TableCell>
+                        {/* <TableCell component="th" scope="row" padding="none" /> */}
                         <TableCell numeric>
                           <a
                             href={`https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=${
