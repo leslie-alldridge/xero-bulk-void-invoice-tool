@@ -41,6 +41,7 @@ class SimpleTable extends React.Component {
     this.handleToggle = this.handleToggle.bind(this);
     this.handleSelectAllClick = this.handleSelectAllClick.bind(this);
     const rows = this.state.invoices.length;
+    this.boxChange = this.boxChange.bind(this);
   }
 
   handleClick() {
@@ -78,6 +79,18 @@ class SimpleTable extends React.Component {
       return;
     }
     this.setState({ selected: [] });
+  }
+
+  boxChange(inv) {
+    console.log(inv);
+    this.state.selected.includes(inv)
+      ? this.setState({
+          selected: this.state.selected.filter(invoice => invoice !== inv)
+        })
+      : this.setState({
+          selected: this.state.selected.concat(inv)
+        });
+    console.log(this.state.selected);
   }
 
   render() {
@@ -122,7 +135,12 @@ class SimpleTable extends React.Component {
                   ) {
                     return (
                       <TableRow key={invoice.InvoiceID}>
-                        <TableCell padding="checkbox">
+                        <TableCell
+                          onChange={() => {
+                            this.boxChange(invoice.InvoiceID);
+                          }}
+                          padding="checkbox"
+                        >
                           <Checkbox />
                         </TableCell>
                         <TableCell numeric>
