@@ -58,14 +58,23 @@ class SimpleTable extends React.Component {
   handleToggle(name, e) {
     this.setState({
       type: this.state.type == 'ACCREC' ? 'ACCPAY' : 'ACCREC',
-      checkedA: !this.state.checkedA
+      checkedA: !this.state.checkedA,
+      rows: this.state.invoices
+        .filter(
+          invoice =>
+            invoice.Type !== this.state.type &&
+            invoice.InvoiceNumber !== 'Expense Claims'
+        )
+        .map(invoice => invoice)
     });
     console.log(this.state);
   }
 
   handleSelectAllClick(event) {
+    console.log(event.target.checked);
+
     if (event.target.checked) {
-      this.setState({ selected: this.state.invoices.map(n => n.id) });
+      this.setState({ selected: this.state.invoices.map(n => n.InvoiceID) });
       return;
     }
     this.setState({ selected: [] });
@@ -74,7 +83,7 @@ class SimpleTable extends React.Component {
   render() {
     const { classes } = this.props;
     const numSelected = this.state.selected.length;
-    const rowCount = this.state.invoices.length;
+    const rowCount = this.state.rows.length;
     return (
       <div>
         {!this.state.loading && (
@@ -94,7 +103,7 @@ class SimpleTable extends React.Component {
                   <TableCell padding="checkbox">
                     <Checkbox
                       indeterminate={numSelected > 0 && numSelected < rowCount}
-                      checked={numSelected === rowCount}
+                      // checked={numSelected === rowCount}
                       onChange={this.handleSelectAllClick}
                     />
                   </TableCell>
@@ -116,7 +125,6 @@ class SimpleTable extends React.Component {
                         <TableCell padding="checkbox">
                           <Checkbox />
                         </TableCell>
-                        {/* <TableCell component="th" scope="row" padding="none" /> */}
                         <TableCell numeric>
                           <a
                             href={`https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=${
