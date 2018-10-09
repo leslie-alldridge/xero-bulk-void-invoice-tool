@@ -39396,101 +39396,112 @@ var SimpleTable = function (_React$Component) {
 
 
       return _react2.default.createElement(
-        _Paper2.default,
-        { className: classes.root },
+        'div',
+        null,
         !this.state.loading && _react2.default.createElement(
-          _Table2.default,
-          { className: classes.table },
-          _react2.default.createElement(
-            _TableHead2.default,
-            null,
+          'p',
+          null,
+          'You\'re now viewing:',
+          ' ',
+          this.state.type == 'ACCREC' ? 'Accounts Receivable' : 'Accounts Payable'
+        ),
+        _react2.default.createElement(
+          _Paper2.default,
+          { className: classes.root },
+          !this.state.loading && _react2.default.createElement(
+            _Table2.default,
+            { className: classes.table },
             _react2.default.createElement(
-              _TableRow2.default,
+              _TableHead2.default,
               null,
               _react2.default.createElement(
-                _TableCell2.default,
+                _TableRow2.default,
                 null,
-                'Void?'
-              ),
-              _react2.default.createElement(
-                _TableCell2.default,
-                { numeric: true },
-                'Invoice Number'
-              ),
-              _react2.default.createElement(
-                _TableCell2.default,
-                { numeric: true },
-                'Date'
-              ),
-              _react2.default.createElement(
-                _TableCell2.default,
-                { numeric: true },
-                'Due Date'
-              ),
-              _react2.default.createElement(
-                _TableCell2.default,
-                { numeric: true },
-                'Total'
+                _react2.default.createElement(
+                  _TableCell2.default,
+                  null,
+                  'Void?'
+                ),
+                _react2.default.createElement(
+                  _TableCell2.default,
+                  { numeric: true },
+                  'Invoice Number'
+                ),
+                _react2.default.createElement(
+                  _TableCell2.default,
+                  { numeric: true },
+                  'Date'
+                ),
+                _react2.default.createElement(
+                  _TableCell2.default,
+                  { numeric: true },
+                  'Due Date'
+                ),
+                _react2.default.createElement(
+                  _TableCell2.default,
+                  { numeric: true },
+                  'Total'
+                )
               )
+            ),
+            _react2.default.createElement(
+              _TableBody2.default,
+              null,
+              this.state.invoices.map(function (invoice) {
+                console.log(invoice);
+                if (invoice.InvoiceNumber !== 'Expense Claims' && _this3.state.type == invoice.Type) {
+                  return _react2.default.createElement(
+                    _TableRow2.default,
+                    { key: invoice.InvoiceID },
+                    _react2.default.createElement(_TableCell2.default, { component: 'th', scope: 'row' }),
+                    _react2.default.createElement(
+                      _TableCell2.default,
+                      { numeric: true },
+                      _react2.default.createElement(
+                        'a',
+                        {
+                          href: 'https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=' + invoice.InvoiceID,
+                          target: '_blank'
+                        },
+                        invoice.InvoiceNumber
+                      )
+                    ),
+                    _react2.default.createElement(
+                      _TableCell2.default,
+                      { numeric: true },
+                      invoice.DateString
+                    ),
+                    _react2.default.createElement(
+                      _TableCell2.default,
+                      { numeric: true },
+                      invoice.DueDateString
+                    ),
+                    _react2.default.createElement(
+                      _TableCell2.default,
+                      { numeric: true },
+                      invoice.Total
+                    )
+                  );
+                }
+              })
             )
           ),
+          this.state.loading && _react2.default.createElement(_Loading2.default, null),
           _react2.default.createElement(
-            _TableBody2.default,
-            null,
-            this.state.invoices.map(function (invoice) {
-              console.log(invoice);
-              if (invoice.InvoiceNumber !== 'Expense Claims' && _this3.state.type == invoice.Type) {
-                return _react2.default.createElement(
-                  _TableRow2.default,
-                  { key: invoice.InvoiceID },
-                  _react2.default.createElement(_TableCell2.default, { component: 'th', scope: 'row' }),
-                  _react2.default.createElement(
-                    _TableCell2.default,
-                    { numeric: true },
-                    _react2.default.createElement(
-                      'a',
-                      {
-                        href: 'https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=' + invoice.InvoiceID,
-                        target: '_blank'
-                      },
-                      invoice.InvoiceNumber
-                    )
-                  ),
-                  _react2.default.createElement(
-                    _TableCell2.default,
-                    { numeric: true },
-                    invoice.DateString
-                  ),
-                  _react2.default.createElement(
-                    _TableCell2.default,
-                    { numeric: true },
-                    invoice.DueDateString
-                  ),
-                  _react2.default.createElement(
-                    _TableCell2.default,
-                    { numeric: true },
-                    invoice.Total
-                  )
-                );
-              }
-            })
-          )
-        ),
-        this.state.loading && _react2.default.createElement(_Loading2.default, null),
-        _react2.default.createElement(
-          'a',
-          { href: '/connect' },
-          'Connect to Xero'
-        ),
-        _react2.default.createElement(
-          'button',
-          { onClick: this.handleClick },
-          'Click me pls'
-        ),
-        _react2.default.createElement(_Switch2.default, {
-          checked: this.state.checkedA,
-          toggle: this.handleToggle
-        })
+            'a',
+            { href: '/connect' },
+            'Connect to Xero'
+          ),
+          _react2.default.createElement(
+            'button',
+            { onClick: this.handleClick },
+            'Click me pls'
+          ),
+          _react2.default.createElement(_Switch2.default, {
+            checked: this.state.checkedA,
+            toggle: this.handleToggle
+          })
+        )
       );
     }
   }]);

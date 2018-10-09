@@ -60,56 +60,67 @@ class SimpleTable extends React.Component {
     const { classes } = this.props;
 
     return (
-      <Paper className={classes.root}>
+      <div>
         {!this.state.loading && (
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell>Void?</TableCell>
-                <TableCell numeric>Invoice Number</TableCell>
-                <TableCell numeric>Date</TableCell>
-                <TableCell numeric>Due Date</TableCell>
-                <TableCell numeric>Total</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {this.state.invoices.map(invoice => {
-                console.log(invoice);
-                if (
-                  invoice.InvoiceNumber !== 'Expense Claims' &&
-                  this.state.type == invoice.Type
-                ) {
-                  return (
-                    <TableRow key={invoice.InvoiceID}>
-                      <TableCell component="th" scope="row" />
-                      <TableCell numeric>
-                        <a
-                          href={`https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=${
-                            invoice.InvoiceID
-                          }`}
-                          target="_blank"
-                        >
-                          {invoice.InvoiceNumber}
-                        </a>
-                      </TableCell>
-                      <TableCell numeric>{invoice.DateString}</TableCell>
-                      <TableCell numeric>{invoice.DueDateString}</TableCell>
-                      <TableCell numeric>{invoice.Total}</TableCell>
-                    </TableRow>
-                  );
-                }
-              })}
-            </TableBody>
-          </Table>
+          <p>
+            You're now viewing:{' '}
+            {this.state.type == 'ACCREC'
+              ? 'Accounts Receivable'
+              : 'Accounts Payable'}
+          </p>
         )}
-        {this.state.loading && <Loading />}
-        <a href="/connect">Connect to Xero</a>
-        <button onClick={this.handleClick}>Click me pls</button>
-        <SwitchToggle
-          checked={this.state.checkedA}
-          toggle={this.handleToggle}
-        />
-      </Paper>
+
+        <Paper className={classes.root}>
+          {!this.state.loading && (
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Void?</TableCell>
+                  <TableCell numeric>Invoice Number</TableCell>
+                  <TableCell numeric>Date</TableCell>
+                  <TableCell numeric>Due Date</TableCell>
+                  <TableCell numeric>Total</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {this.state.invoices.map(invoice => {
+                  console.log(invoice);
+                  if (
+                    invoice.InvoiceNumber !== 'Expense Claims' &&
+                    this.state.type == invoice.Type
+                  ) {
+                    return (
+                      <TableRow key={invoice.InvoiceID}>
+                        <TableCell component="th" scope="row" />
+                        <TableCell numeric>
+                          <a
+                            href={`https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=${
+                              invoice.InvoiceID
+                            }`}
+                            target="_blank"
+                          >
+                            {invoice.InvoiceNumber}
+                          </a>
+                        </TableCell>
+                        <TableCell numeric>{invoice.DateString}</TableCell>
+                        <TableCell numeric>{invoice.DueDateString}</TableCell>
+                        <TableCell numeric>{invoice.Total}</TableCell>
+                      </TableRow>
+                    );
+                  }
+                })}
+              </TableBody>
+            </Table>
+          )}
+          {this.state.loading && <Loading />}
+          <a href="/connect">Connect to Xero</a>
+          <button onClick={this.handleClick}>Click me pls</button>
+          <SwitchToggle
+            checked={this.state.checkedA}
+            toggle={this.handleToggle}
+          />
+        </Paper>
+      </div>
     );
   }
 }
