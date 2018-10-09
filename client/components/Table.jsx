@@ -2,14 +2,18 @@ import React from 'react';
 import request from 'superagent';
 import PropTypes from 'prop-types';
 import Loading from './Loading';
+import SwitchToggle from './Switch';
+import XeroButton from './SendButton';
+//Material UI imports
 import { withStyles } from '@material-ui/core/styles';
+import Checkbox from '@material-ui/core/Checkbox';
+
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import SwitchToggle from './Switch';
 
 const styles = theme => ({
   root: {
@@ -75,7 +79,13 @@ class SimpleTable extends React.Component {
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
-                  <TableCell>Void?</TableCell>
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                    // indeterminate={numSelected > 0 && numSelected < rowCount}
+                    // checked={numSelected === rowCount}
+                    // onChange={onSelectAllClick}
+                    />
+                  </TableCell>
                   <TableCell numeric>Invoice Number</TableCell>
                   <TableCell numeric>Date</TableCell>
                   <TableCell numeric>Due Date</TableCell>
@@ -113,7 +123,9 @@ class SimpleTable extends React.Component {
             </Table>
           )}
           {this.state.loading && <Loading />}
-          <a href="/connect">Connect to Xero</a>
+
+          <XeroButton />
+
           <button onClick={this.handleClick}>Click me pls</button>
           <SwitchToggle
             checked={this.state.checkedA}

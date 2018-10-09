@@ -31,10 +31,7 @@ class SwitchToggle extends React.Component {
     this.state = {
       checkedA: true
     };
-    this.handleChange = this.handleChange.bind(this);
   }
-
-  handleChange(name, e) {}
 
   render() {
     const { classes } = this.props;
