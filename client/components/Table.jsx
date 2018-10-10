@@ -16,6 +16,7 @@ import Paper from '@material-ui/core/Paper';
 import RetrieveButton from './Buttons/Retrieve';
 import VoidButton from './Buttons/Void';
 import VoidConfirm from './Buttons/VoidConfirm';
+import Notification from './Snackbar';
 
 const styles = theme => ({
   root: {
@@ -38,7 +39,8 @@ class InvoiceTable extends React.Component {
       loading: false,
       checkedA: true,
       selected: [],
-      voidConfirm: false
+      voidConfirm: false,
+      snackbar: false
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
@@ -46,11 +48,10 @@ class InvoiceTable extends React.Component {
     this.boxChange = this.boxChange.bind(this);
     this.handleVoid = this.handleVoid.bind(this);
     this.voidConfirmed = this.voidConfirmed.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   handleClick() {
-    console.log('handle');
-
     this.setState({
       loading: true
     });
@@ -106,7 +107,16 @@ class InvoiceTable extends React.Component {
     let obj = { void: this.state.selected };
     request('post', '/void', obj).then(res => {
       console.log(res);
+      this.setState({
+        snackbar: true
+      });
       this.handleClick();
+    });
+  }
+
+  handleClose() {
+    this.setState({
+      snackbar: false
     });
   }
 
@@ -202,6 +212,10 @@ class InvoiceTable extends React.Component {
           <SwitchToggle
             checked={this.state.checkedA}
             toggle={this.handleToggle}
+          />
+          <Notification
+            handleClose={this.handleClose}
+            open={this.state.snackbar}
           />
         </Paper>
       </div>
