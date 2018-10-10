@@ -39650,10 +39650,15 @@ var InvoiceTable = function (_React$Component) {
                     onChange: this.handleSelectAllClick
                   })
                 ),
-                _react2.default.createElement(
+                this.state.type == 'ACCREC' && _react2.default.createElement(
                   _TableCell2.default,
                   { numeric: true },
                   'Invoice Number'
+                ),
+                this.state.type == 'ACCPAY' && _react2.default.createElement(
+                  _TableCell2.default,
+                  { numeric: true },
+                  'Bill Reference'
                 ),
                 _react2.default.createElement(
                   _TableCell2.default,
@@ -39695,13 +39700,21 @@ var InvoiceTable = function (_React$Component) {
                     _react2.default.createElement(
                       _TableCell2.default,
                       { numeric: true },
-                      _react2.default.createElement(
+                      _this5.state.type == 'ACCREC' && _react2.default.createElement(
                         'a',
                         {
                           href: 'https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=' + invoice.InvoiceID,
                           target: '_blank'
                         },
                         invoice.InvoiceNumber
+                      ),
+                      _this5.state.type == 'ACCPAY' && _react2.default.createElement(
+                        'a',
+                        {
+                          href: 'https://go.xero.com/AccountsPayable/View.aspx?InvoiceID=' + invoice.InvoiceID,
+                          target: '_blank'
+                        },
+                        invoice.InvoiceNumber || 'No reference'
                       )
                     ),
                     _react2.default.createElement(

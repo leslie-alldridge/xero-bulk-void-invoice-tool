@@ -150,7 +150,12 @@ class InvoiceTable extends React.Component {
                       onChange={this.handleSelectAllClick}
                     />
                   </TableCell>
-                  <TableCell numeric>Invoice Number</TableCell>
+                  {this.state.type == 'ACCREC' && (
+                    <TableCell numeric>Invoice Number</TableCell>
+                  )}
+                  {this.state.type == 'ACCPAY' && (
+                    <TableCell numeric>Bill Reference</TableCell>
+                  )}
                   <TableCell numeric>Date</TableCell>
                   <TableCell numeric>Due Date</TableCell>
                   <TableCell numeric>Total</TableCell>
@@ -177,14 +182,26 @@ class InvoiceTable extends React.Component {
                           />
                         </TableCell>
                         <TableCell numeric>
-                          <a
-                            href={`https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=${
-                              invoice.InvoiceID
-                            }`}
-                            target="_blank"
-                          >
-                            {invoice.InvoiceNumber}
-                          </a>
+                          {this.state.type == 'ACCREC' && (
+                            <a
+                              href={`https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=${
+                                invoice.InvoiceID
+                              }`}
+                              target="_blank"
+                            >
+                              {invoice.InvoiceNumber}
+                            </a>
+                          )}
+                          {this.state.type == 'ACCPAY' && (
+                            <a
+                              href={`https://go.xero.com/AccountsPayable/View.aspx?InvoiceID=${
+                                invoice.InvoiceID
+                              }`}
+                              target="_blank"
+                            >
+                              {invoice.InvoiceNumber || 'No reference'}
+                            </a>
+                          )}
                         </TableCell>
                         <TableCell numeric>
                           {invoice.DateString.slice(0, 10)}
