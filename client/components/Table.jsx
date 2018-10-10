@@ -49,6 +49,8 @@ class InvoiceTable extends React.Component {
   }
 
   handleClick() {
+    console.log('handle');
+
     this.setState({
       loading: true
     });
@@ -104,6 +106,7 @@ class InvoiceTable extends React.Component {
     let obj = { void: this.state.selected };
     request('post', '/void', obj).then(res => {
       console.log(res);
+      this.handleClick();
     });
   }
 

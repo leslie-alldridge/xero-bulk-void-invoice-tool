@@ -39497,6 +39497,8 @@ var InvoiceTable = function (_React$Component) {
     value: function handleClick() {
       var _this2 = this;
 
+      console.log('handle');
+
       this.setState({
         loading: true
       });
@@ -39556,15 +39558,18 @@ var InvoiceTable = function (_React$Component) {
   }, {
     key: 'voidConfirmed',
     value: function voidConfirmed() {
+      var _this4 = this;
+
       var obj = { void: this.state.selected };
       (0, _api2.default)('post', '/void', obj).then(function (res) {
         console.log(res);
+        _this4.handleClick();
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
       var classes = this.props.classes;
 
@@ -39634,7 +39639,7 @@ var InvoiceTable = function (_React$Component) {
               _TableBody2.default,
               null,
               this.state.invoices.map(function (invoice) {
-                if (invoice.InvoiceNumber !== 'Expense Claims' && _this4.state.type == invoice.Type) {
+                if (invoice.InvoiceNumber !== 'Expense Claims' && _this5.state.type == invoice.Type) {
                   return _react2.default.createElement(
                     _TableRow2.default,
                     { key: invoice.InvoiceID },
@@ -39642,12 +39647,12 @@ var InvoiceTable = function (_React$Component) {
                       _TableCell2.default,
                       {
                         onChange: function onChange() {
-                          _this4.boxChange(invoice.InvoiceID);
+                          _this5.boxChange(invoice.InvoiceID);
                         },
                         padding: 'checkbox'
                       },
                       _react2.default.createElement(_Checkbox2.default, {
-                        checked: _this4.state.selected.includes(invoice.InvoiceID)
+                        checked: _this5.state.selected.includes(invoice.InvoiceID)
                       })
                     ),
                     _react2.default.createElement(
