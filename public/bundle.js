@@ -39588,10 +39588,12 @@ var InvoiceTable = function (_React$Component) {
       var obj = { void: this.state.selected };
       (0, _api2.default)('post', '/void', obj).then(function (res) {
         console.log(res);
+        setTimeout(function () {
+          _this4.handleClick();
+        }, 150);
         _this4.setState({
           snackbar: true
         });
-        _this4.handleClick();
       });
     }
   }, {

@@ -107,10 +107,12 @@ class InvoiceTable extends React.Component {
     let obj = { void: this.state.selected };
     request('post', '/void', obj).then(res => {
       console.log(res);
+      setTimeout(() => {
+        this.handleClick();
+      }, 150);
       this.setState({
         snackbar: true
       });
-      this.handleClick();
     });
   }
 
