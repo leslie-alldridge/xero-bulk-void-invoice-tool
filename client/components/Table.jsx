@@ -1,5 +1,5 @@
 import React from 'react';
-import request from 'superagent';
+import request from '../utils/api';
 import PropTypes from 'prop-types';
 import Loading from './Loading';
 import SwitchToggle from './Buttons/Switch';
@@ -43,16 +43,16 @@ class InvoiceTable extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
     this.handleSelectAllClick = this.handleSelectAllClick.bind(this);
-    const rows = this.state.invoices.length;
     this.boxChange = this.boxChange.bind(this);
     this.handleVoid = this.handleVoid.bind(this);
+    this.voidConfirmed = this.voidConfirmed.bind(this);
   }
 
   handleClick() {
     this.setState({
       loading: true
     });
-    request.get('/invoices').then(res => {
+    request('get', '/invoices').then(res => {
       this.setState({
         loading: false,
         invoices: res.body.Invoices
@@ -95,9 +95,15 @@ class InvoiceTable extends React.Component {
   }
 
   handleVoid() {
-    console.log('hit');
     this.setState({
       voidConfirm: true
+    });
+  }
+
+  voidConfirmed() {
+    let obj = { void: this.state.selected };
+    request('post', '/void', obj).then(res => {
+      console.log(res);
     });
   }
 

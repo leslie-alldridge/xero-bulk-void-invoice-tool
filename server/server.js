@@ -9,7 +9,8 @@ let xeroClient = new XeroClient(config);
 
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(path.join(__dirname, '../public')));
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.get('/connect', async function(req, res) {
   lastRequestToken = await xeroClient.oauth1Client.getRequestToken();
 
@@ -34,6 +35,16 @@ app.get('/invoices', async function(req, res) {
     page: '1'
   });
   res.json(invoices);
+});
+
+app.post('/void', async function(req, res) {
+  console.log(req.body);
+
+  // let invoices = await xeroClient.invoices.get({
+  //   Statuses: 'AUTHORISED',
+  //   page: '1'
+  // });
+  // res.json(invoices);
 });
 
 module.exports = app;
