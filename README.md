@@ -12,3 +12,12 @@ Although I was very happy with building a bulk invoice tool, I knew the technolo
 reason, version two will be using React. React provides a lot of extra functionality using state, that my previous
  app doesn't have. Users will now be able to simply filter and adjust what invoices display in the table, before selecting 
  and voiding their invoices.
+
+Personal Notes: 
+- checkbox should tick when all rows are manually ticked
+- invoices should add to 'rows' in state before the toggle is pressed
+- need to handle error cases in the voidConfirmed method (using res.body) and rendering an error snackbar
+- code tidy 
+- tests
+- css and other styling
+- deploy to Heroku
