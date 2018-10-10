@@ -3,7 +3,7 @@ import request from 'superagent';
 import PropTypes from 'prop-types';
 import Loading from './Loading';
 import SwitchToggle from './Switch';
-import XeroButton from './SendButton';
+import XeroButton from './Buttons/SendButton';
 //Material UI imports
 import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -14,6 +14,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import RetrieveButton from './Buttons/RetrieveButton';
 
 const styles = theme => ({
   root: {
@@ -73,12 +74,31 @@ class SimpleTable extends React.Component {
 
   handleSelectAllClick(event) {
     console.log(event.target.checked);
+   if(event.target.checked == true){
+    this.state.invoices.map(invoice => {
+      if (
+        invoice.InvoiceNumber !== 'Expense Claims' &&
+        this.state.type == invoice.Type
+      ){
+        console.log('hit it');
+        this.setState({
+          selected: this.state.selected.concat(invoice.InvoiceID)
 
-    if (event.target.checked) {
-      this.setState({ selected: this.state.invoices.map(n => n.InvoiceID) });
-      return;
-    }
-    this.setState({ selected: [] });
+        })
+      }
+    })
+  }
+  else {
+    this.setState({
+      selected: []
+    })
+  }
+    console.log(this.state);
+    // if (event.target.checked) {
+    //   this.setState({ selected: this.state.invoices.map(n => n.InvoiceID) });
+    //   return;
+    // }
+   // this.setState({ selected: [] });
   }
 
   boxChange(inv) {
@@ -103,8 +123,8 @@ class SimpleTable extends React.Component {
           <p>
             You're now viewing:{' '}
             {this.state.type == 'ACCREC'
-              ? 'Accounts Receivable'
-              : 'Accounts Payable'}
+              ? <b>Accounts Receivable</b>
+              : <b>Accounts Payable</b>}
           </p>
         )}
 
@@ -140,6 +160,7 @@ class SimpleTable extends React.Component {
                             this.boxChange(invoice.InvoiceID);
                           }}
                           padding="checkbox"
+                          checked={this.state.selected.includes(invoice.InvoiceID)}
                         >
                           <Checkbox />
                         </TableCell>
@@ -153,9 +174,9 @@ class SimpleTable extends React.Component {
                             {invoice.InvoiceNumber}
                           </a>
                         </TableCell>
-                        <TableCell numeric>{invoice.DateString}</TableCell>
-                        <TableCell numeric>{invoice.DueDateString}</TableCell>
-                        <TableCell numeric>{invoice.Total}</TableCell>
+                        <TableCell numeric>{invoice.DateString.slice(0,10)}</TableCell>
+                        <TableCell numeric>{invoice.DueDateString.slice(0,10)}</TableCell>
+                        <TableCell numeric>${invoice.Total}</TableCell>
                       </TableRow>
                     );
                   }
@@ -164,10 +185,10 @@ class SimpleTable extends React.Component {
             </Table>
           )}
           {this.state.loading && <Loading />}
-
+          <div id="buttons">
           <XeroButton />
-
-          <button onClick={this.handleClick}>Click me pls</button>
+          <RetrieveButton onClick={this.handleClick}/>
+          </div>
           <SwitchToggle
             checked={this.state.checkedA}
             toggle={this.handleToggle}
