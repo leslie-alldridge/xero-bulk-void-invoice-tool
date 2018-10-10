@@ -7,7 +7,6 @@ import XeroButton from './Buttons/SendButton';
 //Material UI imports
 import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
-
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -27,7 +26,7 @@ const styles = theme => ({
   }
 });
 
-class SimpleTable extends React.Component {
+class InvoiceTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -67,31 +66,21 @@ class SimpleTable extends React.Component {
           invoice.InvoiceNumber !== 'Expense Claims'
       )
     });
-    console.log(this.state);
   }
 
   handleSelectAllClick(event) {
-    console.log(event.target.checked);
     if (event.target.checked == true) {
       this.setState({
         selected: this.state.rows.map(inv => inv.InvoiceID)
       });
-      console.log('we out');
     } else {
       return this.setState({
         selected: []
       });
     }
-    console.log(this.state);
-    // if (event.target.checked) {
-    //   this.setState({ selected: this.state.invoices.map(n => n.InvoiceID) });
-    //   return;
-    // }
-    // this.setState({ selected: [] });
   }
 
   boxChange(inv) {
-    console.log(inv);
     this.state.selected.includes(inv)
       ? this.setState({
           selected: this.state.selected.filter(invoice => invoice !== inv)
@@ -99,7 +88,6 @@ class SimpleTable extends React.Component {
       : this.setState({
           selected: this.state.selected.concat(inv)
         });
-    console.log(this.state.selected);
   }
 
   render() {
@@ -127,7 +115,6 @@ class SimpleTable extends React.Component {
                   <TableCell padding="checkbox">
                     <Checkbox
                       indeterminate={numSelected > 0 && numSelected < rowCount}
-                      // checked={numSelected === rowCount}
                       onChange={this.handleSelectAllClick}
                     />
                   </TableCell>
@@ -139,7 +126,6 @@ class SimpleTable extends React.Component {
               </TableHead>
               <TableBody>
                 {this.state.invoices.map(invoice => {
-                  console.log(invoice);
                   if (
                     invoice.InvoiceNumber !== 'Expense Claims' &&
                     this.state.type == invoice.Type
@@ -197,8 +183,8 @@ class SimpleTable extends React.Component {
   }
 }
 
-SimpleTable.propTypes = {
+InvoiceTable.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(SimpleTable);
+export default withStyles(styles)(InvoiceTable);
