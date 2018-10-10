@@ -2,8 +2,8 @@ import React from 'react';
 import request from 'superagent';
 import PropTypes from 'prop-types';
 import Loading from './Loading';
-import SwitchToggle from './Switch';
-import XeroButton from './Buttons/SendButton';
+import SwitchToggle from './Buttons/Switch';
+import XeroButton from './Buttons/Send';
 //Material UI imports
 import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -13,7 +13,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import RetrieveButton from './Buttons/RetrieveButton';
+import RetrieveButton from './Buttons/Retrieve';
+import VoidButton from './Buttons/Void';
+import VoidConfirm from './Buttons/VoidConfirm';
 
 const styles = theme => ({
   root: {
@@ -35,13 +37,15 @@ class InvoiceTable extends React.Component {
       type: 'ACCREC',
       loading: false,
       checkedA: true,
-      selected: []
+      selected: [],
+      voidConfirm: false
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
     this.handleSelectAllClick = this.handleSelectAllClick.bind(this);
     const rows = this.state.invoices.length;
     this.boxChange = this.boxChange.bind(this);
+    this.handleVoid = this.handleVoid.bind(this);
   }
 
   handleClick() {
@@ -88,6 +92,13 @@ class InvoiceTable extends React.Component {
       : this.setState({
           selected: this.state.selected.concat(inv)
         });
+  }
+
+  handleVoid() {
+    console.log('hit');
+    this.setState({
+      voidConfirm: true
+    });
   }
 
   render() {
@@ -172,6 +183,12 @@ class InvoiceTable extends React.Component {
           <div id="buttons">
             <XeroButton />
             <RetrieveButton onClick={this.handleClick} />
+            {!this.state.voidConfirm && (
+              <VoidButton onClick={this.handleVoid} />
+            )}
+            {this.state.voidConfirm && (
+              <VoidConfirm onClick={this.voidConfirmed} />
+            )}
           </div>
           <SwitchToggle
             checked={this.state.checkedA}

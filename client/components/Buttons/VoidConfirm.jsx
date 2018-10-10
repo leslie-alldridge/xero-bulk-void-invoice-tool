@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
-import Send from '@material-ui/icons/Send';
+import DeleteForever from '@material-ui/icons/DeleteForever';
 
 const styles = theme => ({
   button: {
@@ -14,27 +14,27 @@ const styles = theme => ({
   }
 });
 
-function XeroButton(props) {
+function VoidConfirm(props) {
   const { classes } = props;
   return (
     <div>
       <Button
-        href="/connect"
         variant="contained"
-        color="primary"
+        color="secondary"
         className={classes.button}
+        onClick={props.onClick}
       >
-        Connect to Xero
+        Confirm Void
         <Icon className={classes.rightIcon}>
-          <Send />
+          <DeleteForever />
         </Icon>
       </Button>
     </div>
   );
 }
 
-XeroButton.propTypes = {
+VoidConfirm.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(XeroButton);
+export default withStyles(styles)(VoidConfirm);
