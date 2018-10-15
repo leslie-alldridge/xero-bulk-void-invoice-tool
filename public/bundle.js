@@ -39507,7 +39507,8 @@ var InvoiceTable = function (_React$Component) {
       checkedA: true,
       selected: [],
       voidConfirm: false,
-      snackbar: false
+      snackbar: false,
+      page: 1
     };
     _this.handleClick = _this.handleClick.bind(_this);
     _this.handleToggle = _this.handleToggle.bind(_this);
@@ -39527,7 +39528,7 @@ var InvoiceTable = function (_React$Component) {
       this.setState({
         loading: true
       });
-      (0, _api2.default)('get', '/invoices').then(function (res) {
+      (0, _api2.default)('get', '/invoices/' + this.state.page).then(function (res) {
         _this2.setState({
           loading: false,
           invoices: res.body.Invoices

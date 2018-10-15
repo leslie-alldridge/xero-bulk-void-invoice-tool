@@ -40,7 +40,8 @@ class InvoiceTable extends React.Component {
       checkedA: true,
       selected: [],
       voidConfirm: false,
-      snackbar: false
+      snackbar: false,
+      page: 1
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
@@ -55,7 +56,7 @@ class InvoiceTable extends React.Component {
     this.setState({
       loading: true
     });
-    request('get', '/invoices').then(res => {
+    request('get', `/invoices/${this.state.page}`).then(res => {
       this.setState({
         loading: false,
         invoices: res.body.Invoices

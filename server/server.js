@@ -29,10 +29,12 @@ app.get('/callback', async function(req, res) {
   res.redirect('/');
 });
 
-app.get('/invoices', async function(req, res) {
+app.get('/invoices/:id', async function(req, res) {
+  console.log(req.params.id);
+  
   let invoices = await xeroClient.invoices.get({
     Statuses: 'AUTHORISED',
-    page: '1'
+    page: req.params.id
   });
   res.json(invoices);
 });
