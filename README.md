@@ -17,7 +17,7 @@ Personal Notes:
 - checkbox should tick when all rows are manually ticked
 - invoices should add to 'rows' in state before the toggle is pressed
 - need to handle error cases in the voidConfirmed method (using res.body) and rendering an error snackbar
-- paging for table when invoices list is long (API pages to 100 atm)
+- paging for table when invoices list is long (API pages to 100 atm) - server paging done just need table to respond
 - setting a time out when voiding over 60 invoices (I think API limit is 60 per minute)
 - code tidy 
 - tests
