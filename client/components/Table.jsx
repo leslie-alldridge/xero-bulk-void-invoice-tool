@@ -4,6 +4,11 @@ import PropTypes from 'prop-types';
 import Loading from './Loading';
 import SwitchToggle from './Buttons/Switch';
 import XeroButton from './Buttons/Send';
+import RetrieveButton from './Buttons/Retrieve';
+import VoidButton from './Buttons/Void';
+import VoidConfirm from './Buttons/VoidConfirm';
+import Notification from './Snackbar';
+import ErrSnackbar from './ErrSnackbar';
 //Material UI imports
 import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -12,12 +17,14 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableFooter from '@material-ui/core/TableFooter';
 import Paper from '@material-ui/core/Paper';
-import RetrieveButton from './Buttons/Retrieve';
-import VoidButton from './Buttons/Void';
-import VoidConfirm from './Buttons/VoidConfirm';
-import Notification from './Snackbar';
-import ErrSnackbar from './ErrSnackbar';
+import IconButton from '@material-ui/core/IconButton';
+import FirstPageIcon from '@material-ui/icons/FirstPage';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import LastPageIcon from '@material-ui/icons/LastPage';
 
 const styles = theme => ({
   root: {
@@ -52,6 +59,7 @@ class InvoiceTable extends React.Component {
     this.handleVoid = this.handleVoid.bind(this);
     this.voidConfirmed = this.voidConfirmed.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleChangePage = this.handleChangePage.bind(this);
   }
 
   handleClick() {
@@ -78,6 +86,10 @@ class InvoiceTable extends React.Component {
           loading: false
         });
       });
+  }
+
+  handleChangePage() {
+    console.log('page changing');
   }
 
   handleToggle(name, e) {
@@ -246,6 +258,19 @@ class InvoiceTable extends React.Component {
                   }
                 })}
               </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    colSpan={3}
+                    count={rowCount}
+                    rowsPerPage={rowCount}
+                    page={0}
+                    onChangePage={this.handleChangePage}
+                    // onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                    // ActionsComponent={TablePaginationActionsWrapped}
+                  />
+                </TableRow>
+              </TableFooter>
             </Table>
           )}
           {this.state.loading && <Loading />}

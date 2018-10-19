@@ -39451,6 +39451,26 @@ var _Send = __webpack_require__(311);
 
 var _Send2 = _interopRequireDefault(_Send);
 
+var _Retrieve = __webpack_require__(330);
+
+var _Retrieve2 = _interopRequireDefault(_Retrieve);
+
+var _Void = __webpack_require__(332);
+
+var _Void2 = _interopRequireDefault(_Void);
+
+var _VoidConfirm = __webpack_require__(334);
+
+var _VoidConfirm2 = _interopRequireDefault(_VoidConfirm);
+
+var _Snackbar = __webpack_require__(336);
+
+var _Snackbar2 = _interopRequireDefault(_Snackbar);
+
+var _ErrSnackbar = __webpack_require__(342);
+
+var _ErrSnackbar2 = _interopRequireDefault(_ErrSnackbar);
+
 var _styles = __webpack_require__(18);
 
 var _Checkbox = __webpack_require__(139);
@@ -39477,29 +39497,37 @@ var _TableRow = __webpack_require__(143);
 
 var _TableRow2 = _interopRequireDefault(_TableRow);
 
+var _TablePagination = __webpack_require__(490);
+
+var _TablePagination2 = _interopRequireDefault(_TablePagination);
+
+var _TableFooter = __webpack_require__(488);
+
+var _TableFooter2 = _interopRequireDefault(_TableFooter);
+
 var _Paper = __webpack_require__(21);
 
 var _Paper2 = _interopRequireDefault(_Paper);
 
-var _Retrieve = __webpack_require__(330);
+var _IconButton = __webpack_require__(41);
 
-var _Retrieve2 = _interopRequireDefault(_Retrieve);
+var _IconButton2 = _interopRequireDefault(_IconButton);
 
-var _Void = __webpack_require__(332);
+var _FirstPage = __webpack_require__(512);
 
-var _Void2 = _interopRequireDefault(_Void);
+var _FirstPage2 = _interopRequireDefault(_FirstPage);
 
-var _VoidConfirm = __webpack_require__(334);
+var _KeyboardArrowLeft = __webpack_require__(513);
 
-var _VoidConfirm2 = _interopRequireDefault(_VoidConfirm);
+var _KeyboardArrowLeft2 = _interopRequireDefault(_KeyboardArrowLeft);
 
-var _Snackbar = __webpack_require__(336);
+var _KeyboardArrowRight = __webpack_require__(514);
 
-var _Snackbar2 = _interopRequireDefault(_Snackbar);
+var _KeyboardArrowRight2 = _interopRequireDefault(_KeyboardArrowRight);
 
-var _ErrSnackbar = __webpack_require__(342);
+var _LastPage = __webpack_require__(515);
 
-var _ErrSnackbar2 = _interopRequireDefault(_ErrSnackbar);
+var _LastPage2 = _interopRequireDefault(_LastPage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39551,6 +39579,7 @@ var InvoiceTable = function (_React$Component) {
     _this.handleVoid = _this.handleVoid.bind(_this);
     _this.voidConfirmed = _this.voidConfirmed.bind(_this);
     _this.handleClose = _this.handleClose.bind(_this);
+    _this.handleChangePage = _this.handleChangePage.bind(_this);
     return _this;
   }
 
@@ -39578,6 +39607,11 @@ var InvoiceTable = function (_React$Component) {
           loading: false
         });
       });
+    }
+  }, {
+    key: 'handleChangePage',
+    value: function handleChangePage() {
+      console.log('page changing');
     }
   }, {
     key: 'handleToggle',
@@ -39795,6 +39829,23 @@ var InvoiceTable = function (_React$Component) {
                   );
                 }
               })
+            ),
+            _react2.default.createElement(
+              _TableFooter2.default,
+              null,
+              _react2.default.createElement(
+                _TableRow2.default,
+                null,
+                _react2.default.createElement(_TablePagination2.default, {
+                  colSpan: 3,
+                  count: rowCount,
+                  rowsPerPage: rowCount,
+                  page: 0,
+                  onChangePage: this.handleChangePage
+                  // onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                  // ActionsComponent={TablePaginationActionsWrapped}
+                })
+              )
             )
           ),
           this.state.loading && _react2.default.createElement(_Loading2.default, null),
@@ -68961,6 +69012,114 @@ var _default = (0, _withTheme.default)()(Zoom);
 
 exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+/* 512 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(2));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(49));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.default.Fragment, null, _react.default.createElement("path", {
+  d: "M18.41 16.59L13.82 12l4.59-4.59L17 6l-6 6 6 6zM6 6h2v12H6z"
+}), _react.default.createElement("path", {
+  fill: "none",
+  d: "M24 24H0V0h24v24z"
+})), 'FirstPage');
+
+exports.default = _default;
+
+/***/ }),
+/* 513 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(2));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(49));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.default.Fragment, null, _react.default.createElement("path", {
+  d: "M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"
+}), _react.default.createElement("path", {
+  fill: "none",
+  d: "M0 0h24v24H0V0z"
+})), 'KeyboardArrowLeft');
+
+exports.default = _default;
+
+/***/ }),
+/* 514 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(2));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(49));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.default.Fragment, null, _react.default.createElement("path", {
+  d: "M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"
+}), _react.default.createElement("path", {
+  fill: "none",
+  d: "M0 0h24v24H0V0z"
+})), 'KeyboardArrowRight');
+
+exports.default = _default;
+
+/***/ }),
+/* 515 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(2));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(49));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.default.Fragment, null, _react.default.createElement("path", {
+  d: "M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"
+}), _react.default.createElement("path", {
+  fill: "none",
+  d: "M0 0h24v24H0V0z"
+})), 'LastPage');
+
+exports.default = _default;
 
 /***/ })
 /******/ ]);
