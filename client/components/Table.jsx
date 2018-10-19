@@ -61,6 +61,7 @@ class InvoiceTable extends React.Component {
     this.voidConfirmed = this.voidConfirmed.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
+    this.handleChangePageBack = this.handleChangePageBack.bind(this);
   }
 
   handleClick() {
@@ -96,6 +97,34 @@ class InvoiceTable extends React.Component {
       page: this.state.page + 1
     });
     request('get', `/invoices/${this.state.page + 1}`)
+      .then(res => {
+        this.setState({
+          error: false,
+          loading: false,
+          invoices: res.body.Invoices,
+          checkedA: !this.state.checkedA,
+          rows: res.body.Invoices.filter(
+            invoice =>
+              invoice.Type !== 'ACCPAY' &&
+              invoice.InvoiceNumber !== 'Expense Claims'
+          )
+        });
+      })
+      .catch(err => {
+        this.setState({
+          error: true,
+          loading: false
+        });
+      });
+  }
+
+  handleChangePageBack() {
+    console.log('page changing');
+    this.setState({
+      loading: true,
+      page: this.state.page - 1
+    });
+    request('get', `/invoices/${this.state.page - 1}`)
       .then(res => {
         this.setState({
           error: false,
@@ -296,10 +325,10 @@ class InvoiceTable extends React.Component {
                     Next page
                     <KeyboardArrowRight onClick={this.handleChangePage} />
                   </TableRow>
-                  {this.state.page >= 1 && (
+                  {this.state.page > 1 && (
                     <TableRow>
                       Previous page
-                      <KeyboardArrowLeft onClick={this.handleChangePage} />
+                      <KeyboardArrowLeft onClick={this.handleChangePageBack} />
                     </TableRow>
                   )}
                 </TableFooter>

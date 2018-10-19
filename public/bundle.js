@@ -39624,6 +39624,7 @@ var InvoiceTable = function (_React$Component) {
     _this.voidConfirmed = _this.voidConfirmed.bind(_this);
     _this.handleClose = _this.handleClose.bind(_this);
     _this.handleChangePage = _this.handleChangePage.bind(_this);
+    _this.handleChangePageBack = _this.handleChangePageBack.bind(_this);
     return _this;
   }
 
@@ -39680,15 +39681,42 @@ var InvoiceTable = function (_React$Component) {
       });
     }
   }, {
+    key: 'handleChangePageBack',
+    value: function handleChangePageBack() {
+      var _this4 = this;
+
+      console.log('page changing');
+      this.setState({
+        loading: true,
+        page: this.state.page - 1
+      });
+      (0, _api2.default)('get', '/invoices/' + (this.state.page - 1)).then(function (res) {
+        _this4.setState({
+          error: false,
+          loading: false,
+          invoices: res.body.Invoices,
+          checkedA: !_this4.state.checkedA,
+          rows: res.body.Invoices.filter(function (invoice) {
+            return invoice.Type !== 'ACCPAY' && invoice.InvoiceNumber !== 'Expense Claims';
+          })
+        });
+      }).catch(function (err) {
+        _this4.setState({
+          error: true,
+          loading: false
+        });
+      });
+    }
+  }, {
     key: 'handleToggle',
     value: function handleToggle(name, e) {
-      var _this4 = this;
+      var _this5 = this;
 
       this.setState({
         type: this.state.type == 'ACCREC' ? 'ACCPAY' : 'ACCREC',
         checkedA: !this.state.checkedA,
         rows: this.state.invoices.filter(function (invoice) {
-          return invoice.Type !== _this4.state.type && invoice.InvoiceNumber !== 'Expense Claims';
+          return invoice.Type !== _this5.state.type && invoice.InvoiceNumber !== 'Expense Claims';
         }),
         selected: []
       });
@@ -39730,19 +39758,19 @@ var InvoiceTable = function (_React$Component) {
   }, {
     key: 'voidConfirmed',
     value: function voidConfirmed() {
-      var _this5 = this;
+      var _this6 = this;
 
       var obj = { void: this.state.selected };
       (0, _api2.default)('post', '/void', obj).then(function (res) {
         setTimeout(function () {
-          _this5.handleClick();
+          _this6.handleClick();
         }, 150);
-        _this5.setState({
+        _this6.setState({
           error: false,
           snackbar: true
         });
       }).catch(function (err) {
-        _this5.setState({
+        _this6.setState({
           error: true
         });
       });
@@ -39758,7 +39786,7 @@ var InvoiceTable = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this6 = this;
+      var _this7 = this;
 
       var classes = this.props.classes;
 
@@ -39840,7 +39868,7 @@ var InvoiceTable = function (_React$Component) {
               _TableBody2.default,
               null,
               this.state.invoices.map(function (invoice) {
-                if (invoice.InvoiceNumber !== 'Expense Claims' && _this6.state.type == invoice.Type) {
+                if (invoice.InvoiceNumber !== 'Expense Claims' && _this7.state.type == invoice.Type) {
                   return _react2.default.createElement(
                     _TableRow2.default,
                     { key: invoice.InvoiceID },
@@ -39848,18 +39876,18 @@ var InvoiceTable = function (_React$Component) {
                       _TableCell2.default,
                       {
                         onChange: function onChange() {
-                          _this6.boxChange(invoice.InvoiceID);
+                          _this7.boxChange(invoice.InvoiceID);
                         },
                         padding: 'checkbox'
                       },
                       _react2.default.createElement(_Checkbox2.default, {
-                        checked: _this6.state.selected.includes(invoice.InvoiceID)
+                        checked: _this7.state.selected.includes(invoice.InvoiceID)
                       })
                     ),
                     _react2.default.createElement(
                       _TableCell2.default,
                       { numeric: true },
-                      _this6.state.type == 'ACCREC' && _react2.default.createElement(
+                      _this7.state.type == 'ACCREC' && _react2.default.createElement(
                         'a',
                         {
                           href: 'https://go.xero.com/AccountsReceivable/View.aspx?invoiceid=' + invoice.InvoiceID,
@@ -39867,7 +39895,7 @@ var InvoiceTable = function (_React$Component) {
                         },
                         invoice.InvoiceNumber
                       ),
-                      _this6.state.type == 'ACCPAY' && _react2.default.createElement(
+                      _this7.state.type == 'ACCPAY' && _react2.default.createElement(
                         'a',
                         {
                           href: 'https://go.xero.com/AccountsPayable/View.aspx?invoiceid=' + invoice.InvoiceID,
@@ -39910,11 +39938,11 @@ var InvoiceTable = function (_React$Component) {
                 'Next page',
                 _react2.default.createElement(_KeyboardArrowRight2.default, { onClick: this.handleChangePage })
               ),
-              this.state.page >= 1 && _react2.default.createElement(
+              this.state.page > 1 && _react2.default.createElement(
                 _TableRow2.default,
                 null,
                 'Previous page',
-                _react2.default.createElement(_KeyboardArrowLeft2.default, { onClick: this.handleChangePage })
+                _react2.default.createElement(_KeyboardArrowLeft2.default, { onClick: this.handleChangePageBack })
               )
             )
           ),
