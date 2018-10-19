@@ -39533,7 +39533,12 @@ var InvoiceTable = function (_React$Component) {
       (0, _api2.default)('get', '/invoices/' + this.state.page).then(function (res) {
         _this2.setState({
           loading: false,
-          invoices: res.body.Invoices
+          invoices: res.body.Invoices,
+          // type: this.state.type == 'ACCREC' ? 'ACCPAY' : 'ACCREC',
+          checkedA: !_this2.state.checkedA,
+          rows: res.body.Invoices.filter(function (invoice) {
+            return invoice.Type !== 'ACCPAY' && invoice.InvoiceNumber !== 'Expense Claims';
+          })
         });
       });
     }
@@ -39547,7 +39552,8 @@ var InvoiceTable = function (_React$Component) {
         checkedA: !this.state.checkedA,
         rows: this.state.invoices.filter(function (invoice) {
           return invoice.Type !== _this3.state.type && invoice.InvoiceNumber !== 'Expense Claims';
-        })
+        }),
+        selected: []
       });
     }
   }, {
@@ -39648,10 +39654,11 @@ var InvoiceTable = function (_React$Component) {
                 _react2.default.createElement(
                   _TableCell2.default,
                   { padding: 'checkbox' },
+                  console.log(rowCount, this.state.selected.length),
                   _react2.default.createElement(_Checkbox2.default, {
                     indeterminate: numSelected > 0 && numSelected < rowCount,
                     onChange: this.handleSelectAllClick,
-                    checked: this.state.selected.length == rowCount
+                    checked: this.state.selected.length > 0 && this.state.selected.length == rowCount
                   })
                 ),
                 this.state.type == 'ACCREC' && _react2.default.createElement(

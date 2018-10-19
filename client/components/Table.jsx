@@ -59,7 +59,13 @@ class InvoiceTable extends React.Component {
     request('get', `/invoices/${this.state.page}`).then(res => {
       this.setState({
         loading: false,
-        invoices: res.body.Invoices
+        invoices: res.body.Invoices,
+        checkedA: !this.state.checkedA,
+        rows: res.body.Invoices.filter(
+          invoice =>
+            invoice.Type !== 'ACCPAY' &&
+            invoice.InvoiceNumber !== 'Expense Claims'
+        )
       });
     });
   }
@@ -72,7 +78,8 @@ class InvoiceTable extends React.Component {
         invoice =>
           invoice.Type !== this.state.type &&
           invoice.InvoiceNumber !== 'Expense Claims'
-      )
+      ),
+      selected: []
     });
   }
 
@@ -146,10 +153,14 @@ class InvoiceTable extends React.Component {
               <TableHead>
                 <TableRow>
                   <TableCell padding="checkbox">
+                    {console.log(rowCount, this.state.selected.length)}
                     <Checkbox
                       indeterminate={numSelected > 0 && numSelected < rowCount}
                       onChange={this.handleSelectAllClick}
-                      checked={this.state.selected.length == rowCount}
+                      checked={
+                        this.state.selected.length > 0 &&
+                        this.state.selected.length == rowCount
+                      }
                     />
                   </TableCell>
                   {this.state.type == 'ACCREC' && (
