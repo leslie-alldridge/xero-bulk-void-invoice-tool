@@ -171,6 +171,7 @@ class InvoiceTable extends React.Component {
                   )}
                   <TableCell numeric>Date</TableCell>
                   <TableCell numeric>Due Date</TableCell>
+                  <TableCell numeric>Contact</TableCell>
                   <TableCell numeric>Total</TableCell>
                 </TableRow>
               </TableHead>
@@ -197,7 +198,7 @@ class InvoiceTable extends React.Component {
                         <TableCell numeric>
                           {this.state.type == 'ACCREC' && (
                             <a
-                              href={`https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=${
+                              href={`https://go.xero.com/AccountsReceivable/View.aspx?invoiceid=${
                                 invoice.InvoiceID
                               }`}
                               target="_blank"
@@ -207,7 +208,7 @@ class InvoiceTable extends React.Component {
                           )}
                           {this.state.type == 'ACCPAY' && (
                             <a
-                              href={`https://go.xero.com/AccountsPayable/View.aspx?InvoiceID=${
+                              href={`https://go.xero.com/AccountsPayable/View.aspx?invoiceid=${
                                 invoice.InvoiceID
                               }`}
                               target="_blank"
@@ -221,6 +222,12 @@ class InvoiceTable extends React.Component {
                         </TableCell>
                         <TableCell numeric>
                           {invoice.DueDateString.slice(0, 10)}
+                        </TableCell>
+                        <TableCell numeric>
+                          {String(invoice.Contact.Name).length > 10
+                            ? String(invoice.Contact.Name).substring(0, 10) +
+                              '...'
+                            : invoice.Contact.Name}
                         </TableCell>
                         <TableCell numeric>${invoice.Total}</TableCell>
                       </TableRow>

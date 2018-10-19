@@ -39534,7 +39534,6 @@ var InvoiceTable = function (_React$Component) {
         _this2.setState({
           loading: false,
           invoices: res.body.Invoices,
-          // type: this.state.type == 'ACCREC' ? 'ACCPAY' : 'ACCREC',
           checkedA: !_this2.state.checkedA,
           rows: res.body.Invoices.filter(function (invoice) {
             return invoice.Type !== 'ACCPAY' && invoice.InvoiceNumber !== 'Expense Claims';
@@ -39684,6 +39683,11 @@ var InvoiceTable = function (_React$Component) {
                 _react2.default.createElement(
                   _TableCell2.default,
                   { numeric: true },
+                  'Contact'
+                ),
+                _react2.default.createElement(
+                  _TableCell2.default,
+                  { numeric: true },
                   'Total'
                 )
               )
@@ -39714,7 +39718,7 @@ var InvoiceTable = function (_React$Component) {
                       _this5.state.type == 'ACCREC' && _react2.default.createElement(
                         'a',
                         {
-                          href: 'https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=' + invoice.InvoiceID,
+                          href: 'https://go.xero.com/AccountsReceivable/View.aspx?invoiceid=' + invoice.InvoiceID,
                           target: '_blank'
                         },
                         invoice.InvoiceNumber
@@ -39722,7 +39726,7 @@ var InvoiceTable = function (_React$Component) {
                       _this5.state.type == 'ACCPAY' && _react2.default.createElement(
                         'a',
                         {
-                          href: 'https://go.xero.com/AccountsPayable/View.aspx?InvoiceID=' + invoice.InvoiceID,
+                          href: 'https://go.xero.com/AccountsPayable/View.aspx?invoiceid=' + invoice.InvoiceID,
                           target: '_blank'
                         },
                         invoice.InvoiceNumber || 'No reference'
@@ -39737,6 +39741,11 @@ var InvoiceTable = function (_React$Component) {
                       _TableCell2.default,
                       { numeric: true },
                       invoice.DueDateString.slice(0, 10)
+                    ),
+                    _react2.default.createElement(
+                      _TableCell2.default,
+                      { numeric: true },
+                      String(invoice.Contact.Name).length > 10 ? String(invoice.Contact.Name).substring(0, 10) + '...' : invoice.Contact.Name
                     ),
                     _react2.default.createElement(
                       _TableCell2.default,
