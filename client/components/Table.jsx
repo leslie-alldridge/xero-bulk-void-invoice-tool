@@ -41,6 +41,7 @@ class InvoiceTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      page: 0,
       rows: [],
       invoices: [],
       type: 'ACCREC',
@@ -90,6 +91,14 @@ class InvoiceTable extends React.Component {
 
   handleChangePage() {
     console.log('page changing');
+
+    this.setState({
+      page: this.state.page + 1
+    });
+    request('get', `/invoices/${this.state.page + 1}`).then(res => {
+      console.log(res);
+      console.log('made it');
+    });
   }
 
   handleToggle(name, e) {
@@ -136,14 +145,21 @@ class InvoiceTable extends React.Component {
 
   voidConfirmed() {
     let obj = { void: this.state.selected };
-    request('post', '/void', obj).then(res => {
-      setTimeout(() => {
-        this.handleClick();
-      }, 150);
-      this.setState({
-        snackbar: true
+    request('post', '/void', obj)
+      .then(res => {
+        setTimeout(() => {
+          this.handleClick();
+        }, 150);
+        this.setState({
+          error: false,
+          snackbar: true
+        });
+      })
+      .catch(err => {
+        this.setState({
+          error: true
+        });
       });
-    });
   }
 
   handleClose() {
@@ -265,9 +281,10 @@ class InvoiceTable extends React.Component {
                     count={rowCount}
                     labelRowsPerPage=""
                     rowsPerPage={rowCount}
-                    page={0}
+                    page={this.state.page || 0}
                     onChangePage={this.handleChangePage}
                     rowsPerPageOptions={''}
+                    nextIconButtonProps={true}
                     // onChangeRowsPerPage={this.handleChangeRowsPerPage}
                     // ActionsComponent={TablePaginationActionsWrapped}
                   />

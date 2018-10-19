@@ -31,7 +31,7 @@ app.get('/callback', async function(req, res) {
 
 app.get('/invoices/:id', async function(req, res) {
   console.log(req.params.id);
-  
+
   let invoices = await xeroClient.invoices.get({
     Statuses: 'AUTHORISED',
     page: req.params.id

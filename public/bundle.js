@@ -39573,6 +39573,8 @@ var _LastPage2 = _interopRequireDefault(_LastPage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -39602,7 +39604,8 @@ var InvoiceTable = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (InvoiceTable.__proto__ || Object.getPrototypeOf(InvoiceTable)).call(this, props));
 
-    _this.state = {
+    _this.state = _defineProperty({
+      page: 0,
       rows: [],
       invoices: [],
       type: 'ACCREC',
@@ -39611,9 +39614,8 @@ var InvoiceTable = function (_React$Component) {
       checkedA: true,
       selected: [],
       voidConfirm: false,
-      snackbar: false,
-      page: 1
-    };
+      snackbar: false
+    }, 'page', 1);
     _this.handleClick = _this.handleClick.bind(_this);
     _this.handleToggle = _this.handleToggle.bind(_this);
     _this.handleSelectAllClick = _this.handleSelectAllClick.bind(_this);
@@ -39654,6 +39656,14 @@ var InvoiceTable = function (_React$Component) {
     key: 'handleChangePage',
     value: function handleChangePage() {
       console.log('page changing');
+
+      this.setState({
+        page: this.state.page + 1
+      });
+      (0, _api2.default)('get', '/invoices/' + (this.state.page + 1)).then(function (res) {
+        console.log(res);
+        console.log('made it');
+      });
     }
   }, {
     key: 'handleToggle',
@@ -39714,7 +39724,12 @@ var InvoiceTable = function (_React$Component) {
           _this4.handleClick();
         }, 150);
         _this4.setState({
+          error: false,
           snackbar: true
+        });
+      }).catch(function (err) {
+        _this4.setState({
+          error: true
         });
       });
     }
@@ -39883,9 +39898,10 @@ var InvoiceTable = function (_React$Component) {
                   count: rowCount,
                   labelRowsPerPage: '',
                   rowsPerPage: rowCount,
-                  page: 0,
+                  page: this.state.page || 0,
                   onChangePage: this.handleChangePage,
-                  rowsPerPageOptions: ''
+                  rowsPerPageOptions: '',
+                  nextIconButtonProps: true
                   // onChangeRowsPerPage={this.handleChangeRowsPerPage}
                   // ActionsComponent={TablePaginationActionsWrapped}
                 })
