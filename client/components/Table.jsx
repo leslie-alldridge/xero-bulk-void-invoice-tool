@@ -17,6 +17,7 @@ import RetrieveButton from './Buttons/Retrieve';
 import VoidButton from './Buttons/Void';
 import VoidConfirm from './Buttons/VoidConfirm';
 import Notification from './Snackbar';
+import ErrSnackbar from './ErrSnackbar';
 
 const styles = theme => ({
   root: {
@@ -37,6 +38,7 @@ class InvoiceTable extends React.Component {
       invoices: [],
       type: 'ACCREC',
       loading: false,
+      error: false,
       checkedA: true,
       selected: [],
       voidConfirm: false,
@@ -56,18 +58,26 @@ class InvoiceTable extends React.Component {
     this.setState({
       loading: true
     });
-    request('get', `/invoices/${this.state.page}`).then(res => {
-      this.setState({
-        loading: false,
-        invoices: res.body.Invoices,
-        checkedA: !this.state.checkedA,
-        rows: res.body.Invoices.filter(
-          invoice =>
-            invoice.Type !== 'ACCPAY' &&
-            invoice.InvoiceNumber !== 'Expense Claims'
-        )
+    request('get', `/invoices/${this.state.page}`)
+      .then(res => {
+        this.setState({
+          error: false,
+          loading: false,
+          invoices: res.body.Invoices,
+          checkedA: !this.state.checkedA,
+          rows: res.body.Invoices.filter(
+            invoice =>
+              invoice.Type !== 'ACCPAY' &&
+              invoice.InvoiceNumber !== 'Expense Claims'
+          )
+        });
+      })
+      .catch(err => {
+        this.setState({
+          error: true,
+          loading: false
+        });
       });
-    });
   }
 
   handleToggle(name, e) {
@@ -126,7 +136,8 @@ class InvoiceTable extends React.Component {
 
   handleClose() {
     this.setState({
-      snackbar: false
+      snackbar: false,
+      error: false
     });
   }
 
@@ -257,6 +268,9 @@ class InvoiceTable extends React.Component {
             open={this.state.snackbar}
           />
         </Paper>
+        {this.state.error && (
+          <ErrSnackbar handleClose={this.handleClose} open={this.state.error} />
+        )}
       </div>
     );
   }
