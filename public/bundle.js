@@ -39509,7 +39509,8 @@ var InvoiceTable = function (_React$Component) {
       checkedA: true,
       selected: [],
       voidConfirm: false,
-      snackbar: false
+      snackbar: false,
+      page: 1
     };
     _this.handleClick = _this.handleClick.bind(_this);
     _this.handleToggle = _this.handleToggle.bind(_this);
@@ -39529,7 +39530,7 @@ var InvoiceTable = function (_React$Component) {
       this.setState({
         loading: true
       });
-      (0, _api2.default)('get', '/invoices').then(function (res) {
+      (0, _api2.default)('get', '/invoices/' + this.state.page).then(function (res) {
         _this2.setState({
           loading: false,
           invoices: res.body.Invoices
@@ -39653,10 +39654,15 @@ var InvoiceTable = function (_React$Component) {
                     checked: this.state.selected.length == rowCount
                   })
                 ),
-                _react2.default.createElement(
+                this.state.type == 'ACCREC' && _react2.default.createElement(
                   _TableCell2.default,
                   { numeric: true },
                   'Invoice Number'
+                ),
+                this.state.type == 'ACCPAY' && _react2.default.createElement(
+                  _TableCell2.default,
+                  { numeric: true },
+                  'Bill Reference'
                 ),
                 _react2.default.createElement(
                   _TableCell2.default,
@@ -39698,13 +39704,21 @@ var InvoiceTable = function (_React$Component) {
                     _react2.default.createElement(
                       _TableCell2.default,
                       { numeric: true },
-                      _react2.default.createElement(
+                      _this5.state.type == 'ACCREC' && _react2.default.createElement(
                         'a',
                         {
                           href: 'https://go.xero.com/AccountsReceivable/View.aspx?InvoiceID=' + invoice.InvoiceID,
                           target: '_blank'
                         },
                         invoice.InvoiceNumber
+                      ),
+                      _this5.state.type == 'ACCPAY' && _react2.default.createElement(
+                        'a',
+                        {
+                          href: 'https://go.xero.com/AccountsPayable/View.aspx?InvoiceID=' + invoice.InvoiceID,
+                          target: '_blank'
+                        },
+                        invoice.InvoiceNumber || 'No reference'
                       )
                     ),
                     _react2.default.createElement(
