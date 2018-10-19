@@ -91,14 +91,30 @@ class InvoiceTable extends React.Component {
 
   handleChangePage() {
     console.log('page changing');
-
     this.setState({
+      loading: true,
       page: this.state.page + 1
     });
-    request('get', `/invoices/${this.state.page + 1}`).then(res => {
-      console.log(res);
-      console.log('made it');
-    });
+    request('get', `/invoices/${this.state.page + 1}`)
+      .then(res => {
+        this.setState({
+          error: false,
+          loading: false,
+          invoices: res.body.Invoices,
+          checkedA: !this.state.checkedA,
+          rows: res.body.Invoices.filter(
+            invoice =>
+              invoice.Type !== 'ACCPAY' &&
+              invoice.InvoiceNumber !== 'Expense Claims'
+          )
+        });
+      })
+      .catch(err => {
+        this.setState({
+          error: true,
+          loading: false
+        });
+      });
   }
 
   handleToggle(name, e) {
@@ -274,22 +290,20 @@ class InvoiceTable extends React.Component {
                   }
                 })}
               </TableBody>
-              <TableFooter>
-                <TableRow>
-                  <TablePagination
-                    colSpan={3}
-                    count={rowCount}
-                    labelRowsPerPage=""
-                    rowsPerPage={rowCount}
-                    page={this.state.page || 0}
-                    onChangePage={this.handleChangePage}
-                    rowsPerPageOptions={''}
-                    nextIconButtonProps={true}
-                    // onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                    // ActionsComponent={TablePaginationActionsWrapped}
-                  />
-                </TableRow>
-              </TableFooter>
+              {rowCount >= 100 && (
+                <TableFooter>
+                  <TableRow>
+                    Next page
+                    <KeyboardArrowRight onClick={this.handleChangePage} />
+                  </TableRow>
+                  {this.state.page >= 1 && (
+                    <TableRow>
+                      Previous page
+                      <KeyboardArrowLeft onClick={this.handleChangePage} />
+                    </TableRow>
+                  )}
+                </TableFooter>
+              )}
             </Table>
           )}
           {this.state.loading && <Loading />}

@@ -39655,26 +39655,40 @@ var InvoiceTable = function (_React$Component) {
   }, {
     key: 'handleChangePage',
     value: function handleChangePage() {
-      console.log('page changing');
+      var _this3 = this;
 
+      console.log('page changing');
       this.setState({
+        loading: true,
         page: this.state.page + 1
       });
       (0, _api2.default)('get', '/invoices/' + (this.state.page + 1)).then(function (res) {
-        console.log(res);
-        console.log('made it');
+        _this3.setState({
+          error: false,
+          loading: false,
+          invoices: res.body.Invoices,
+          checkedA: !_this3.state.checkedA,
+          rows: res.body.Invoices.filter(function (invoice) {
+            return invoice.Type !== 'ACCPAY' && invoice.InvoiceNumber !== 'Expense Claims';
+          })
+        });
+      }).catch(function (err) {
+        _this3.setState({
+          error: true,
+          loading: false
+        });
       });
     }
   }, {
     key: 'handleToggle',
     value: function handleToggle(name, e) {
-      var _this3 = this;
+      var _this4 = this;
 
       this.setState({
         type: this.state.type == 'ACCREC' ? 'ACCPAY' : 'ACCREC',
         checkedA: !this.state.checkedA,
         rows: this.state.invoices.filter(function (invoice) {
-          return invoice.Type !== _this3.state.type && invoice.InvoiceNumber !== 'Expense Claims';
+          return invoice.Type !== _this4.state.type && invoice.InvoiceNumber !== 'Expense Claims';
         }),
         selected: []
       });
@@ -39716,19 +39730,19 @@ var InvoiceTable = function (_React$Component) {
   }, {
     key: 'voidConfirmed',
     value: function voidConfirmed() {
-      var _this4 = this;
+      var _this5 = this;
 
       var obj = { void: this.state.selected };
       (0, _api2.default)('post', '/void', obj).then(function (res) {
         setTimeout(function () {
-          _this4.handleClick();
+          _this5.handleClick();
         }, 150);
-        _this4.setState({
+        _this5.setState({
           error: false,
           snackbar: true
         });
       }).catch(function (err) {
-        _this4.setState({
+        _this5.setState({
           error: true
         });
       });
@@ -39744,7 +39758,7 @@ var InvoiceTable = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this5 = this;
+      var _this6 = this;
 
       var classes = this.props.classes;
 
@@ -39826,7 +39840,7 @@ var InvoiceTable = function (_React$Component) {
               _TableBody2.default,
               null,
               this.state.invoices.map(function (invoice) {
-                if (invoice.InvoiceNumber !== 'Expense Claims' && _this5.state.type == invoice.Type) {
+                if (invoice.InvoiceNumber !== 'Expense Claims' && _this6.state.type == invoice.Type) {
                   return _react2.default.createElement(
                     _TableRow2.default,
                     { key: invoice.InvoiceID },
@@ -39834,18 +39848,18 @@ var InvoiceTable = function (_React$Component) {
                       _TableCell2.default,
                       {
                         onChange: function onChange() {
-                          _this5.boxChange(invoice.InvoiceID);
+                          _this6.boxChange(invoice.InvoiceID);
                         },
                         padding: 'checkbox'
                       },
                       _react2.default.createElement(_Checkbox2.default, {
-                        checked: _this5.state.selected.includes(invoice.InvoiceID)
+                        checked: _this6.state.selected.includes(invoice.InvoiceID)
                       })
                     ),
                     _react2.default.createElement(
                       _TableCell2.default,
                       { numeric: true },
-                      _this5.state.type == 'ACCREC' && _react2.default.createElement(
+                      _this6.state.type == 'ACCREC' && _react2.default.createElement(
                         'a',
                         {
                           href: 'https://go.xero.com/AccountsReceivable/View.aspx?invoiceid=' + invoice.InvoiceID,
@@ -39853,7 +39867,7 @@ var InvoiceTable = function (_React$Component) {
                         },
                         invoice.InvoiceNumber
                       ),
-                      _this5.state.type == 'ACCPAY' && _react2.default.createElement(
+                      _this6.state.type == 'ACCPAY' && _react2.default.createElement(
                         'a',
                         {
                           href: 'https://go.xero.com/AccountsPayable/View.aspx?invoiceid=' + invoice.InvoiceID,
@@ -39887,24 +39901,20 @@ var InvoiceTable = function (_React$Component) {
                 }
               })
             ),
-            _react2.default.createElement(
+            rowCount >= 100 && _react2.default.createElement(
               _TableFooter2.default,
               null,
               _react2.default.createElement(
                 _TableRow2.default,
                 null,
-                _react2.default.createElement(_TablePagination2.default, {
-                  colSpan: 3,
-                  count: rowCount,
-                  labelRowsPerPage: '',
-                  rowsPerPage: rowCount,
-                  page: this.state.page || 0,
-                  onChangePage: this.handleChangePage,
-                  rowsPerPageOptions: '',
-                  nextIconButtonProps: true
-                  // onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                  // ActionsComponent={TablePaginationActionsWrapped}
-                })
+                'Next page',
+                _react2.default.createElement(_KeyboardArrowRight2.default, { onClick: this.handleChangePage })
+              ),
+              this.state.page >= 1 && _react2.default.createElement(
+                _TableRow2.default,
+                null,
+                'Previous page',
+                _react2.default.createElement(_KeyboardArrowLeft2.default, { onClick: this.handleChangePage })
               )
             )
           ),
