@@ -95,6 +95,7 @@ class InvoiceTable extends React.Component {
       : this.setState({
           selected: this.state.selected.concat(inv)
         });
+    console.log(this.state);
   }
 
   handleVoid() {
@@ -106,7 +107,6 @@ class InvoiceTable extends React.Component {
   voidConfirmed() {
     let obj = { void: this.state.selected };
     request('post', '/void', obj).then(res => {
-      console.log(res);
       setTimeout(() => {
         this.handleClick();
       }, 150);
@@ -148,6 +148,7 @@ class InvoiceTable extends React.Component {
                     <Checkbox
                       indeterminate={numSelected > 0 && numSelected < rowCount}
                       onChange={this.handleSelectAllClick}
+                      checked={this.state.selected.length == rowCount}
                     />
                   </TableCell>
                   <TableCell numeric>Invoice Number</TableCell>

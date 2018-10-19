@@ -38,9 +38,7 @@ app.get('/invoices', async function(req, res) {
 });
 
 app.post('/void', async function(req, res) {
-  console.log(req.body.void);
   let toVoid = req.body.void;
-  console.log(toVoid);
   try {
     for (let i = 0; i < toVoid.length; i++) {
       xeroClient.invoices.update({
@@ -50,8 +48,6 @@ app.post('/void', async function(req, res) {
     }
     res.json('Invoice(s) Voided');
   } catch (ex) {
-    console.log('error!!!!');
-
     res.json('error!');
   }
 });

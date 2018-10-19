@@ -12,7 +12,9 @@ const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
     marginBottom: theme.spacing.unit * 8,
-    padding: `${theme.spacing.unit * 6}px 0`
+    padding: `${theme.spacing.unit * 6}px 0`,
+    paddingLeft: theme.spacing.unit * 2,
+    paddingRight: theme.spacing.unit * 2
   },
   backButton: {
     marginRight: theme.spacing.unit

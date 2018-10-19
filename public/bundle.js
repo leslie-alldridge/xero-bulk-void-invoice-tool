@@ -35021,7 +35021,9 @@ var styles = function styles(theme) {
     root: {
       backgroundColor: theme.palette.background.paper,
       marginBottom: theme.spacing.unit * 8,
-      padding: theme.spacing.unit * 6 + 'px 0'
+      padding: theme.spacing.unit * 6 + 'px 0',
+      paddingLeft: theme.spacing.unit * 2,
+      paddingRight: theme.spacing.unit * 2
     },
     backButton: {
       marginRight: theme.spacing.unit
@@ -39572,6 +39574,7 @@ var InvoiceTable = function (_React$Component) {
       }) : this.setState({
         selected: this.state.selected.concat(inv)
       });
+      console.log(this.state);
     }
   }, {
     key: 'handleVoid',
@@ -39587,7 +39590,6 @@ var InvoiceTable = function (_React$Component) {
 
       var obj = { void: this.state.selected };
       (0, _api2.default)('post', '/void', obj).then(function (res) {
-        console.log(res);
         setTimeout(function () {
           _this4.handleClick();
         }, 150);
@@ -39647,7 +39649,8 @@ var InvoiceTable = function (_React$Component) {
                   { padding: 'checkbox' },
                   _react2.default.createElement(_Checkbox2.default, {
                     indeterminate: numSelected > 0 && numSelected < rowCount,
-                    onChange: this.handleSelectAllClick
+                    onChange: this.handleSelectAllClick,
+                    checked: this.state.selected.length == rowCount
                   })
                 ),
                 _react2.default.createElement(
