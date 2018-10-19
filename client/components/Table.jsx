@@ -263,9 +263,11 @@ class InvoiceTable extends React.Component {
                   <TablePagination
                     colSpan={3}
                     count={rowCount}
+                    labelRowsPerPage=""
                     rowsPerPage={rowCount}
                     page={0}
                     onChangePage={this.handleChangePage}
+                    rowsPerPageOptions={''}
                     // onChangeRowsPerPage={this.handleChangeRowsPerPage}
                     // ActionsComponent={TablePaginationActionsWrapped}
                   />
