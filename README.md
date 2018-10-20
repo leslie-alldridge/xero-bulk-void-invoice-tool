@@ -18,8 +18,9 @@ Personal Notes:
 - invoices should add to 'rows' in state before the toggle is pressed DONE
 - need to handle error cases in the voidConfirmed method (using res.body) and rendering an error snackbar DONE
 - paging for table when invoices list is long (API pages to 100 atm) - server paging done just need table to respond DONE
-- setting a time out when voiding over 60 invoices (I think API limit is 60 per minute)
+- setting a time out when voiding over 60 invoices (I think API limit is 60 per minute) DONE
+-------------------
 - code tidy 
-- tests
+- tests (test 100 void on a page that isn't page 1)
 - css and other styling
 - deploy to Heroku
