@@ -39539,10 +39539,6 @@ var _TableRow = __webpack_require__(146);
 
 var _TableRow2 = _interopRequireDefault(_TableRow);
 
-var _TablePagination = __webpack_require__(147);
-
-var _TablePagination2 = _interopRequireDefault(_TablePagination);
-
 var _TableFooter = __webpack_require__(164);
 
 var _TableFooter2 = _interopRequireDefault(_TableFooter);
@@ -39551,14 +39547,6 @@ var _Paper = __webpack_require__(21);
 
 var _Paper2 = _interopRequireDefault(_Paper);
 
-var _IconButton = __webpack_require__(33);
-
-var _IconButton2 = _interopRequireDefault(_IconButton);
-
-var _FirstPage = __webpack_require__(375);
-
-var _FirstPage2 = _interopRequireDefault(_FirstPage);
-
 var _KeyboardArrowLeft = __webpack_require__(376);
 
 var _KeyboardArrowLeft2 = _interopRequireDefault(_KeyboardArrowLeft);
@@ -39566,10 +39554,6 @@ var _KeyboardArrowLeft2 = _interopRequireDefault(_KeyboardArrowLeft);
 var _KeyboardArrowRight = __webpack_require__(377);
 
 var _KeyboardArrowRight2 = _interopRequireDefault(_KeyboardArrowRight);
-
-var _LastPage = __webpack_require__(378);
-
-var _LastPage2 = _interopRequireDefault(_LastPage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -39761,19 +39745,53 @@ var InvoiceTable = function (_React$Component) {
       var _this6 = this;
 
       var obj = { void: this.state.selected };
-      (0, _api2.default)('post', '/void', obj).then(function (res) {
-        setTimeout(function () {
-          _this6.handleClick();
-        }, 150);
-        _this6.setState({
-          error: false,
-          snackbar: true
+      if (this.state.selected.length > 50) {
+        this.setState({ loading: true });
+        var _obj = [];
+        for (var i = 0; i < 50; i++) {
+          _obj.push(this.state.selected[i]);
+        }
+        console.log(_obj);
+        (0, _api2.default)('post', '/void', _obj).then(function (res) {
+          setTimeout(function () {
+            console.log('waiting');
+
+            var obj = [];
+            for (var _i = 50; _i < _this6.state.selected.length; _i++) {
+              console.log('pushing');
+
+              obj.push(_this6.state.selected[_i]);
+            }
+            console.log(obj);
+
+            _this6.setState({
+              error: false,
+              snackbar: true,
+              loading: false
+            });
+            _this6.handleClick();
+          }, 60000);
+        }).catch(function (err) {
+          _this6.setState({
+            error: true,
+            loading: false
+          });
         });
-      }).catch(function (err) {
-        _this6.setState({
-          error: true
+      } else {
+        (0, _api2.default)('post', '/void', obj).then(function (res) {
+          setTimeout(function () {
+            _this6.handleClick();
+          }, 150);
+          _this6.setState({
+            error: false,
+            snackbar: true
+          });
+        }).catch(function (err) {
+          _this6.setState({
+            error: true
+          });
         });
-      });
+      }
     }
   }, {
     key: 'handleClose',
@@ -51614,33 +51632,7 @@ exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 375 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(__webpack_require__(2));
-
-var _createSvgIcon = _interopRequireDefault(__webpack_require__(28));
-
-var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.default.Fragment, null, _react.default.createElement("path", {
-  d: "M18.41 16.59L13.82 12l4.59-4.59L17 6l-6 6 6 6zM6 6h2v12H6z"
-}), _react.default.createElement("path", {
-  fill: "none",
-  d: "M24 24H0V0h24v24z"
-})), 'FirstPage');
-
-exports.default = _default;
-
-/***/ }),
+/* 375 */,
 /* 376 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -51695,33 +51687,7 @@ var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.d
 exports.default = _default;
 
 /***/ }),
-/* 378 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(__webpack_require__(2));
-
-var _createSvgIcon = _interopRequireDefault(__webpack_require__(28));
-
-var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.default.Fragment, null, _react.default.createElement("path", {
-  d: "M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"
-}), _react.default.createElement("path", {
-  fill: "none",
-  d: "M0 0h24v24H0V0z"
-})), 'LastPage');
-
-exports.default = _default;
-
-/***/ }),
+/* 378 */,
 /* 379 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 

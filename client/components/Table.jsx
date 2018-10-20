@@ -17,14 +17,10 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableFooter from '@material-ui/core/TableFooter';
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import FirstPageIcon from '@material-ui/icons/FirstPage';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import LastPageIcon from '@material-ui/icons/LastPage';
 
 const styles = theme => ({
   root: {
@@ -190,21 +186,57 @@ class InvoiceTable extends React.Component {
 
   voidConfirmed() {
     let obj = { void: this.state.selected };
-    request('post', '/void', obj)
-      .then(res => {
-        setTimeout(() => {
-          this.handleClick();
-        }, 150);
-        this.setState({
-          error: false,
-          snackbar: true
+    if (this.state.selected.length > 50) {
+      this.setState({ loading: true });
+      let obj = [];
+      for (let i = 0; i < 50; i++) {
+        obj.push(this.state.selected[i]);
+      }
+      console.log(obj);
+      request('post', '/void', obj)
+        .then(res => {
+          setTimeout(() => {
+            console.log('waiting');
+
+            let obj = [];
+            for (let i = 50; i < this.state.selected.length; i++) {
+              console.log('pushing');
+
+              obj.push(this.state.selected[i]);
+            }
+            console.log(obj);
+
+            this.setState({
+              error: false,
+              snackbar: true,
+              loading: false
+            });
+            this.handleClick();
+          }, 60000);
+        })
+        .catch(err => {
+          this.setState({
+            error: true,
+            loading: false
+          });
         });
-      })
-      .catch(err => {
-        this.setState({
-          error: true
+    } else {
+      request('post', '/void', obj)
+        .then(res => {
+          setTimeout(() => {
+            this.handleClick();
+          }, 150);
+          this.setState({
+            error: false,
+            snackbar: true
+          });
+        })
+        .catch(err => {
+          this.setState({
+            error: true
+          });
         });
-      });
+    }
   }
 
   handleClose() {
