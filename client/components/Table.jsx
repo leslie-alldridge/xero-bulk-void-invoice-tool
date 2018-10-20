@@ -21,8 +21,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
 import Paper from '@material-ui/core/Paper';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos';
 
 const styles = theme => ({
   root: {
@@ -284,9 +284,52 @@ class InvoiceTable extends React.Component {
           <p>
             You're now viewing:{' '}
             {this.state.type == 'ACCREC' ? (
-              <b>Accounts Receivable - Page {this.state.page}</b>
+              <b>
+                Accounts Receivable -{' '}
+                {this.state.page > 1 && (
+                  <ArrowBackIos
+                    style={{
+                      color: '#3f51b5',
+                      marginTop: '10px',
+                      paddingTop: '10px'
+                    }}
+                    onClick={this.handleChangePageBack}
+                  />
+                )}
+                Page {this.state.page}{' '}
+                {rowCount >= 100 && (
+                  <ArrowForwardIos
+                    style={{
+                      color: '#3f51b5',
+                      marginTop: '10px',
+                      paddingTop: '10px'
+                    }}
+                    onClick={this.handleChangePage}
+                  />
+                )}
+              </b>
             ) : (
-              <b>Accounts Payable - Page {this.state.page}</b>
+              <b>
+                Accounts Payable -
+                {this.state.page > 1 && (
+                  <ArrowBackIos
+                    style={{
+                      color: '#3f51b5',
+                      marginTop: '10px',
+                      paddingTop: '10px'
+                    }}
+                  />
+                )}{' '}
+                Page {this.state.page}{' '}
+                <ArrowForwardIos
+                  style={{
+                    color: '#3f51b5',
+                    marginTop: '10px',
+                    paddingTop: '10px'
+                  }}
+                  onClick={this.handleChangePage}
+                />
+              </b>
             )}
           </p>
         )}
@@ -379,20 +422,6 @@ class InvoiceTable extends React.Component {
                   }
                 })}
               </TableBody>
-              {rowCount >= 100 && (
-                <TableFooter>
-                  <TableRow>
-                    Next page
-                    <KeyboardArrowRight onClick={this.handleChangePage} />
-                  </TableRow>
-                  {this.state.page > 1 && (
-                    <TableRow>
-                      Previous page
-                      <KeyboardArrowLeft onClick={this.handleChangePageBack} />
-                    </TableRow>
-                  )}
-                </TableFooter>
-              )}
             </Table>
           )}
           {this.state.loading && <Loading />}

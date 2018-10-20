@@ -78,10 +78,6 @@ class SimpleModal extends React.Component {
   }
 }
 
-SimpleModal.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
 const SimpleModalWrapped = withStyles(styles)(SimpleModal);
 
 export default SimpleModalWrapped;
