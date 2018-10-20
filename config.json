@@ -1,8 +1,0 @@
-{
-  "appType": "public",
-  "callbackUrl": "https://bulkvoidxero.herokuapp.com/callback",
-  "consumerKey": "JO3X0XWXAR4JGIDQ6T1IUX7ZAYBSNF",
-  "consumerSecret": "SKFNGZEV6GVP2TCUOMDVRDLAGSTO6J",
-  "userAgent": "Tester (PUBLIC) - Application for testing Xero",
-  "redirectOnError": true
-}
