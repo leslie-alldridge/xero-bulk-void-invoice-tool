@@ -61,9 +61,7 @@ class InvoiceTable extends React.Component {
     this.handleChangePageBack = this.handleChangePageBack.bind(this);
   }
 
-  handleClick() {
-    console.log('handlecllick');
-    
+  handleClick() {    
     this.setState({
       loading: true
     });
@@ -90,7 +88,6 @@ class InvoiceTable extends React.Component {
   }
 
   handleChangePage() {
-    console.log('page changing');
     this.setState({
       loading: true,
       page: this.state.page + 1
@@ -119,7 +116,6 @@ class InvoiceTable extends React.Component {
   }
 
   handleChangePageBack() {
-    console.log('page changing');
     this.setState({
       loading: true,
       page: this.state.page - 1
@@ -180,7 +176,6 @@ class InvoiceTable extends React.Component {
       : this.setState({
           selected: this.state.selected.concat(inv)
         });
-    console.log(this.state);
   }
 
   handleVoid() {
@@ -197,29 +192,19 @@ class InvoiceTable extends React.Component {
       for (let i = 0; i < 50; i++) {
         obj.void.push(this.state.selected[i]);
       }
-      console.log(obj);
       request('post', '/void', obj)
         .then(res => {
           this.setState({ apiLimit: true})
           setTimeout(() => {
-            console.log('waiting');
             let obj = {void: []};
             for (let i = 50; i < this.state.selected.length; i++) {
-              console.log('pushing');
-
               obj.void.push(this.state.selected[i]);
-            }
-            console.log(obj);
-            
+            } 
             request('post', '/void', obj)
             .then(res => {
-              console.log(res);
             })
-            .catch(err => {
-              console.log(err);
-              
+            .catch(err => {              
             })
-              
             this.setState({
               page: 0,
               rows: [],
@@ -299,7 +284,6 @@ class InvoiceTable extends React.Component {
               <TableHead>
                 <TableRow>
                   <TableCell padding="checkbox">
-                    {console.log(rowCount, this.state.selected.length)}
                     <Checkbox
                       indeterminate={numSelected > 0 && numSelected < rowCount}
                       onChange={this.handleSelectAllClick}

@@ -30,8 +30,6 @@ app.get('/callback', async function(req, res) {
 });
 
 app.get('/invoices/:id', async function(req, res) {
-  console.log(req.params.id);
-
   let invoices = await xeroClient.invoices.get({
     Statuses: 'AUTHORISED',
     page: req.params.id
@@ -40,9 +38,7 @@ app.get('/invoices/:id', async function(req, res) {
 });
 
 app.post('/void', async function(req, res) {
-  let toVoid = req.body.void;
-  console.log(toVoid.length);
-  
+  let toVoid = req.body.void;  
   try {
     for (let i = 0; i < toVoid.length; i++) {
       xeroClient.invoices.update({
@@ -52,9 +48,7 @@ app.post('/void', async function(req, res) {
     }
     res.json('Invoice(s) Voided');
   } catch (ex) {
-    res.json(ex);
-    console.log(ex);
-    
+    res.json(ex);    
   }
 });
 
