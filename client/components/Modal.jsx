@@ -3,15 +3,10 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
-import Button from '@material-ui/core/Button';
-
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
 
 function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
+  const top = 50;
+  const left = 50;
 
   return {
     top: `${top}%`,
@@ -34,40 +29,46 @@ class SimpleModal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false
+      open: this.props.open
     };
   }
 
-  //   handleOpen = () => {
-  //     this.setState({ open: true });
-  //   };
-
-  //   handleClose = () => {
-  //     this.setState({ open: false });
-  //   };
-
   render() {
     const { classes } = this.props;
-    console.log(this.props.open);
 
     return (
       <div>
-        <Typography gutterBottom>
-          Click to get the full Modal experience!
-        </Typography>
-        <Button onClick={this.handleOpen}>Open Modal</Button>
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
-          open={this.props.open}
-          onClose={this.handleClose}
+          open={this.state.open}
+          onClose={this.props.close}
         >
           <div style={getModalStyle()} className={classes.paper}>
             <Typography variant="h6" id="modal-title">
-              Text in a modal
+              <b>How to use this application</b>
             </Typography>
             <Typography variant="subtitle1" id="simple-modal-description">
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+              1. Connect to your Xero organisation. <br />
+              <br /> 2. Click Retrieve Invoices and then select which ones to
+              void <br />
+              <br />
+              3. You can toggle receivables/payables and navigate through pages
+              <br />
+              <br />
+              4. Press Void and Confirm the void <br />
+              <br />
+              Notes: If voiding more than the API limits allow, the app will
+              wait for you and submit the rest of the invoices once the API
+              limit has reset (60 seconds). <br />
+              <br />
+              Selected invoies will be reset everytime you navigate to a new
+              page, this encourages a safe amount of voiding each time (100
+              max). <br />
+              <br />
+              If the hyperlinks don't work, please ensure you're logged in to
+              the right organisation in your web browser (open a new tab for
+              Xero and login).
             </Typography>
             <SimpleModalWrapped />
           </div>
@@ -81,7 +82,6 @@ SimpleModal.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-// We need an intermediary variable for handling the recursive nesting.
 const SimpleModalWrapped = withStyles(styles)(SimpleModal);
 
 export default SimpleModalWrapped;

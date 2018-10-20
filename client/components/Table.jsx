@@ -63,6 +63,7 @@ class InvoiceTable extends React.Component {
     this.handleChangePage = this.handleChangePage.bind(this);
     this.handleChangePageBack = this.handleChangePageBack.bind(this);
     this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   handleClick() {
@@ -265,7 +266,12 @@ class InvoiceTable extends React.Component {
     this.setState({
       open: true
     });
-    console.log(this.state);
+  }
+
+  closeModal() {
+    this.setState({
+      open: false
+    });
   }
 
   render() {
@@ -409,8 +415,12 @@ class InvoiceTable extends React.Component {
             open={this.state.snackbar}
           />
         </Paper>
-        <p onClick={this.openModal}>Need help? Click here</p>
-        <SimpleModalWrapped open={this.state.open || false} />
+        <p style={{ color: '#3f51b5' }} onClick={this.openModal}>
+          Need help? Click here
+        </p>
+        {this.state.open && (
+          <SimpleModalWrapped open={this.state.open} close={this.closeModal} />
+        )}
         {this.state.error && (
           <ErrSnackbar handleClose={this.handleClose} open={this.state.error} />
         )}
