@@ -5,7 +5,14 @@ const path = require('path');
 let app = express();
 
 let lastRequestToken = null;
-let xeroClient = new XeroClient(config);
+let xeroClient = new XeroClient({
+  appType: 'public',
+  callbackUrl: 'https://bulkvoidxero.herokuapp.com/callback',
+  consumerKey: process.env.consumerKey,
+  consumerSecret: process.env.consumerSecret,
+  userAgent: 'Tester (PUBLIC) - Application for testing Xero',
+  redirectOnError: true
+});
 
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(path.join(__dirname, '../public')));
@@ -38,7 +45,7 @@ app.get('/invoices/:id', async function(req, res) {
 });
 
 app.post('/void', async function(req, res) {
-  let toVoid = req.body.void;  
+  let toVoid = req.body.void;
   try {
     for (let i = 0; i < toVoid.length; i++) {
       xeroClient.invoices.update({
@@ -48,7 +55,7 @@ app.post('/void', async function(req, res) {
     }
     res.json('Invoice(s) Voided');
   } catch (ex) {
-    res.json(ex);    
+    res.json(ex);
   }
 });
 

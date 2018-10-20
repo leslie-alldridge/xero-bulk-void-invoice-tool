@@ -29123,11 +29123,11 @@ var _Paper = __webpack_require__(22);
 
 var _Paper2 = _interopRequireDefault(_Paper);
 
-var _ArrowBackIos = __webpack_require__(482);
+var _ArrowBackIos = __webpack_require__(319);
 
 var _ArrowBackIos2 = _interopRequireDefault(_ArrowBackIos);
 
-var _ArrowForwardIos = __webpack_require__(481);
+var _ArrowForwardIos = __webpack_require__(320);
 
 var _ArrowForwardIos2 = _interopRequireDefault(_ArrowForwardIos);
 
@@ -29365,9 +29365,22 @@ var InvoiceTable = function (_React$Component) {
         });
       } else {
         (0, _api2.default)('post', '/void', obj).then(function (res) {
+          _this6.setState(_defineProperty({
+            page: 0,
+            rows: [],
+            invoices: [],
+            type: 'ACCREC',
+            loading: false,
+            apiLimit: false,
+            error: false,
+            checkedA: true,
+            selected: [],
+            voidConfirm: false,
+            snackbar: false
+          }, 'page', 1));
           setTimeout(function () {
             _this6.handleClick();
-          }, 150);
+          }, 350);
           _this6.setState({
             error: false,
             snackbar: true
@@ -45078,8 +45091,60 @@ exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 319 */,
-/* 320 */,
+/* 319 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(1));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(32));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.default.Fragment, null, _react.default.createElement("path", {
+  d: "M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"
+}), _react.default.createElement("path", {
+  fill: "none",
+  d: "M0 0h24v24H0z"
+})), 'ArrowBackIos');
+
+exports.default = _default;
+
+/***/ }),
+/* 320 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(1));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(32));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.default.Fragment, null, _react.default.createElement("path", {
+  d: "M5.88 4.12L13.76 12l-7.88 7.88L8 22l10-10L8 2z"
+}), _react.default.createElement("path", {
+  fill: "none",
+  d: "M0 0h24v24H0z"
+})), 'ArrowForwardIos');
+
+exports.default = _default;
+
+/***/ }),
 /* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -67214,60 +67279,6 @@ var _default = (0, _withTheme.default)()(Zoom);
 
 exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
-
-/***/ }),
-/* 481 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(__webpack_require__(1));
-
-var _createSvgIcon = _interopRequireDefault(__webpack_require__(32));
-
-var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.default.Fragment, null, _react.default.createElement("path", {
-  d: "M5.88 4.12L13.76 12l-7.88 7.88L8 22l10-10L8 2z"
-}), _react.default.createElement("path", {
-  fill: "none",
-  d: "M0 0h24v24H0z"
-})), 'ArrowForwardIos');
-
-exports.default = _default;
-
-/***/ }),
-/* 482 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _interopRequireDefault = __webpack_require__(0);
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(__webpack_require__(1));
-
-var _createSvgIcon = _interopRequireDefault(__webpack_require__(32));
-
-var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.default.Fragment, null, _react.default.createElement("path", {
-  d: "M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"
-}), _react.default.createElement("path", {
-  fill: "none",
-  d: "M0 0h24v24H0z"
-})), 'ArrowBackIos');
-
-exports.default = _default;
 
 /***/ })
 /******/ ]);
