@@ -97,6 +97,7 @@ class InvoiceTable extends React.Component {
         this.setState({
           error: false,
           loading: false,
+          voidConfirm: false,
           invoices: res.body.Invoices,
           checkedA: !this.state.checkedA,
           rows: res.body.Invoices.filter(
@@ -127,6 +128,7 @@ class InvoiceTable extends React.Component {
           loading: false,
           invoices: res.body.Invoices,
           checkedA: !this.state.checkedA,
+          voidConfirm: false,
           rows: res.body.Invoices.filter(
             invoice =>
               invoice.Type !== 'ACCPAY' &&
@@ -209,7 +211,8 @@ class InvoiceTable extends React.Component {
             this.setState({
               error: false,
               snackbar: true,
-              loading: false
+              loading: false,
+              voidConfirm: false
             });
             this.handleClick();
           }, 60000);
