@@ -42,6 +42,7 @@ class InvoiceTable extends React.Component {
       invoices: [],
       type: 'ACCREC',
       loading: false,
+      apiLimit: false,
       error: false,
       checkedA: true,
       selected: [],
@@ -61,6 +62,8 @@ class InvoiceTable extends React.Component {
   }
 
   handleClick() {
+    console.log('handlecllick');
+    
     this.setState({
       loading: true
     });
@@ -190,32 +193,54 @@ class InvoiceTable extends React.Component {
     let obj = { void: this.state.selected };
     if (this.state.selected.length > 50) {
       this.setState({ loading: true });
-      let obj = [];
+      let obj = {void: []};
       for (let i = 0; i < 50; i++) {
-        obj.push(this.state.selected[i]);
+        obj.void.push(this.state.selected[i]);
       }
       console.log(obj);
       request('post', '/void', obj)
         .then(res => {
+          this.setState({ apiLimit: true})
           setTimeout(() => {
             console.log('waiting');
-
-            let obj = [];
+            let obj = {void: []};
             for (let i = 50; i < this.state.selected.length; i++) {
               console.log('pushing');
 
-              obj.push(this.state.selected[i]);
+              obj.void.push(this.state.selected[i]);
             }
             console.log(obj);
-
+            
+            request('post', '/void', obj)
+            .then(res => {
+              console.log(res);
+            })
+            .catch(err => {
+              console.log(err);
+              
+            })
+              
             this.setState({
-              error: false,
-              snackbar: true,
+              page: 0,
+              rows: [],
+              invoices: [],
+              type: 'ACCREC',
               loading: false,
-              voidConfirm: false
+              apiLimit: false,
+              error: false,
+              checkedA: true,
+              selected: [],
+              voidConfirm: false,
+              snackbar: false,
+              page: 1
             });
-            this.handleClick();
-          }, 60000);
+            setTimeout(() => {
+              this.handleClick();
+            }, 150);
+            this.setState({
+              apiLimit: false
+            })
+          }, 65000);
         })
         .catch(err => {
           this.setState({
@@ -264,7 +289,9 @@ class InvoiceTable extends React.Component {
               <b>Accounts Payable</b>
             )}
           </p>
+          
         )}
+        {this.state.apiLimit && 'Xero API Limit reached, please wait sixty seconds for it to reset'}
 
         <Paper className={classes.root}>
           {!this.state.loading && (

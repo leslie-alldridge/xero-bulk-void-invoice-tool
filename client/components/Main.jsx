@@ -129,7 +129,7 @@ class Title extends React.Component {
             </h2>
 
             <Typography
-              style={{ fontSize: '1em', margin: '0 auto', maxWidth: '30%' }}
+              style={{ fontSize: '1em', margin: '0 auto', maxWidth: '30%', marginBottom: '15%' }}
               align="center"
               gutterBottom
             >
@@ -140,7 +140,7 @@ class Title extends React.Component {
               void. I'm available for contact{' '}
               <a href="mailto:leslie.alldridge@gmail.com">here</a>.<br />
               <Button
-                style={{ marginTop: '3%' }}
+                style={{ marginTop: '3%', marginBottom: '3%' }}
                 variant="contained"
                 color="primary"
                 onClick={this.confirmed}
