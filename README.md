@@ -24,5 +24,5 @@ Personal Notes:
 - tests (test 100 void on a page that isn't page 1) DONE
 - add help page DONE
 - css and other styling DONE
-- deploy to Heroku
+- deploy to Heroku DONE
 
