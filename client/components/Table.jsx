@@ -239,9 +239,23 @@ class InvoiceTable extends React.Component {
     } else {
       request('post', '/void', obj)
         .then(res => {
+          this.setState({
+            page: 0,
+            rows: [],
+            invoices: [],
+            type: 'ACCREC',
+            loading: false,
+            apiLimit: false,
+            error: false,
+            checkedA: true,
+            selected: [],
+            voidConfirm: false,
+            snackbar: false,
+            page: 1
+          });
           setTimeout(() => {
             this.handleClick();
-          }, 150);
+          }, 350);
           this.setState({
             error: false,
             snackbar: true
