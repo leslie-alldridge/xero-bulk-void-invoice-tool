@@ -10,6 +10,7 @@ import VoidButton from './Buttons/Void';
 import VoidConfirm from './Buttons/VoidConfirm';
 import Notification from './Snackbar';
 import ErrSnackbar from './ErrSnackbar';
+import SimpleModalWrapped from './Modal';
 
 import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -49,7 +50,8 @@ class InvoiceTable extends React.Component {
       selected: [],
       voidConfirm: false,
       snackbar: false,
-      page: 1
+      page: 1,
+      open: false
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
@@ -60,6 +62,7 @@ class InvoiceTable extends React.Component {
     this.handleClose = this.handleClose.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
     this.handleChangePageBack = this.handleChangePageBack.bind(this);
+    this.openModal = this.openModal.bind(this);
   }
 
   handleClick() {
@@ -258,6 +261,13 @@ class InvoiceTable extends React.Component {
     });
   }
 
+  openModal() {
+    this.setState({
+      open: true
+    });
+    console.log(this.state);
+  }
+
   render() {
     const { classes } = this.props;
     const numSelected = this.state.selected.length;
@@ -399,6 +409,8 @@ class InvoiceTable extends React.Component {
             open={this.state.snackbar}
           />
         </Paper>
+        <p onClick={this.openModal}>Need help? Click here</p>
+        <SimpleModalWrapped open={this.state.open || false} />
         {this.state.error && (
           <ErrSnackbar handleClose={this.handleClose} open={this.state.error} />
         )}
