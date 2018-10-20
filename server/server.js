@@ -12,8 +12,6 @@ let xeroClient = new XeroClient({
   userAgent: 'Tester (PUBLIC) - Application for testing Xero',
   redirectOnError: true
 });
-console.log(process.env.consumerKey);
-
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.json());
