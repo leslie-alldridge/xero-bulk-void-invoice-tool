@@ -20,7 +20,8 @@ Personal Notes:
 - paging for table when invoices list is long (API pages to 100 atm) - server paging done just need table to respond DONE
 - setting a time out when voiding over 60 invoices (I think API limit is 60 per minute) DONE
 -------------------
-- code tidy 
-- tests (test 100 void on a page that isn't page 1)
+- code tidy DONE
+- tests (test 100 void on a page that isn't page 1) DONE
+- add help page
 - css and other styling
 - deploy to Heroku
