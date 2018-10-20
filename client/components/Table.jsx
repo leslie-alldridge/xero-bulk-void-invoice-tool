@@ -1,6 +1,7 @@
 import React from 'react';
 import request from '../utils/api';
 import PropTypes from 'prop-types';
+
 import Loading from './Loading';
 import SwitchToggle from './Buttons/Switch';
 import XeroButton from './Buttons/Send';
@@ -9,7 +10,7 @@ import VoidButton from './Buttons/Void';
 import VoidConfirm from './Buttons/VoidConfirm';
 import Notification from './Snackbar';
 import ErrSnackbar from './ErrSnackbar';
-//Material UI imports
+
 import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import Table from '@material-ui/core/Table';
@@ -61,7 +62,7 @@ class InvoiceTable extends React.Component {
     this.handleChangePageBack = this.handleChangePageBack.bind(this);
   }
 
-  handleClick() {    
+  handleClick() {
     this.setState({
       loading: true
     });
@@ -188,23 +189,21 @@ class InvoiceTable extends React.Component {
     let obj = { void: this.state.selected };
     if (this.state.selected.length > 50) {
       this.setState({ loading: true });
-      let obj = {void: []};
+      let obj = { void: [] };
       for (let i = 0; i < 50; i++) {
         obj.void.push(this.state.selected[i]);
       }
       request('post', '/void', obj)
         .then(res => {
-          this.setState({ apiLimit: true})
+          this.setState({ apiLimit: true });
           setTimeout(() => {
-            let obj = {void: []};
+            let obj = { void: [] };
             for (let i = 50; i < this.state.selected.length; i++) {
               obj.void.push(this.state.selected[i]);
-            } 
+            }
             request('post', '/void', obj)
-            .then(res => {
-            })
-            .catch(err => {              
-            })
+              .then(res => {})
+              .catch(err => {});
             this.setState({
               page: 0,
               rows: [],
@@ -224,7 +223,7 @@ class InvoiceTable extends React.Component {
             }, 150);
             this.setState({
               apiLimit: false
-            })
+            });
           }, 65000);
         })
         .catch(err => {
@@ -269,15 +268,14 @@ class InvoiceTable extends React.Component {
           <p>
             You're now viewing:{' '}
             {this.state.type == 'ACCREC' ? (
-              <b>Accounts Receivable</b>
+              <b>Accounts Receivable - Page {this.state.page}</b>
             ) : (
-              <b>Accounts Payable</b>
+              <b>Accounts Payable - Page {this.state.page}</b>
             )}
           </p>
-          
         )}
-        {this.state.apiLimit && 'Xero API Limit reached, please wait sixty seconds for it to reset'}
-
+        {this.state.apiLimit &&
+          'Xero API Limit reached, please wait sixty seconds for it to reset'}
         <Paper className={classes.root}>
           {!this.state.loading && (
             <Table className={classes.table}>

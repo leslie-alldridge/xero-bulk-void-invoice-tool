@@ -1,13 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import Table from './Table';
+import { get, set } from '../utils/localstorage';
+
 import { withStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Table from './Table';
-import { get, set } from '../utils/localstorage';
+
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
@@ -28,7 +31,7 @@ const styles = theme => ({
 
 function getSteps() {
   return [
-    'Press "Connect to Xero" and then click "Fetch Invoices"',
+    'Press "Connect to Xero" and then click "Retrieve Invoices"',
     'Check invoices you wish to void',
     'Press void'
   ];

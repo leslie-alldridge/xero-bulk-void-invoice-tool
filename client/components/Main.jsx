@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import { get, set } from '../utils/localstorage';
+import IntroStepper from './IntroStepper';
+
 import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IntroStepper from './IntroStepper';
 import { Button } from '@material-ui/core';
-import { get, set } from '../utils/localstorage';
+
 const styles = theme => ({
   layout: {
     width: 'auto',
@@ -110,7 +113,6 @@ class Title extends React.Component {
           <Toolbar variant="dense" className={classes.toolbarSecondary} />
           <main />
         </div>
-
         <Typography
           className={classes.content}
           variant="title"
@@ -119,17 +121,19 @@ class Title extends React.Component {
         >
           Void multiple invoices with a single button
         </Typography>
-
         <IntroStepper />
-
         {this.state.confirm == false ? (
           <div>
             <h2 style={{ textAlign: 'center', margin: '0 auto' }}>
               Disclaimer:
             </h2>
-
             <Typography
-              style={{ fontSize: '1em', margin: '0 auto', maxWidth: '30%', marginBottom: '15%' }}
+              style={{
+                fontSize: '1em',
+                margin: '0 auto',
+                maxWidth: '30%',
+                marginBottom: '15%'
+              }}
               align="center"
               gutterBottom
             >
