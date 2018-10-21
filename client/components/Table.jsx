@@ -335,14 +335,16 @@ class InvoiceTable extends React.Component {
                   />
                 )}{' '}
                 Page {this.state.page}{' '}
-                <ArrowForwardIos
-                  style={{
-                    color: '#3f51b5',
-                    marginTop: '10px',
-                    paddingTop: '10px'
-                  }}
-                  onClick={this.handleChangePage}
-                />
+                {rowCount >= 100 && (
+                  <ArrowForwardIos
+                    style={{
+                      color: '#3f51b5',
+                      marginTop: '10px',
+                      paddingTop: '10px'
+                    }}
+                    onClick={this.handleChangePage}
+                  />
+                )}
               </b>
             )}
           </p>
