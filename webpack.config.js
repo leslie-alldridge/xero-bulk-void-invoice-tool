@@ -1,22 +1,24 @@
-const path = require('path')
+const path = require('path');
+var mode = process.env.NODE_ENV || 'development';
 
 module.exports = {
   entry: './client/index.js',
   output: {
     path: path.join(__dirname, '/public'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   module: {
-    loaders: [
+    rules: [
       {
         loader: 'babel-loader',
         test: /\.jsx?$/,
-        exclude: /node_modules/
-      }
-    ]
+        exclude: /node_modules/,
+      },
+    ],
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
-  devtool: 'source-map'
-}
+  devtool: mode === 'development' ? 'inline-source-map' : false,
+  mode: mode,
+};
