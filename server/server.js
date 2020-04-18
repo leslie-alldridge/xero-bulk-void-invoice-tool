@@ -1,15 +1,18 @@
 // Various imports
 const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
 const XeroClient = require('xero-node').AccountingAPIClient;
 const path = require('path');
 const app = express();
 
 let lastRequestToken = null;
+dotenv.config({ path: './config/config.env' });
 
 // Create Xero OAuth1.0 Client
 let xeroClient = new XeroClient({
   appType: 'public',
-  callbackUrl: 'https://bulkvoidxero.herokuapp.com/callback',
+  callbackUrl: 'http://bulkvoidxero.herokuapp.com/callback',
   consumerKey: process.env.consumerKey,
   consumerSecret: process.env.consumerSecret,
   userAgent: 'Tester (PUBLIC) - Application for testing Xero',
@@ -20,6 +23,7 @@ let xeroClient = new XeroClient({
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 // Connect to Xero and obtain + go to the authorisation URL
 app.get('/connect', async function (req, res) {
@@ -28,7 +32,7 @@ app.get('/connect', async function (req, res) {
   let authoriseUrl = xeroClient.oauth1Client.buildAuthoriseUrl(
     lastRequestToken
   );
-  res.redirect(authoriseUrl);
+  res.json(authoriseUrl);
 });
 
 // Callback URL contains token and we take user back to the / route

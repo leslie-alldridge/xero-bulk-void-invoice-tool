@@ -1,4 +1,6 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+
 import axios from 'axios';
 import { Layout, Menu, Breadcrumb } from 'antd';
 
@@ -11,7 +13,11 @@ export const Void = () => {
         <div className="site-layout-content">
           <h3>Please click below to connect with your Xero organisation</h3>
           <span
-            onClick={() => axios.get('/connect')}
+            onClick={() =>
+              axios
+                .get('/connect')
+                .then((data) => window.location.assign(data.data))
+            }
             data-xero-sso
             data-theme="dark"
             data-href="#"
