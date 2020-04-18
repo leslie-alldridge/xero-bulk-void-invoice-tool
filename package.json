@@ -1,12 +1,17 @@
 {
-  "name": "boilerplate-react-redux",
-  "version": "0.2.0",
-  "description": "React Redux using express",
+  "name": "bulkvoidtoolxero",
+  "version": "1.0.0",
+  "description": "A tool to bulk void invoice documents in Xero",
   "main": "server/index.js",
   "scripts": {
-    "start": "webpack && node server",
-    "dev": "nodemon --watch server & webpack --watch",
-    "webpack": "webpack --watch"
+    "start": "node server",
+    "server": "nodemon server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leslie-alldridge/xero-bulk-void-invoice-tool-v2-react.git"
   },
   "author": "Leslie Alldridge",
   "license": "ISC",
@@ -17,27 +22,12 @@
     ]
   },
   "devDependencies": {
-    "webpack-cli": "^3.3.11"
+    "concurrently": "^5.1.0",
+    "nodemon": "^2.0.2"
   },
   "dependencies": {
-    "@material-ui/core": "^4.0.2",
-    "@material-ui/icons": "^3.0.1",
-    "@material-ui/pickers": "^3.2.10",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
+    "dotenv": "^8.2.0",
     "express": "^4.16.2",
-    "express-session": "^1.15.6",
-    "fs": "^0.0.1-security",
-    "immutable": "^3.8.2",
-    "nodemon": "^1.14.12",
-    "react": "^16.5.2",
-    "react-dom": "^16.2.0",
-    "react-redux": "^5.0.6",
-    "redux": "^3.7.2",
-    "superagent": "^4.0.0-beta.5",
-    "webpack": "^4.42.1",
     "xero-node": "^3.0.12"
   }
 }
