@@ -5,7 +5,8 @@
   "main": "server/index.js",
   "scripts": {
     "start": "webpack && node server",
-    "dev": "nodemon --watch server & webpack --watch"
+    "dev": "nodemon --watch server & webpack --watch",
+    "webpack": "webpack --watch"
   },
   "author": "Leslie Alldridge",
   "license": "ISC",
@@ -19,8 +20,9 @@
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
-    "@material-ui/core": "^3.1.2",
+    "@material-ui/core": "^4.0.2",
     "@material-ui/icons": "^3.0.1",
+    "@material-ui/pickers": "^3.2.10",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",

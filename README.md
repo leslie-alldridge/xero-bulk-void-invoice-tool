@@ -1,28 +1,29 @@
-# xero-bulk-void-invoice-tool-v2-react
+# xero-bulk-void-invoice-tool
 
-## Goals
+## Things to note
 
-1. Rebuild my previous bulk void tool that uses express and handlebars, to a modern React web app. 
-2. Learn how to authenticate with Xero using React 
-3. Provide a clean interface where users can bulk void invoices
+- This application runs on a free Heroku instance so the first load will take ~30 seconds
+- Software comes with no warranty and is used at your own risk
+- Not affiliated with Xero in any way shape or form
+- This was built to suit my personal needs but if it helps you, you're welcome to use it
+- Questions or feature requests are welcome
+- Uses OAuth1.0 which will deprecate in December 2020 - Undecided whether I'll upgrade it or not
 
-## The Idea
+## Technology
 
-Although I was very happy with building a bulk invoice tool, I knew the technologies used were already outdated. For this 
-reason, version two will be using React. React provides a lot of extra functionality using state, that my previous
- app doesn't have. Users will now be able to simply filter and adjust what invoices display in the table, before selecting 
- and voiding their invoices.
+- React/Redux
+- Node backend
+- Xero Node SDK (for all API calls and authentication)
+- NO data persistence or database (I don't want users information or tokens) and that's why every time you need to re-auth manually
 
-Personal Notes: 
-- checkbox should tick when all rows are manually ticked  DONE
-- invoices should add to 'rows' in state before the toggle is pressed DONE
-- need to handle error cases in the voidConfirmed method (using res.body) and rendering an error snackbar DONE
-- paging for table when invoices list is long (API pages to 100 atm) - server paging done just need table to respond DONE
-- setting a time out when voiding over 60 invoices (I think API limit is 60 per minute) DONE
--------------------
-- code tidy DONE
-- tests (test 100 void on a page that isn't page 1) DONE
-- add help page DONE
-- css and other styling DONE
-- deploy to Heroku DONE
+## Use cases
 
+As the title suggests, this will bulk void invoices. There is a limit of 60 calls / minute via the Xero API so my code counts how many invoices are being voided. More than 60 and we'll sleep until a minute has passed, before firing off another 60 calls, and so on.
+
+## Questions
+
+Can I unvoid an invoice - NO (so be careful please)
+Does this functionality exist in Xero - NO
+Can I distribute this software/code - NO
+Am I able to build on top of what you already have - YES as long as it's not later sold / charged out. You should be promoting open source.
+The code broke - Raise an issue or contact me

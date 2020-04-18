@@ -24,15 +24,17 @@ import Paper from '@material-ui/core/Paper';
 import ArrowBackIos from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIos from '@material-ui/icons/ArrowForwardIos';
 
-const styles = theme => ({
+import DatePicker2 from './DatePicker';
+
+const styles = (theme) => ({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto'
+    overflowX: 'auto',
   },
   table: {
-    minWidth: 700
-  }
+    minWidth: 700,
+  },
 });
 
 class InvoiceTable extends React.Component {
@@ -51,7 +53,7 @@ class InvoiceTable extends React.Component {
       voidConfirm: false,
       snackbar: false,
       page: 1,
-      open: false
+      open: false,
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
@@ -68,26 +70,26 @@ class InvoiceTable extends React.Component {
 
   handleClick() {
     this.setState({
-      loading: true
+      loading: true,
     });
     request('get', `/invoices/${this.state.page}`)
-      .then(res => {
+      .then((res) => {
         this.setState({
           error: false,
           loading: false,
           invoices: res.body.Invoices,
           checkedA: !this.state.checkedA,
           rows: res.body.Invoices.filter(
-            invoice =>
+            (invoice) =>
               invoice.Type !== 'ACCPAY' &&
               invoice.InvoiceNumber !== 'Expense Claims'
-          )
+          ),
         });
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({
           error: true,
-          loading: false
+          loading: false,
         });
       });
   }
@@ -95,10 +97,10 @@ class InvoiceTable extends React.Component {
   handleChangePage() {
     this.setState({
       loading: true,
-      page: this.state.page + 1
+      page: this.state.page + 1,
     });
     request('get', `/invoices/${this.state.page + 1}`)
-      .then(res => {
+      .then((res) => {
         this.setState({
           error: false,
           loading: false,
@@ -106,16 +108,16 @@ class InvoiceTable extends React.Component {
           invoices: res.body.Invoices,
           checkedA: !this.state.checkedA,
           rows: res.body.Invoices.filter(
-            invoice =>
+            (invoice) =>
               invoice.Type !== 'ACCPAY' &&
               invoice.InvoiceNumber !== 'Expense Claims'
-          )
+          ),
         });
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({
           error: true,
-          loading: false
+          loading: false,
         });
       });
   }
@@ -123,10 +125,10 @@ class InvoiceTable extends React.Component {
   handleChangePageBack() {
     this.setState({
       loading: true,
-      page: this.state.page - 1
+      page: this.state.page - 1,
     });
     request('get', `/invoices/${this.state.page - 1}`)
-      .then(res => {
+      .then((res) => {
         this.setState({
           error: false,
           loading: false,
@@ -134,16 +136,16 @@ class InvoiceTable extends React.Component {
           checkedA: !this.state.checkedA,
           voidConfirm: false,
           rows: res.body.Invoices.filter(
-            invoice =>
+            (invoice) =>
               invoice.Type !== 'ACCPAY' &&
               invoice.InvoiceNumber !== 'Expense Claims'
-          )
+          ),
         });
       })
-      .catch(err => {
+      .catch((err) => {
         this.setState({
           error: true,
-          loading: false
+          loading: false,
         });
       });
   }
@@ -153,22 +155,22 @@ class InvoiceTable extends React.Component {
       type: this.state.type == 'ACCREC' ? 'ACCPAY' : 'ACCREC',
       checkedA: !this.state.checkedA,
       rows: this.state.invoices.filter(
-        invoice =>
+        (invoice) =>
           invoice.Type !== this.state.type &&
           invoice.InvoiceNumber !== 'Expense Claims'
       ),
-      selected: []
+      selected: [],
     });
   }
 
   handleSelectAllClick(event) {
     if (event.target.checked == true) {
       this.setState({
-        selected: this.state.rows.map(inv => inv.InvoiceID)
+        selected: this.state.rows.map((inv) => inv.InvoiceID),
       });
     } else {
       return this.setState({
-        selected: []
+        selected: [],
       });
     }
   }
@@ -176,16 +178,16 @@ class InvoiceTable extends React.Component {
   boxChange(inv) {
     this.state.selected.includes(inv)
       ? this.setState({
-          selected: this.state.selected.filter(invoice => invoice !== inv)
+          selected: this.state.selected.filter((invoice) => invoice !== inv),
         })
       : this.setState({
-          selected: this.state.selected.concat(inv)
+          selected: this.state.selected.concat(inv),
         });
   }
 
   handleVoid() {
     this.setState({
-      voidConfirm: true
+      voidConfirm: true,
     });
   }
 
@@ -198,7 +200,7 @@ class InvoiceTable extends React.Component {
         obj.void.push(this.state.selected[i]);
       }
       request('post', '/void', obj)
-        .then(res => {
+        .then((res) => {
           this.setState({ apiLimit: true });
           setTimeout(() => {
             let obj = { void: [] };
@@ -206,8 +208,8 @@ class InvoiceTable extends React.Component {
               obj.void.push(this.state.selected[i]);
             }
             request('post', '/void', obj)
-              .then(res => {})
-              .catch(err => {});
+              .then((res) => {})
+              .catch((err) => {});
             this.setState({
               page: 0,
               rows: [],
@@ -220,25 +222,25 @@ class InvoiceTable extends React.Component {
               selected: [],
               voidConfirm: false,
               snackbar: false,
-              page: 1
+              page: 1,
             });
             setTimeout(() => {
               this.handleClick();
             }, 150);
             this.setState({
-              apiLimit: false
+              apiLimit: false,
             });
           }, 65000);
         })
-        .catch(err => {
+        .catch((err) => {
           this.setState({
             error: true,
-            loading: false
+            loading: false,
           });
         });
     } else {
       request('post', '/void', obj)
-        .then(res => {
+        .then((res) => {
           this.setState({
             page: 0,
             rows: [],
@@ -251,19 +253,19 @@ class InvoiceTable extends React.Component {
             selected: [],
             voidConfirm: false,
             snackbar: false,
-            page: 1
+            page: 1,
           });
           setTimeout(() => {
             this.handleClick();
           }, 350);
           this.setState({
             error: false,
-            snackbar: true
+            snackbar: true,
           });
         })
-        .catch(err => {
+        .catch((err) => {
           this.setState({
-            error: true
+            error: true,
           });
         });
     }
@@ -272,19 +274,19 @@ class InvoiceTable extends React.Component {
   handleClose() {
     this.setState({
       snackbar: false,
-      error: false
+      error: false,
     });
   }
 
   openModal() {
     this.setState({
-      open: true
+      open: true,
     });
   }
 
   closeModal() {
     this.setState({
-      open: false
+      open: false,
     });
   }
 
@@ -294,6 +296,7 @@ class InvoiceTable extends React.Component {
     const rowCount = this.state.rows.length;
     return (
       <div>
+        <DatePicker2 />
         {!this.state.loading && (
           <p>
             You're now viewing:{' '}
@@ -305,7 +308,7 @@ class InvoiceTable extends React.Component {
                     style={{
                       color: '#3f51b5',
                       marginTop: '10px',
-                      paddingTop: '10px'
+                      paddingTop: '10px',
                     }}
                     onClick={this.handleChangePageBack}
                   />
@@ -316,7 +319,7 @@ class InvoiceTable extends React.Component {
                     style={{
                       color: '#3f51b5',
                       marginTop: '10px',
-                      paddingTop: '10px'
+                      paddingTop: '10px',
                     }}
                     onClick={this.handleChangePage}
                   />
@@ -330,7 +333,7 @@ class InvoiceTable extends React.Component {
                     style={{
                       color: '#3f51b5',
                       marginTop: '10px',
-                      paddingTop: '10px'
+                      paddingTop: '10px',
                     }}
                   />
                 )}{' '}
@@ -340,7 +343,7 @@ class InvoiceTable extends React.Component {
                     style={{
                       color: '#3f51b5',
                       marginTop: '10px',
-                      paddingTop: '10px'
+                      paddingTop: '10px',
                     }}
                     onClick={this.handleChangePage}
                   />
@@ -379,7 +382,7 @@ class InvoiceTable extends React.Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {this.state.invoices.map(invoice => {
+                {this.state.invoices.map((invoice) => {
                   if (
                     invoice.InvoiceNumber !== 'Expense Claims' &&
                     this.state.type == invoice.Type
@@ -401,9 +404,7 @@ class InvoiceTable extends React.Component {
                         <TableCell numeric>
                           {this.state.type == 'ACCREC' && (
                             <a
-                              href={`https://go.xero.com/AccountsReceivable/View.aspx?invoiceid=${
-                                invoice.InvoiceID
-                              }`}
+                              href={`https://go.xero.com/AccountsReceivable/View.aspx?invoiceid=${invoice.InvoiceID}`}
                               target="_blank"
                             >
                               {invoice.InvoiceNumber}
@@ -411,9 +412,7 @@ class InvoiceTable extends React.Component {
                           )}
                           {this.state.type == 'ACCPAY' && (
                             <a
-                              href={`https://go.xero.com/AccountsPayable/View.aspx?invoiceid=${
-                                invoice.InvoiceID
-                              }`}
+                              href={`https://go.xero.com/AccountsPayable/View.aspx?invoiceid=${invoice.InvoiceID}`}
                               target="_blank"
                             >
                               {invoice.InvoiceNumber || 'No reference'}
@@ -475,7 +474,7 @@ class InvoiceTable extends React.Component {
 }
 
 InvoiceTable.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(InvoiceTable);
