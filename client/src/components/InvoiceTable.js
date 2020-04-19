@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Moment from 'react-moment';
 import { Table, Button } from 'antd';
 import { Error } from './Error';
 import { remove } from '../utils/localstorage';
@@ -12,6 +13,10 @@ const columns = [
   {
     title: 'Date',
     dataIndex: 'DateString',
+    render: (value) => {
+      // convert date to human readable format
+      return <Moment format="LL">{value}</Moment>;
+    },
   },
   {
     title: 'Due Date',
