@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import { Layout } from 'antd';
+import { Layout, Button } from 'antd';
+import { LoginOutlined } from '@ant-design/icons';
 
 import { get } from '../utils/localstorage';
 import InvoiceTable from './InvoiceTable';
@@ -9,6 +10,7 @@ const { Content, Footer } = Layout;
 
 export const Void = () => {
   const hasAuth = get('oauth_token_secret');
+
   return (
     <Layout className="layout">
       <Content style={{ padding: '0 50px' }}>
@@ -25,15 +27,10 @@ export const Void = () => {
                     .then((data) => window.location.assign(data.data))
                 }
               >
-                <img
-                  style={{
-                    width: '180px',
-                    borderRadius: '7px',
-                    cursor: 'pointer',
-                  }}
-                  src="./signin.PNG"
-                  alt="sign in logo"
-                ></img>
+                <Button type="primary" shape="round" size={'large'}>
+                  <LoginOutlined />
+                  Sign in to Xero
+                </Button>
               </span>
             </div>
           ) : (

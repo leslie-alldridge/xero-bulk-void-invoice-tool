@@ -62,7 +62,11 @@ app.get('/invoices', async function (req, res) {
   } catch (ex) {
     console.log('excep');
 
-    res.json(ex);
+    res
+      .status(500)
+      .send(
+        'We encountered an issue retrieving invoices. Please re-authenticate and try again.'
+      );
   }
 });
 

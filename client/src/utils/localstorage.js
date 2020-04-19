@@ -7,3 +7,5 @@ export const set = (key, value) => {
     ? localStorage.removeItem(key)
     : localStorage.setItem(key, value);
 };
+
+export const remove = (key) => localStorage.removeItem(key);
