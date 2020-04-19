@@ -12,7 +12,7 @@ dotenv.config({ path: './config/config.env' });
 // Create Xero OAuth1.0 Client
 let xeroClient = new XeroClient({
   appType: 'public',
-  callbackUrl: 'http://bulkvoidxero.herokuapp.com/callback',
+  callbackUrl: 'http://localhost:3000/callback',
   consumerKey: process.env.consumerKey,
   consumerSecret: process.env.consumerSecret,
   userAgent: 'Tester (PUBLIC) - Application for testing Xero',
@@ -37,21 +37,26 @@ app.get('/connect', async function (req, res) {
 
 // Callback URL contains token and we take user back to the / route
 app.get('/callback', async function (req, res) {
+  console.log(req.query);
   let oauth_verifier = req.query.oauth_verifier;
   let accessToken = await xeroClient.oauth1Client.swapRequestTokenforAccessToken(
     lastRequestToken,
     oauth_verifier
   );
-  res.redirect('/');
+  res.json(accessToken);
 });
 
 // Get Authorised invoices by ID (Only authorised invoices can be voided)
 app.get('/invoices/:id', async function (req, res) {
-  let invoices = await xeroClient.invoices.get({
-    Statuses: 'AUTHORISED',
-    page: req.params.id,
-  });
-  res.json(invoices);
+  try {
+    let invoices = await xeroClient.invoices.get({
+      Statuses: 'AUTHORISED',
+      page: req.params.id,
+    });
+    res.json(invoices);
+  } catch (ex) {
+    res.json(ex);
+  }
 });
 
 // Send request to Xero to void every invoice in the Array

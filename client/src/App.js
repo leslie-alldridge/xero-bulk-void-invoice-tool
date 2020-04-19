@@ -1,15 +1,23 @@
 import React from 'react';
-import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
+import {
+  Switch,
+  Route,
+  Redirect,
+  useLocation,
+  useHistory,
+} from 'react-router-dom';
 import './App.css';
 import { PageHeader } from './components/PageHeader';
 import { Void } from './components/Void';
 import { About } from './components/About';
 import { Help } from './components/Help';
+import { Auth } from './components/Auth';
 
 import { GlobalProvider } from './context/GlobalState';
 
 function App() {
   let location = useLocation();
+  let history = useHistory();
   return (
     <GlobalProvider>
       <PageHeader currentPath={location.pathname} />
@@ -23,6 +31,9 @@ function App() {
         </Route>
         <Route path="/help">
           <Help />
+        </Route>
+        <Route path="/callback">
+          <Auth history={history} search={location.search} />
         </Route>
       </Switch>
     </GlobalProvider>
