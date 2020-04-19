@@ -7,23 +7,23 @@ import { remove } from '../utils/localstorage';
 const columns = [
   {
     title: 'Invoice Number',
-    dataIndex: 'invoicenumber',
+    dataIndex: 'InvoiceNumber',
   },
   {
     title: 'Date',
-    dataIndex: 'date',
+    dataIndex: 'DateString',
   },
   {
     title: 'Due Date',
-    dataIndex: 'duedate',
+    dataIndex: 'DueDateString',
   },
   {
     title: 'Contact',
-    dataIndex: 'contact',
+    dataIndex: ['Contact', 'Name'],
   },
   {
     title: 'Total',
-    dataIndex: 'total',
+    dataIndex: 'Total',
   },
 ];
 
@@ -41,8 +41,8 @@ class InvoiceTable extends React.Component {
     axios
       .get('/invoices')
       .then((data) => {
-        console.log(data);
-        this.setState({ loading: false });
+        console.log(data.data.Invoices);
+        this.setState({ loading: false, invoiceData: data.data.Invoices });
       })
       .catch((exc) => {
         this.setState({ loading: false, error: true });
@@ -50,7 +50,8 @@ class InvoiceTable extends React.Component {
       });
   };
 
-  disconnect = (history) => {
+  disconnect = () => {
+    // removes users information from their cache
     remove('oauth_token');
     remove('oauth_expires_at');
     remove('oauth_token_secret');
@@ -100,6 +101,7 @@ class InvoiceTable extends React.Component {
           <Error />
         ) : (
           <Table
+            rowKey="InvoiceNumber"
             rowSelection={rowSelection}
             columns={columns}
             dataSource={this.state.invoiceData}
