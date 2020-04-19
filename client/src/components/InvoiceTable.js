@@ -56,8 +56,8 @@ class InvoiceTable extends React.Component {
     axios
       .get(`/invoices?date=${this.state.invoiceMonth}`)
       .then((data) => {
-        console.log(data.data.Invoices);
-        this.setState({ loading: false, invoiceData: data.data.Invoices });
+        console.log(data.data);
+        this.setState({ loading: false, invoiceData: data.data });
       })
       .catch((exc) => {
         this.setState({ loading: false, error: true });
