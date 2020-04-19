@@ -46,6 +46,7 @@ class InvoiceTable extends React.Component {
     selectedRowKeys: [],
     loading: false,
     invoiceData: [],
+    invoiceMonth: '2020-01',
     error: false,
   };
 
@@ -53,7 +54,7 @@ class InvoiceTable extends React.Component {
     this.setState({ loading: true });
     // retrives invoices for the user
     axios
-      .get('/invoices')
+      .get(`/invoices?date=${this.state.invoiceMonth}`)
       .then((data) => {
         console.log(data.data.Invoices);
         this.setState({ loading: false, invoiceData: data.data.Invoices });
@@ -78,6 +79,7 @@ class InvoiceTable extends React.Component {
 
   onDateChange = (date, dateString) => {
     console.log(date, dateString);
+    this.setState({ invoiceMonth: dateString });
   };
 
   render() {
@@ -111,6 +113,8 @@ class InvoiceTable extends React.Component {
             Disconnect from Xero
           </Button>
           <DatePicker
+            autoFocus={true}
+            placeholder={'2020-01'}
             style={{ marginLeft: 8 }}
             onChange={this.onDateChange}
             picker="month"
@@ -128,6 +132,7 @@ class InvoiceTable extends React.Component {
             rowSelection={rowSelection}
             columns={columns}
             dataSource={this.state.invoiceData}
+            pagination={{ pageSize: 100 }}
           />
         )}
       </div>
