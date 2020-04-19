@@ -87,19 +87,51 @@ app.get('/invoices', async function (req, res) {
   }
 });
 
+function voidInvoice(invoiceID, idx) {
+  try {
+    setTimeout(() => {
+      xeroClient.invoices.update({
+        InvoiceID: invoiceID,
+        Status: 'VOIDED',
+      });
+    }, 2000);
+
+    //return Promise.resolve(`Success ${invoiceID}`);
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(`Success ${invoiceID} waited ${2000}ms`), 2000);
+    });
+  } catch (exc) {
+    console.log(exc);
+    return Promise.resolve(`Failed ${invoiceID}`);
+  }
+}
+
+const anAsyncFunction = async (item, idx) => {
+  return voidInvoice(item, idx);
+};
+
 // Send request to Xero to void every invoice in the Array
 app.post('/void', async function (req, res) {
   let toVoid = req.body.void;
+
   try {
-    for (let i = 0; i < toVoid.length; i++) {
-      xeroClient.invoices.update({
-        InvoiceID: toVoid[i],
-        Status: 'VOIDED',
-      });
-    }
-    res.json('Invoice(s) Voided');
-  } catch (ex) {
-    res.json(ex);
+    const getData = async () => {
+      return Promise.all(toVoid.map((item, idx) => anAsyncFunction(item, idx)));
+    };
+    getData().then((data) => {
+      console.log(data);
+      const failureCheck = data.findIndex((element) =>
+        element.includes('Failed')
+      );
+      if (failureCheck === -1) {
+        res.status(200).send('Success');
+      } else {
+        res.status(200).send({ error: results[2] });
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send('Error');
   }
 });
 

@@ -11,7 +11,6 @@ export const Help = () => {
           <p>I'm the help page</p>
         </div>
       </Content>
-
       <Footer style={{ textAlign: 'center' }}>Created by Leslie A. 2020</Footer>
     </Layout>
   );

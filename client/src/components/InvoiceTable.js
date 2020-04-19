@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import Moment from 'react-moment';
-import { Table, Button, DatePicker } from 'antd';
+import { Table, Button, DatePicker, notification } from 'antd';
+import { SmileOutlined, FrownOutlined } from '@ant-design/icons';
 
 import { Error } from './Error';
 import { remove } from '../utils/localstorage';
@@ -48,6 +49,7 @@ class InvoiceTable extends React.Component {
     invoiceData: [],
     invoiceMonth: '2020-01',
     error: false,
+    voidLoading: false,
   };
 
   start = () => {
@@ -74,7 +76,6 @@ class InvoiceTable extends React.Component {
 
   onSelectChange = (selectedRowKeys) => {
     // fires when user selects a row in the table
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     this.setState({ selectedRowKeys });
   };
 
@@ -84,13 +85,35 @@ class InvoiceTable extends React.Component {
   };
 
   void = () => {
-    this.state.selectedRowKeys.map((item) =>
-      console.log(`We will void: ${item}`)
-    );
+    // Send void api call to server with an array of invoice ids
+    this.setState({ voidLoading: true });
+    axios
+      .post('/void', { void: this.state.selectedRowKeys })
+      .then((data) => {
+        if (data.data === 'Success') {
+          this.setState({ voidLoading: false });
+          notification.open({
+            message: 'Invoices Voided Successfully',
+            description: 'All invoices were voided without any issues.',
+            icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+          });
+        } else {
+          this.setState({ voidLoading: false });
+          notification.open({
+            message: 'We encountered a problem',
+            description: `Please see the error response for more information: InvoiceID: ${data.data.error}`,
+            icon: <FrownOutlined style={{ color: '#FF0000' }} />,
+          });
+        }
+      })
+      .catch((exc) => {
+        this.setState({ voidLoading: false, error: true });
+        remove('oauth_token_secret');
+      });
   };
 
   render() {
-    const { loading, selectedRowKeys } = this.state;
+    const { loading, voidLoading, selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -136,6 +159,7 @@ class InvoiceTable extends React.Component {
               danger
               type="primary"
               onClick={this.void}
+              loading={voidLoading}
             >
               {`Void ${selectedRowKeys.length} items`}
             </Button>
