@@ -25,6 +25,10 @@ const columns = [
     title: 'Total',
     dataIndex: 'Total',
   },
+  {
+    title: 'Currency',
+    dataIndex: 'CurrencyCode',
+  },
 ];
 
 class InvoiceTable extends React.Component {
