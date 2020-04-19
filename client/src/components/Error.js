@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Button } from 'antd';
+import { Alert } from 'antd';
 
 export const Error = () => (
   <div>

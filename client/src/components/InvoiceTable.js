@@ -1,7 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import Moment from 'react-moment';
-import { Table, Button } from 'antd';
+import { Table, Button, DatePicker } from 'antd';
+
 import { Error } from './Error';
 import { remove } from '../utils/localstorage';
 
@@ -21,6 +22,10 @@ const columns = [
   {
     title: 'Due Date',
     dataIndex: 'DueDateString',
+    render: (value) => {
+      // convert date to human readable format
+      return <Moment format="LL">{value}</Moment>;
+    },
   },
   {
     title: 'Contact',
@@ -71,6 +76,10 @@ class InvoiceTable extends React.Component {
     this.setState({ selectedRowKeys });
   };
 
+  onDateChange = (date, dateString) => {
+    console.log(date, dateString);
+  };
+
   render() {
     const { loading, selectedRowKeys } = this.state;
     const rowSelection = {
@@ -101,6 +110,11 @@ class InvoiceTable extends React.Component {
           >
             Disconnect from Xero
           </Button>
+          <DatePicker
+            style={{ marginLeft: 8 }}
+            onChange={this.onDateChange}
+            picker="month"
+          />
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
           </span>
