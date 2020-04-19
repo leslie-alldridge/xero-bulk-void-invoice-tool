@@ -9,6 +9,12 @@ const app = express();
 let lastRequestToken = null;
 dotenv.config({ path: './config/config.env' });
 
+// Finds length of month - required to query invoices from Xero API without error
+function daysInMonth(month, year) {
+  // Use 1 for January, 2 for February, etc.
+  return new Date(year, month, 0).getDate();
+}
+
 // Create Xero OAuth1.0 Client
 let xeroClient = new XeroClient({
   appType: 'public',
@@ -48,20 +54,31 @@ app.get('/callback', async function (req, res) {
 
 // Get Authorised invoices by ID (Only authorised invoices can be voided)
 app.get('/invoices', async function (req, res) {
-  console.log('hit url');
-  console.log(xeroClient);
-  console.log(req.params.id);
-
+  const { date } = req.query;
+  // To get invoices for the month we need the first and last days
+  const year = date.substring(0, 4);
+  const month = date.substring(5, 7);
+  const finalDay = daysInMonth(month, year);
+  // Paginate and fill a list of invoices to return
+  let page = 1;
+  let listOfInvoices = [];
   try {
-    let invoices = await xeroClient.invoices.get({
-      Statuses: 'AUTHORISED',
-      page: 1,
-    });
-    console.log(invoices);
-    res.json(invoices);
+    while (true) {
+      let invoices = await xeroClient.invoices.get({
+        Statuses: 'AUTHORISED',
+        page: page,
+        where: `Date >= DateTime(${year}, ${month}, 01) && Date < DateTime(${year}, ${month}, ${finalDay})`,
+      });
+      listOfInvoices.push(...invoices.Invoices);
+      // fill multiple pages if exists
+      if (invoices.Invoices.length < 100) {
+        break;
+      } else {
+        page = page + 1;
+      }
+    }
+    res.json(listOfInvoices);
   } catch (ex) {
-    console.log('excep');
-
     res
       .status(500)
       .send(

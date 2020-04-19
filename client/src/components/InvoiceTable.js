@@ -73,13 +73,20 @@ class InvoiceTable extends React.Component {
   };
 
   onSelectChange = (selectedRowKeys) => {
+    // fires when user selects a row in the table
     console.log('selectedRowKeys changed: ', selectedRowKeys);
     this.setState({ selectedRowKeys });
   };
 
   onDateChange = (date, dateString) => {
-    console.log(date, dateString);
+    // saves date dropdown changes to state
     this.setState({ invoiceMonth: dateString });
+  };
+
+  void = () => {
+    this.state.selectedRowKeys.map((item) =>
+      console.log(`We will void: ${item}`)
+    );
   };
 
   render() {
@@ -122,13 +129,24 @@ class InvoiceTable extends React.Component {
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
           </span>
+          {/* Void button only displays when invoices have been selected */}
+          {hasSelected ? (
+            <Button
+              style={{ marginLeft: 8 }}
+              danger
+              type="primary"
+              onClick={this.void}
+            >
+              {`Void ${selectedRowKeys.length} items`}
+            </Button>
+          ) : null}
         </div>
         {/* When an error occurs, show user error page instead of table */}
         {this.state.error ? (
           <Error />
         ) : (
           <Table
-            rowKey="InvoiceNumber"
+            rowKey="InvoiceID"
             rowSelection={rowSelection}
             columns={columns}
             dataSource={this.state.invoiceData}
