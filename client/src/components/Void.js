@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Layout } from 'antd';
 
 import { get } from '../utils/localstorage';
+import InvoiceTable from './InvoiceTable';
 
 const { Content, Footer } = Layout;
 
@@ -31,11 +32,15 @@ export const Void = () => {
                     cursor: 'pointer',
                   }}
                   src="./signin.PNG"
+                  alt="sign in logo"
                 ></img>
               </span>
             </div>
           ) : (
-            <p>Authenticated</p>
+            <div>
+              <p>Authenticated</p>
+              <InvoiceTable />
+            </div>
           )}
         </div>
       </Content>

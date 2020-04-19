@@ -1,6 +1,6 @@
 import React from 'react';
 import { set } from '../utils/localstorage';
-import { Spin, Alert } from 'antd';
+import { Spin } from 'antd';
 
 import axios from 'axios';
 import { Layout } from 'antd';

@@ -47,14 +47,21 @@ app.get('/callback', async function (req, res) {
 });
 
 // Get Authorised invoices by ID (Only authorised invoices can be voided)
-app.get('/invoices/:id', async function (req, res) {
+app.get('/invoices', async function (req, res) {
+  console.log('hit url');
+  console.log(xeroClient);
+  console.log(req.params.id);
+
   try {
     let invoices = await xeroClient.invoices.get({
       Statuses: 'AUTHORISED',
-      page: req.params.id,
+      page: 1,
     });
+    console.log(invoices);
     res.json(invoices);
   } catch (ex) {
+    console.log('excep');
+
     res.json(ex);
   }
 });
