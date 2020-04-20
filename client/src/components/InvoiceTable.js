@@ -88,7 +88,11 @@ class InvoiceTable extends React.Component {
     // Send void api call to server with an array of invoice ids
     this.setState({ voidLoading: true });
     axios
-      .post('/void', { void: this.state.selectedRowKeys })
+      .post(
+        '/void',
+        { void: this.state.selectedRowKeys },
+        { timeout: 60 * 4 * 1000 }
+      )
       .then((data) => {
         if (data.data === 'Success') {
           this.setState({ voidLoading: false });

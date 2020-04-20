@@ -1,5 +1,6 @@
 // Various imports
 const express = require('express');
+let timeout = require('connect-timeout');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const XeroClient = require('xero-node').AccountingAPIClient;
@@ -30,6 +31,12 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(timeout(240000));
+app.use(haltOnTimedout);
+
+function haltOnTimedout(req, res, next) {
+  if (!req.timedout) next();
+}
 
 // Connect to Xero and obtain + go to the authorisation URL
 app.get('/connect', async function (req, res) {
@@ -89,45 +96,51 @@ app.get('/invoices', async function (req, res) {
 
 function voidInvoice(invoiceID, idx) {
   try {
-    setTimeout(() => {
-      xeroClient.invoices.update({
-        InvoiceID: invoiceID,
-        Status: 'VOIDED',
-      });
-    }, 2000);
+    console.log(`Voiding ${invoiceID}`);
 
-    //return Promise.resolve(`Success ${invoiceID}`);
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(`Success ${invoiceID} waited ${2000}ms`), 2000);
+    xeroClient.invoices.update({
+      InvoiceID: invoiceID,
+      Status: 'VOIDED',
     });
+
+    return `Success ${invoiceID} waited ${2000}ms`;
   } catch (exc) {
     console.log(exc);
-    return Promise.resolve(`Failed ${invoiceID}`);
+    return `Failed ${invoiceID}`;
   }
 }
 
-const anAsyncFunction = async (item, idx) => {
-  return voidInvoice(item, idx);
-};
-
 // Send request to Xero to void every invoice in the Array
 app.post('/void', async function (req, res) {
-  let toVoid = req.body.void;
+  // array of invoice ids to void
+  let invoicesToVoid = req.body.void;
 
   try {
-    const getData = async () => {
-      return Promise.all(toVoid.map((item, idx) => anAsyncFunction(item, idx)));
-    };
-    getData().then((data) => {
-      console.log(data);
-      const failureCheck = data.findIndex((element) =>
-        element.includes('Failed')
-      );
-      if (failureCheck === -1) {
-        res.status(200).send('Success');
-      } else {
-        res.status(200).send({ error: results[2] });
-      }
+    const promises = invoicesToVoid.map(
+      (invoiceID, idx) =>
+        // void the invoices staggered for 1.5s x index in array
+        new Promise((resolve) =>
+          setTimeout(() => {
+            let status = voidInvoice(invoiceID, idx);
+            console.log(status);
+            resolve(status);
+          }, idx * 1500)
+        )
+    );
+    // once all promises are resolved, let the frontend know
+    Promise.all(promises).then(() => {
+      console.log(promises);
+      console.log(`promises above`);
+      res.status(200).send('Success');
+      // const failureCheck = promises.findIndex((element) =>
+      //   element.includes('Failed')
+      // );
+
+      // if (failureCheck === -1) {
+      //   res.status(200).send('Success');
+      // } else {
+      //   res.status(200).send({ error: promises[failureCheck] });
+      // }
     });
   } catch (err) {
     console.log(err);
