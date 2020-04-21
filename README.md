@@ -31,6 +31,6 @@ The code broke - Raise an issue or contact me
 ## Notes to self
 
 - Test voiding an invoice via the application once it's already voided in app (test fail response to UI)
-- Have /test route in frontend (as an example) redirect user to /help page as it currently does not
+- Have /test route in frontend (as an example) redirect user to /help page as it currently does not (DONE)
 - Deploy to Heroku and document deployment steps
-- Delete client_old directory
+- Delete client_old directory (DONE)
