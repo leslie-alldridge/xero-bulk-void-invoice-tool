@@ -87,12 +87,22 @@ class InvoiceTable extends React.Component {
   void = () => {
     // Send void api call to server with an array of invoice ids
     this.setState({ voidLoading: true });
-    axios
-      .post(
-        '/void',
-        { void: this.state.selectedRowKeys },
-        { timeout: 60 * 4 * 1000 }
-      )
+    const api = axios.create({
+      timeout: 10 * 60 * 1000, // whatever time you want
+    });
+    // axios({
+    //   method: 'post',
+    //   url: '/void',
+    //   timeout: 1000 * 500, // Wait for 5 seconds
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   data: {
+    //     void: this.state.selectedRowKeys,
+    //   },
+    // })
+    api
+      .post('/void', { void: this.state.selectedRowKeys })
       .then((data) => {
         if (data.data === 'Success') {
           this.setState({ voidLoading: false });
@@ -111,6 +121,8 @@ class InvoiceTable extends React.Component {
         }
       })
       .catch((exc) => {
+        console.log(`hit the exception frontend`);
+
         this.setState({ voidLoading: false, error: true });
         remove('oauth_token_secret');
       });

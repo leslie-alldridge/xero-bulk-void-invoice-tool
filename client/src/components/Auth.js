@@ -9,7 +9,7 @@ const { Content, Footer } = Layout;
 
 export const Auth = (props) => {
   const search = props.search;
-  axios.get(`/callback${search}`).then((data) => {
+  axios.get(`/api/callback${search}`).then((data) => {
     // Save users information to localstorage
     set('oauth_expires_at', data.data.oauth_expires_at);
     set('oauth_token', data.data.oauth_token);
