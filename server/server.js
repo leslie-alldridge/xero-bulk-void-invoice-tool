@@ -1,11 +1,13 @@
 // Various imports
 const express = require('express');
-let timeout = require('connect-timeout');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const XeroClient = require('xero-node').AccountingAPIClient;
 const path = require('path');
+//var timeout = require('connect-timeout');
+
 const app = express();
+// app.use(timeout('600s'));
 
 let lastRequestToken = null;
 dotenv.config({ path: './config/config.env' });
@@ -16,27 +18,33 @@ function daysInMonth(month, year) {
   return new Date(year, month, 0).getDate();
 }
 
+function haltOnTimedout(req, res, next) {
+  if (!req.timedout) next();
+}
+
 // Create Xero OAuth1.0 Client
 let xeroClient = new XeroClient({
   appType: 'public',
-  callbackUrl: 'http://localhost:3000/callback',
+  callbackUrl: 'http://localhost:5000/callback',
   consumerKey: process.env.consumerKey,
   consumerSecret: process.env.consumerSecret,
   userAgent: 'Tester (PUBLIC) - Application for testing Xero',
   redirectOnError: true,
 });
 
-// Express server configuration
-app.use(express.static(path.join(__dirname, '../public')));
+// Express server configuration local
+//app.use(express.static(path.join(__dirname, '../public')));
+
+// build on heroku
+const root = require('path').join(__dirname, '/../client', 'build');
+app.use(express.static(root));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// app.use(haltOnTimedout);
 app.use(cors());
-app.use(timeout(240000));
-app.use(haltOnTimedout);
 
-function haltOnTimedout(req, res, next) {
-  if (!req.timedout) next();
-}
+// app.use(haltOnTimedout);
 
 // Connect to Xero and obtain + go to the authorisation URL
 app.get('/connect', async function (req, res) {
@@ -49,7 +57,7 @@ app.get('/connect', async function (req, res) {
 });
 
 // Callback URL contains token and we take user back to the / route
-app.get('/callback', async function (req, res) {
+app.get('/api/callback', async function (req, res) {
   console.log(req.query);
   let oauth_verifier = req.query.oauth_verifier;
   let accessToken = await xeroClient.oauth1Client.swapRequestTokenforAccessToken(
@@ -146,6 +154,10 @@ app.post('/void', async function (req, res) {
     console.log(err);
     res.status(500).send('Error');
   }
+});
+
+app.get('*', (req, res) => {
+  res.sendFile('index.html', { root });
 });
 
 module.exports = app;

@@ -6,13 +6,13 @@ import { withStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
 import Send from '@material-ui/icons/Send';
 
-const styles = theme => ({
+const styles = (theme) => ({
   button: {
-    margin: theme.spacing.unit
+    margin: theme.spacing.unit,
   },
   rightIcon: {
-    marginLeft: theme.spacing.unit
-  }
+    marginLeft: theme.spacing.unit,
+  },
 });
 
 function XeroButton(props) {
@@ -35,7 +35,7 @@ function XeroButton(props) {
 }
 
 XeroButton.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(XeroButton);
