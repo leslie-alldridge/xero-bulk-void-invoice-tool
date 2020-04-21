@@ -36,6 +36,6 @@ The code broke - Raise an issue or contact me
 
 - Test voiding an invoice via the application once it's already voided in app (test fail response to UI) - Strangely enough the API accepts this and it's fine (DONE)
 - Have /test route in frontend (as an example) redirect user to /help page as it currently does not (DONE)
-- Deploy to Heroku and document deployment steps
+- Deploy to Heroku and document deployment steps (IN PROGRESS)
 - Delete client_old directory (DONE)
-- Fetch the latest list of invoices after a void completes
+- Fetch the latest list of invoices after a void completes (DONE)
