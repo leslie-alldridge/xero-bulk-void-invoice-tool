@@ -27,3 +27,10 @@ Does this functionality exist in Xero - NO
 Can I distribute this software/code - NO
 Am I able to build on top of what you already have - YES as long as it's not later sold / charged out. You should be promoting open source.
 The code broke - Raise an issue or contact me
+
+## Notes to self
+
+- Test voiding an invoice via the application once it's already voided in app (test fail response to UI)
+- Have /test route in frontend (as an example) redirect user to /help page as it currently does not
+- Deploy to Heroku and document deployment steps
+- Delete client_old directory

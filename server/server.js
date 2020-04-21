@@ -6,7 +6,6 @@ const XeroClient = require('xero-node').AccountingAPIClient;
 const path = require('path');
 
 const app = express();
-// app.use(timeout('600s'));
 
 let lastRequestToken = null;
 dotenv.config({ path: './config/config.env' });
@@ -15,10 +14,6 @@ dotenv.config({ path: './config/config.env' });
 function daysInMonth(month, year) {
   // Use 1 for January, 2 for February, etc.
   return new Date(year, month, 0).getDate();
-}
-
-function haltOnTimedout(req, res, next) {
-  if (!req.timedout) next();
 }
 
 // Create Xero OAuth1.0 Client
@@ -31,19 +26,12 @@ let xeroClient = new XeroClient({
   redirectOnError: true,
 });
 
-// Express server configuration local
-//app.use(express.static(path.join(__dirname, '../public')));
-
-// build on heroku
+// Configuration using production build
 const root = require('path').join(__dirname, '/../client', 'build');
 app.use(express.static(root));
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(haltOnTimedout);
 app.use(cors());
-
-// app.use(haltOnTimedout);
 
 // Connect to Xero and obtain + go to the authorisation URL
 app.get('/connect', async function (req, res) {
@@ -101,18 +89,16 @@ app.get('/invoices', async function (req, res) {
   }
 });
 
-function voidInvoice(invoiceID, idx) {
+function voidInvoice(invoiceID) {
+  // Uses SDK to void invoices, returns a promise with fail or success which will be checked later on
   try {
-    console.log(`Voiding ${invoiceID}`);
-
     xeroClient.invoices.update({
       InvoiceID: invoiceID,
       Status: 'VOIDED',
     });
 
-    return `Success ${invoiceID} waited ${2000}ms`;
+    return `Success ${invoiceID}`;
   } catch (exc) {
-    console.log(exc);
     return `Failed ${invoiceID}`;
   }
 }
@@ -129,7 +115,6 @@ app.post('/void', async function (req, res) {
         new Promise((resolve) =>
           setTimeout(() => {
             let status = voidInvoice(invoiceID, idx);
-            console.log(status);
             resolve(status);
           }, idx * 1500)
         )
@@ -155,6 +140,7 @@ app.post('/void', async function (req, res) {
   }
 });
 
+// Fallback route to serve index page on unknown routes
 app.get('*', (req, res) => {
   res.sendFile('index.html', { root });
 });
