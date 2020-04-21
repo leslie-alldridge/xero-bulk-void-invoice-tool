@@ -12,14 +12,13 @@ import { Void } from './components/Void';
 import { About } from './components/About';
 import { Help } from './components/Help';
 import { Auth } from './components/Auth';
-
-import { GlobalProvider } from './context/GlobalState';
+import { NotFound } from './components/NotFound';
 
 function App() {
   let location = useLocation();
   let history = useHistory();
   return (
-    <GlobalProvider>
+    <div>
       <PageHeader currentPath={location.pathname} />
       <Switch>
         <Redirect exact from="/" to="/void" />
@@ -35,8 +34,9 @@ function App() {
         <Route path="/callback">
           <Auth history={history} search={location.search} />
         </Route>
+        <Route component={NotFound} />
       </Switch>
-    </GlobalProvider>
+    </div>
   );
 }
 

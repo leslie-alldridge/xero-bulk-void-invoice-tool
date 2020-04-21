@@ -1,11 +1,11 @@
 import React from 'react';
-import { set } from '../utils/localstorage';
-import { Spin } from 'antd';
-
 import axios from 'axios';
-import { Layout } from 'antd';
+import { Spin, Layout } from 'antd';
 
-const { Content, Footer } = Layout;
+import { PageFooter } from './common/PageFooter';
+import { set } from '../utils/localstorage';
+
+const { Content } = Layout;
 
 export const Auth = (props) => {
   const search = props.search;
@@ -23,7 +23,7 @@ export const Auth = (props) => {
           <Spin tip="Authenticating..."></Spin>
         </div>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>Created by Leslie A. 2020</Footer>
+      <PageFooter />
     </Layout>
   );
 };

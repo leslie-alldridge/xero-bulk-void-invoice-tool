@@ -5,8 +5,9 @@ import { LoginOutlined } from '@ant-design/icons';
 
 import { get } from '../utils/localstorage';
 import InvoiceTable from './InvoiceTable';
+import { PageFooter } from './common/PageFooter';
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
 export const Void = () => {
   const hasAuth = get('oauth_token_secret');
@@ -41,7 +42,7 @@ export const Void = () => {
           )}
         </div>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>Created by Leslie A. 2020</Footer>
+      <PageFooter />
     </Layout>
   );
 };

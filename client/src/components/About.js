@@ -1,7 +1,8 @@
 import React from 'react';
 import { Layout } from 'antd';
+import { PageFooter } from './common/PageFooter';
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
 export const About = () => {
   return (
@@ -9,7 +10,7 @@ export const About = () => {
       <Content style={{ padding: '0 50px' }}>
         <div className="site-layout-content">I am the about page</div>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>Created by Leslie A. 2020</Footer>
+      <PageFooter />
     </Layout>
   );
 };

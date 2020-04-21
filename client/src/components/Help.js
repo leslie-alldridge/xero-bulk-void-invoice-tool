@@ -1,7 +1,8 @@
 import React from 'react';
 import { Layout } from 'antd';
+import { PageFooter } from './common/PageFooter';
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
 export const Help = () => {
   return (
@@ -11,7 +12,7 @@ export const Help = () => {
           <p>I'm the help page</p>
         </div>
       </Content>
-      <Footer style={{ textAlign: 'center' }}>Created by Leslie A. 2020</Footer>
+      <PageFooter />
     </Layout>
   );
 };
