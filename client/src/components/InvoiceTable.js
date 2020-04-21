@@ -102,6 +102,9 @@ class InvoiceTable extends React.Component {
             description: 'All invoices were voided without any issues.',
             icon: <SmileOutlined style={{ color: '#108ee9' }} />,
           });
+          setTimeout(() => {
+            this.start();
+          }, 500);
         } else {
           this.setState({ voidLoading: false, selectedRowKeys: [] });
           // Error pop up message
@@ -110,6 +113,9 @@ class InvoiceTable extends React.Component {
             description: `Please see the error response for more information: InvoiceID: ${data.data.error}`,
             icon: <FrownOutlined style={{ color: '#FF0000' }} />,
           });
+          setTimeout(() => {
+            this.start();
+          }, 500);
         }
       })
       .catch((exc) => {
