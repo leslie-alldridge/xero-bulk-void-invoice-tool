@@ -103,7 +103,7 @@ class InvoiceTable extends React.Component {
             icon: <SmileOutlined style={{ color: '#108ee9' }} />,
           });
         } else {
-          this.setState({ voidLoading: false });
+          this.setState({ voidLoading: false, selectedRowKeys: [] });
           // Error pop up message
           notification.open({
             message: 'We encountered a problem',

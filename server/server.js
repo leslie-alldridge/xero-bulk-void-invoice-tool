@@ -112,30 +112,31 @@ app.post('/void', async function (req, res) {
     const promises = invoicesToVoid.map(
       (invoiceID, idx) =>
         // void the invoices staggered for 1.5s x index in array
-        new Promise((resolve) =>
+        new Promise((resolve, reject) =>
           setTimeout(() => {
             let status = voidInvoice(invoiceID, idx);
-            resolve(status);
+            // check to see if api call success/fail
+            if (status.includes('Success')) {
+              resolve(status);
+            } else {
+              reject(status);
+            }
           }, idx * 1500)
         )
     );
     // once all promises are resolved, let the frontend know
-    Promise.all(promises).then(() => {
-      console.log(promises);
-      console.log(`promises above`);
-      res.status(200).send('Success');
-      // const failureCheck = promises.findIndex((element) =>
-      //   element.includes('Failed')
-      // );
-
-      // if (failureCheck === -1) {
-      //   res.status(200).send('Success');
-      // } else {
-      //   res.status(200).send({ error: promises[failureCheck] });
-      // }
-    });
+    Promise.all(promises)
+      .then(() => {
+        console.log(promises);
+        console.log(`promises above`);
+        res.status(200).send('Success');
+      })
+      .catch((err) => {
+        // catches the rejection from our promise
+        res.status(200).send({ error: err });
+      });
   } catch (err) {
-    console.log(err);
+    // Overall catch for the route
     res.status(500).send('Error');
   }
 });

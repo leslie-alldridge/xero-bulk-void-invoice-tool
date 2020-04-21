@@ -28,9 +28,14 @@ Can I distribute this software/code - NO
 Am I able to build on top of what you already have - YES as long as it's not later sold / charged out. You should be promoting open source.
 The code broke - Raise an issue or contact me
 
+## Deployment
+
+1.
+
 ## Notes to self
 
-- Test voiding an invoice via the application once it's already voided in app (test fail response to UI)
+- Test voiding an invoice via the application once it's already voided in app (test fail response to UI) - Strangely enough the API accepts this and it's fine (DONE)
 - Have /test route in frontend (as an example) redirect user to /help page as it currently does not (DONE)
 - Deploy to Heroku and document deployment steps
 - Delete client_old directory (DONE)
+- Fetch the latest list of invoices after a void completes
