@@ -39,3 +39,4 @@ The code broke - Raise an issue or contact me
 - Deploy to Heroku and document deployment steps (IN PROGRESS)
 - Delete client_old directory (DONE)
 - Fetch the latest list of invoices after a void completes (DONE)
+- Change app url in dev portal to point to heroku instance
