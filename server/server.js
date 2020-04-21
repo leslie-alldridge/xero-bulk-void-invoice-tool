@@ -4,7 +4,6 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const XeroClient = require('xero-node').AccountingAPIClient;
 const path = require('path');
-//var timeout = require('connect-timeout');
 
 const app = express();
 // app.use(timeout('600s'));

@@ -54,11 +54,10 @@ class InvoiceTable extends React.Component {
 
   start = () => {
     this.setState({ loading: true });
-    // retrives invoices for the user
+    // retrieves invoices for the user
     axios
       .get(`/invoices?date=${this.state.invoiceMonth}`)
       .then((data) => {
-        console.log(data.data);
         this.setState({ loading: false, invoiceData: data.data });
       })
       .catch((exc) => {
@@ -87,25 +86,17 @@ class InvoiceTable extends React.Component {
   void = () => {
     // Send void api call to server with an array of invoice ids
     this.setState({ voidLoading: true });
+
     const api = axios.create({
-      timeout: 10 * 60 * 1000, // whatever time you want
+      timeout: 10 * 60 * 1000, // extended API call duration to 10 minutes max
     });
-    // axios({
-    //   method: 'post',
-    //   url: '/void',
-    //   timeout: 1000 * 500, // Wait for 5 seconds
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   data: {
-    //     void: this.state.selectedRowKeys,
-    //   },
-    // })
+
     api
       .post('/void', { void: this.state.selectedRowKeys })
       .then((data) => {
         if (data.data === 'Success') {
-          this.setState({ voidLoading: false });
+          this.setState({ voidLoading: false, selectedRowKeys: [] });
+          // Success pop up message
           notification.open({
             message: 'Invoices Voided Successfully',
             description: 'All invoices were voided without any issues.',
@@ -113,6 +104,7 @@ class InvoiceTable extends React.Component {
           });
         } else {
           this.setState({ voidLoading: false });
+          // Error pop up message
           notification.open({
             message: 'We encountered a problem',
             description: `Please see the error response for more information: InvoiceID: ${data.data.error}`,
@@ -121,8 +113,6 @@ class InvoiceTable extends React.Component {
         }
       })
       .catch((exc) => {
-        console.log(`hit the exception frontend`);
-
         this.setState({ voidLoading: false, error: true });
         remove('oauth_token_secret');
       });
