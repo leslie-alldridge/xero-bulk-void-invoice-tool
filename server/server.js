@@ -19,7 +19,7 @@ function daysInMonth(month, year) {
 // Create Xero OAuth1.0 Client
 let xeroClient = new XeroClient({
   appType: 'public',
-  callbackUrl: `${callbackDomainUat}/callback`,
+  callbackUrl: `${process.env.callbackDomainUat}/callback`,
   consumerKey: process.env.consumerKey,
   consumerSecret: process.env.consumerSecret,
   userAgent: 'Tester (PUBLIC) - Application for testing Xero',
