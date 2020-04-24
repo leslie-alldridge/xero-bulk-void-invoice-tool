@@ -30,13 +30,13 @@ The code broke - Raise an issue or contact me
 
 ## Deployment
 
-1.
+Please see [the documentation](/docs/deployment)
 
 ## Notes to self
 
 - Test voiding an invoice via the application once it's already voided in app (test fail response to UI) - Strangely enough the API accepts this and it's fine (DONE)
 - Have /test route in frontend (as an example) redirect user to /help page as it currently does not (DONE)
-- Deploy to Heroku and document deployment steps (IN PROGRESS)
+- Deploy to Heroku and document deployment steps (Done)
 - Delete client_old directory (DONE)
 - Fetch the latest list of invoices after a void completes (DONE)
-- Change app url in dev portal to point to heroku instance
+- Change app url in dev portal to point to heroku instance (DONE)
