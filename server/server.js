@@ -127,8 +127,6 @@ app.post('/void', async function (req, res) {
     // once all promises are resolved, let the frontend know
     Promise.all(promises)
       .then(() => {
-        console.log(promises);
-        console.log(`promises above`);
         res.status(200).send('Success');
       })
       .catch((err) => {

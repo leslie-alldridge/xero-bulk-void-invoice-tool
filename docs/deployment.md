@@ -1,5 +1,7 @@
 ## Deployment
 
+Note: UAT currently shares the devapp with prod as it's no longer possible to create new OAuth1 apps. This will be improved during an OAuth2 upgrade.
+
 ### UAT
 
 1. Using the heroku cli push your current branch e.g. `git push heroku yourbranch:master`
