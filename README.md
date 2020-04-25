@@ -36,6 +36,8 @@ The code broke - Raise an issue or contact me
 
 You can run the code locally from the root directory by using `npm run dev`. Since there's no HTTP duration limits locally you could remove the batched calls from the react frontend and just do one massive call to `/void` with hundreds / thousands of invoice ids.
 
+Please see [my local environment documentation](/docs/localenv.md)
+
 ## Deployment
 
 Please see [the documentation](/docs/deployment)

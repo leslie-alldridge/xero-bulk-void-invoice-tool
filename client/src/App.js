@@ -7,7 +7,7 @@ import {
   useHistory,
 } from 'react-router-dom';
 import './App.css';
-import { PageHeader } from './components/PageHeader';
+import { PageHeader } from './components/common/PageHeader';
 import { Void } from './components/Void';
 import { About } from './components/About';
 import { Help } from './components/Help';
