@@ -20,7 +20,7 @@
 
 ## Use cases
 
-As the title suggests, this will bulk void invoices. There is a limit of 60 calls / minute via the Xero API so my code counts how many invoices are being voided. More than 60 and we'll sleep until a minute has passed, before firing off another 60 calls, and so on.
+As the title suggests, this will bulk void invoices. There is a limit of 60 calls / minute via the Xero API so my code sends a call every 1.2 seconds, making it impossible to exceed 60 per minute.
 
 ## Questions
 
@@ -30,9 +30,9 @@ Does this functionality exist in Xero - NO
 
 Can I distribute this software/code - NO
 
-Am I able to build on top of what you already have - YES as long as it's not later sold / charged out. You should be promoting open source.
+Am I able to build on top of what you already have - YES as long as it's NOT later sold / charged out. You should be promoting open source. If you want to profit, make your own thing from scratch.
 
-The code broke - Raise an issue or contact me
+The code broke - Raise an issue, pull request or contact me
 
 ## Running this locally
 
@@ -42,7 +42,7 @@ Please see [my local environment documentation](/docs/localenv.md)
 
 ## Deployment
 
-Please see [the documentation](/docs/deployment)
+Please see [the documentation](/docs/deployment.md)
 
 ## Notes to self
 
