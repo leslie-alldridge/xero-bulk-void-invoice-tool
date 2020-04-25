@@ -8,6 +8,7 @@
 - This was built to suit my personal needs but if it helps you, you're welcome to use it
 - Questions or feature requests are welcome
 - Uses OAuth1.0 which will deprecate in December 2020 - Undecided whether I'll upgrade it or not
+- You can view the progress of a void job in your web browser dev tools console - I left some logs there for those interested
 
 ## Technology
 
@@ -15,6 +16,7 @@
 - Node backend
 - Xero Node SDK (for all API calls and authentication)
 - NO data persistence or database (I don't want users information or tokens) and that's why every time you need to re-auth manually
+- [Localstorage](https://stackoverflow.com/questions/17139519/what-is-localstorage) to hold your API key (expires after 30 minutes and deletes on error / disconnect from Xero button click)
 
 ## Use cases
 
