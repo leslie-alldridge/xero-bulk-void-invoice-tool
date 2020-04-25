@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Layout } from 'antd';
-import { PageFooter } from './common/PageFooter';
+import { PageFooter } from './PageFooter';
 
 const { Content } = Layout;
 

@@ -19,7 +19,7 @@ function daysInMonth(month, year) {
 // Create Xero OAuth1.0 Client
 let xeroClient = new XeroClient({
   appType: 'public',
-  callbackUrl: `${process.env.callbackDomainUat}/callback`,
+  callbackUrl: `${process.env.callbackDomainTest}/callback`,
   consumerKey: process.env.consumerKey,
   consumerSecret: process.env.consumerSecret,
   userAgent: 'Tester (PUBLIC) - Application for testing Xero',
@@ -109,20 +109,20 @@ app.post('/void', async function (req, res) {
   let invoicesToVoid = req.body.void;
 
   try {
+    // With current solution only one id comes through making the map redundant
+    // but I'm leaving it here in case folks want to use this endpoint and send an array of invoice IDs locally
+    // without worrying about long running HTTP calls
     const promises = invoicesToVoid.map(
       (invoiceID, idx) =>
-        // void the invoices staggered for 1.5s x index in array
-        new Promise((resolve, reject) =>
-          setTimeout(() => {
-            let status = voidInvoice(invoiceID, idx);
-            // check to see if api call success/fail
-            if (status.includes('Success')) {
-              resolve(status);
-            } else {
-              reject(status);
-            }
-          }, idx * 1500)
-        )
+        new Promise((resolve, reject) => {
+          let status = voidInvoice(invoiceID, idx);
+          // check to see if api call success/fail
+          if (status.includes('Success')) {
+            resolve(status);
+          } else {
+            reject(status);
+          }
+        })
     );
     // once all promises are resolved, let the frontend know
     Promise.all(promises)

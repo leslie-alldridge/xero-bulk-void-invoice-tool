@@ -23,10 +23,18 @@ As the title suggests, this will bulk void invoices. There is a limit of 60 call
 ## Questions
 
 Can I unvoid an invoice - NO (so be careful please)
+
 Does this functionality exist in Xero - NO
+
 Can I distribute this software/code - NO
+
 Am I able to build on top of what you already have - YES as long as it's not later sold / charged out. You should be promoting open source.
+
 The code broke - Raise an issue or contact me
+
+## Running this locally
+
+You can run the code locally from the root directory by using `npm run dev`. Since there's no HTTP duration limits locally you could remove the batched calls from the react frontend and just do one massive call to `/void` with hundreds / thousands of invoice ids.
 
 ## Deployment
 

@@ -36,7 +36,10 @@ export const Void = () => {
             </div>
           ) : (
             <div>
-              <p>Authenticated</p>
+              <p>
+                Credentials found. If you need to halt an invoice voiding job,
+                please refresh the entire page using Ctrl + R or F5
+              </p>
               <InvoiceTable />
             </div>
           )}

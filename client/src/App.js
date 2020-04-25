@@ -12,7 +12,7 @@ import { Void } from './components/Void';
 import { About } from './components/About';
 import { Help } from './components/Help';
 import { Auth } from './components/Auth';
-import { NotFound } from './components/NotFound';
+import { NotFound } from './components/common/NotFound';
 
 function App() {
   let location = useLocation();
