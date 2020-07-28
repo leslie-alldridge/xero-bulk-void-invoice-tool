@@ -76,7 +76,7 @@ app.get('/invoices', async function (req, res) {
       let invoices = await xeroClient.invoices.get({
         Statuses: 'AUTHORISED',
         page: page,
-        where: `Date >= DateTime(${year}, ${month}, 01) && Date < DateTime(${year}, ${month}, ${finalDay})`,
+        where: `Date >= DateTime(${year}, ${month}, 01) && Date <= DateTime(${year}, ${month}, ${finalDay})`,
       });
       listOfInvoices.push(...invoices.Invoices);
       // fill multiple pages if exists
