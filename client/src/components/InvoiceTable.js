@@ -47,7 +47,7 @@ class InvoiceTable extends Component {
     selectedRowKeys: [],
     loading: false,
     invoiceData: [],
-    invoiceMonth: '2020-01',
+    invoiceMonth: new Date().getFullYear() + '-' + (new Date().getMonth() + 1),
     error: false,
     voidLoading: false,
     voidErrors: [],
@@ -189,7 +189,7 @@ class InvoiceTable extends Component {
           </Button>
           <DatePicker
             autoFocus={true}
-            placeholder={'2020-01'}
+            placeholder={this.state.invoiceMonth}
             style={{ marginLeft: 8 }}
             onChange={this.onDateChange}
             picker='month'

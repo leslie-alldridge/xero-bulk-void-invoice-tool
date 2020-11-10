@@ -121,13 +121,13 @@ app.get('/invoices', async function (req, res) {
     while (true) {
       let invoices = await xero.accountingApi.getInvoices(
         req.session.activeTenant.tenantId,
-        new Date(2020),
-        'Type=="ACCREC"',
+        undefined,
+        `Date >= DateTime(${year}, ${month}, 01) && Date <= DateTime(${year}, ${month}, ${finalDay})`,
         'reference DESC',
         undefined,
         undefined,
         undefined,
-        ['PAID', 'DRAFT'],
+        ['AUTHORISED'],
         0,
         true,
         false,
