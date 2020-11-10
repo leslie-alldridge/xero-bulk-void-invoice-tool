@@ -17,7 +17,7 @@ const columns = [
     dataIndex: 'DateString',
     render: (value) => {
       // convert date to human readable format
-      return <Moment format="LL">{value}</Moment>;
+      return <Moment format='LL'>{value}</Moment>;
     },
   },
   {
@@ -25,7 +25,7 @@ const columns = [
     dataIndex: 'DueDateString',
     render: (value) => {
       // convert date to human readable format
-      return <Moment format="LL">{value}</Moment>;
+      return <Moment format='LL'>{value}</Moment>;
     },
   },
   {
@@ -63,15 +63,15 @@ class InvoiceTable extends Component {
       })
       .catch((exc) => {
         this.setState({ loading: false, error: true });
-        remove('oauth_token_secret');
+        remove('access_token');
       });
   };
 
   disconnect = () => {
     // removes users information from their cache
-    remove('oauth_token');
+    remove('id_token');
     remove('oauth_expires_at');
-    remove('oauth_token_secret');
+    remove('access_token');
   };
 
   onSelectChange = (selectedRowKeys) => {
@@ -168,7 +168,7 @@ class InvoiceTable extends Component {
       <div>
         <div style={{ marginBottom: 16 }}>
           <Button
-            type="primary"
+            type='primary'
             onClick={this.start}
             disabled={false}
             loading={loading}
@@ -178,7 +178,7 @@ class InvoiceTable extends Component {
           <Button
             style={{ marginLeft: 8 }}
             danger
-            type="secondary"
+            type='secondary'
             onClick={() => {
               this.disconnect();
               window.location.reload();
@@ -192,7 +192,7 @@ class InvoiceTable extends Component {
             placeholder={'2020-01'}
             style={{ marginLeft: 8 }}
             onChange={this.onDateChange}
-            picker="month"
+            picker='month'
           />
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
@@ -202,7 +202,7 @@ class InvoiceTable extends Component {
             <Button
               style={{ marginLeft: 8 }}
               danger
-              type="primary"
+              type='primary'
               onClick={this.void}
               loading={voidLoading}
             >
@@ -218,7 +218,7 @@ class InvoiceTable extends Component {
           <Error />
         ) : (
           <Table
-            rowKey="InvoiceID"
+            rowKey='InvoiceID'
             rowSelection={rowSelection}
             columns={columns}
             dataSource={this.state.invoiceData}

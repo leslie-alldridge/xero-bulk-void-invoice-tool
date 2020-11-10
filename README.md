@@ -36,7 +36,7 @@ The code broke - Raise an issue, pull request or contact me
 
 ## Running this locally
 
-You can run the code locally from the root directory by using `npm run dev`. Since there's no HTTP duration limits locally you could remove the batched calls from the react frontend and just do one massive call to `/void` with hundreds / thousands of invoice ids.
+You can run the code locally from the root directory by using `npm run dev`. You'll likely need to run `npm i` in both the `root directory` and `client` directory to get all the node_modules required in this project. Since there's no HTTP duration limits locally you could remove the batched calls from the react frontend and just do one massive call to `/void` with hundreds / thousands of invoice ids.
 
 Please see [my local environment documentation](/docs/localenv.md)
 
@@ -46,9 +46,4 @@ Please see [the documentation](/docs/deployment.md)
 
 ## Notes to self
 
-- Test voiding an invoice via the application once it's already voided in app (test fail response to UI) - Strangely enough the API accepts this and it's fine (DONE)
-- Have /test route in frontend (as an example) redirect user to /help page as it currently does not (DONE)
-- Deploy to Heroku and document deployment steps (Done)
-- Delete client_old directory (DONE)
-- Fetch the latest list of invoices after a void completes (DONE)
-- Change app url in dev portal to point to heroku instance (DONE)
+- Migrate to OAuth2

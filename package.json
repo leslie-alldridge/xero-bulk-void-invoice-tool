@@ -3,6 +3,7 @@
   "version": "3.0.0",
   "description": "A tool to bulk void invoice documents in Xero",
   "main": "server/index.js",
+  "type": "module",
   "scripts": {
     "start": "node server",
     "server": "nodemon server",
@@ -17,13 +18,14 @@
   "author": "Leslie Alldridge",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^5.1.0",
-    "nodemon": "^2.0.2"
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.6"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.16.2",
-    "xero-node": "^3.0.12"
+    "express-session": "^1.17.1",
+    "xero-node": "^4.9.0"
   }
 }

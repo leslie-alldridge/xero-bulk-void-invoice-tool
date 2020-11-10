@@ -21,17 +21,17 @@ function App() {
     <div>
       <PageHeader currentPath={location.pathname} />
       <Switch>
-        <Redirect exact from="/" to="/void" />
-        <Route path="/void">
+        <Redirect exact from='/' to='/void' />
+        <Route path='/void'>
           <Void />
         </Route>
-        <Route path="/about">
+        <Route path='/about'>
           <About />
         </Route>
-        <Route path="/help">
+        <Route path='/help'>
           <Help />
         </Route>
-        <Route path="/callback">
+        <Route path='/auth'>
           <Auth history={history} search={location.search} />
         </Route>
         <Route component={NotFound} />

@@ -10,12 +10,12 @@ import { PageFooter } from './common/PageFooter';
 const { Content } = Layout;
 
 export const Void = () => {
-  const hasAuth = get('oauth_token_secret');
+  const hasAuth = get('access_token');
 
   return (
-    <Layout className="layout">
+    <Layout className='layout'>
       <Content style={{ padding: '0 50px' }}>
-        <div className="site-layout-content">
+        <div className='site-layout-content'>
           {/* If user is not authenticated, show button, otherwise let them know they're authenticated. */}
           {hasAuth === null ? (
             <div>
@@ -28,7 +28,7 @@ export const Void = () => {
                     .then((data) => window.location.assign(data.data))
                 }
               >
-                <Button type="primary" shape="round" size={'large'}>
+                <Button type='primary' shape='round' size={'large'}>
                   <LoginOutlined />
                   Sign in to Xero
                 </Button>
