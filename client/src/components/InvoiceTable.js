@@ -10,11 +10,11 @@ import { remove } from '../utils/localstorage';
 const columns = [
   {
     title: 'Invoice Number',
-    dataIndex: 'InvoiceNumber',
+    dataIndex: 'invoiceNumber',
   },
   {
     title: 'Date',
-    dataIndex: 'DateString',
+    dataIndex: 'date',
     render: (value) => {
       // convert date to human readable format
       return <Moment format='LL'>{value}</Moment>;
@@ -22,7 +22,7 @@ const columns = [
   },
   {
     title: 'Due Date',
-    dataIndex: 'DueDateString',
+    dataIndex: 'dueDate',
     render: (value) => {
       // convert date to human readable format
       return <Moment format='LL'>{value}</Moment>;
@@ -30,15 +30,15 @@ const columns = [
   },
   {
     title: 'Contact',
-    dataIndex: ['Contact', 'Name'],
+    dataIndex: ['contact', 'name'],
   },
   {
     title: 'Total',
-    dataIndex: 'Total',
+    dataIndex: 'total',
   },
   {
     title: 'Currency',
-    dataIndex: 'CurrencyCode',
+    dataIndex: 'currencyCode',
   },
 ];
 

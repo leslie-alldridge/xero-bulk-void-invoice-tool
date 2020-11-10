@@ -91,6 +91,7 @@ app.get('/callback', async (req, res) => {
     console.log(tokenSet);
     console.log('xero.config.state: ', xero.config.state);
     req.session.tokenSet = tokenSet;
+    req.session.activeTenant = xero.tenants[0];
     res.redirect('/auth');
   } catch (err) {
     console.log(err);
@@ -104,31 +105,55 @@ app.get('/token', async (req, res) => {
 
 // Get Authorised invoices by ID (Only authorised invoices can be voided)
 app.get('/invoices', async function (req, res) {
+  console.log('hit');
+  console.log(req.session.activeTenant.tenantId);
   const { date } = req.query;
   // To get invoices for the month we need the first and last days
   const year = date.substring(0, 4);
   const month = date.substring(5, 7);
   const finalDay = daysInMonth(month, year);
+  console.log(new Date(year, month, finalDay));
+
   // Paginate and fill a list of invoices to return
   let page = 1;
   let listOfInvoices = [];
   try {
     while (true) {
-      let invoices = await xero.accountingApi.getInvoices({
-        Statuses: 'AUTHORISED',
-        page: page,
-        where: `Date >= DateTime(${year}, ${month}, 01) && Date <= DateTime(${year}, ${month}, ${finalDay})`,
-      });
-      listOfInvoices.push(...invoices.Invoices);
+      let invoices = await xero.accountingApi.getInvoices(
+        req.session.activeTenant.tenantId,
+        new Date(2020),
+        'Type=="ACCREC"',
+        'reference DESC',
+        undefined,
+        undefined,
+        undefined,
+        ['PAID', 'DRAFT'],
+        0,
+        true,
+        false,
+        4,
+        {
+          headers: {
+            contentType: 'application/json',
+          },
+        }
+      );
+      console.log(invoices);
+      invoices = invoices.body.invoices;
+      console.log('invoices boi');
+      console.log(invoices);
+      listOfInvoices.push(...invoices);
       // fill multiple pages if exists
-      if (invoices.Invoices.length < 100) {
+      if (invoices.length < 100) {
         break;
       } else {
         page = page + 1;
       }
     }
+
     res.json(listOfInvoices);
   } catch (ex) {
+    console.log(ex);
     res
       .status(500)
       .send(
