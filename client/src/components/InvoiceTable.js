@@ -51,6 +51,7 @@ class InvoiceTable extends Component {
     error: false,
     voidLoading: false,
     voidErrors: [],
+    pagination: 100,
   };
 
   start = () => {
@@ -75,8 +76,13 @@ class InvoiceTable extends Component {
   };
 
   onSelectChange = (selectedRowKeys) => {
-    // fires when user selects a row in the table
     this.setState({ selectedRowKeys });
+  };
+
+  handleTableChange = (pagination, filters, sorter) => {
+    this.setState({
+      pagination,
+    });
   };
 
   onDateChange = (date, dateString) => {
@@ -218,11 +224,12 @@ class InvoiceTable extends Component {
           <Error />
         ) : (
           <Table
-            rowKey='InvoiceID'
+            rowKey='invoiceNumber'
             rowSelection={rowSelection}
             columns={columns}
             dataSource={this.state.invoiceData}
-            pagination={{ pageSize: 100 }}
+            onChange={this.handleTableChange}
+            pagination={this.state.pagination}
           />
         )}
       </div>
