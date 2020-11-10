@@ -224,7 +224,7 @@ class InvoiceTable extends Component {
           <Error />
         ) : (
           <Table
-            rowKey='invoiceNumber'
+            rowKey='invoiceID'
             rowSelection={rowSelection}
             columns={columns}
             dataSource={this.state.invoiceData}

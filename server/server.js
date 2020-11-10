@@ -106,14 +106,11 @@ app.get('/token', async (req, res) => {
 // Get Authorised invoices by ID (Only authorised invoices can be voided)
 app.get('/invoices', async function (req, res) {
   try {
-    console.log('hit');
-    console.log(req.session.activeTenant.tenantId);
     const { date } = req.query;
     // To get invoices for the month we need the first and last days
     const year = date.substring(0, 4);
     const month = date.substring(5, 7);
     const finalDay = daysInMonth(month, year);
-    console.log(new Date(year, month, finalDay));
 
     // Paginate and fill a list of invoices to return
     let page = 1;
@@ -145,7 +142,6 @@ app.get('/invoices', async function (req, res) {
         break;
       } else {
         page = page + 1;
-        console.log(page);
       }
     }
 
@@ -160,16 +156,34 @@ app.get('/invoices', async function (req, res) {
   }
 });
 
-function voidInvoice(invoiceID) {
+async function voidInvoice(invoiceID, req) {
   // Uses SDK to void invoices, returns a promise with fail or success which will be checked later on
   try {
-    xeroClient.invoices.update({
-      InvoiceID: invoiceID,
-      Status: 'VOIDED',
-    });
+    // xero.accountingApi.updateInvoice({
+    //   InvoiceID: invoiceID,
+    //   Status: 'VOIDED',
+    // });
+    const getInvoice = await xero.accountingApi.getInvoice(
+      req.session.activeTenant.tenantId,
+      invoiceID
+    );
+    getInvoice.body.invoices[0].status = 'VOIDED';
+    // let partialInvoice = {
+    //   InvoiceNumber: invoiceID,
+    //   Status: 'VOIDED',
+    // };
+    // let updateInvoices = {};
+    // updateInvoices.invoices = [partialInvoice];
+    // console.log(updateInvoices);
+    const result = await xero.accountingApi.updateInvoice(
+      req.session.activeTenant.tenantId,
+      invoiceID,
+      getInvoice.body
+    );
 
     return `Success ${invoiceID}`;
   } catch (exc) {
+    console.log(exc);
     return `Failed ${invoiceID}`;
   }
 }
@@ -186,13 +200,14 @@ app.post('/void', async function (req, res) {
     const promises = invoicesToVoid.map(
       (invoiceID, idx) =>
         new Promise((resolve, reject) => {
-          let status = voidInvoice(invoiceID, idx);
-          // check to see if api call success/fail
-          if (status.includes('Success')) {
-            resolve(status);
-          } else {
-            reject(status);
-          }
+          voidInvoice(invoiceID, req, idx).then((data) => {
+            // check to see if api call success/fail
+            if (data.includes('Success')) {
+              resolve(data);
+            } else {
+              reject(data);
+            }
+          });
         })
     );
     // once all promises are resolved, let the frontend know
