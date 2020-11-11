@@ -47,3 +47,6 @@ Please see [my local environment documentation](/docs/localenv.md)
 
 Please see [the documentation](/docs/deployment.md)
 
+## Future release intentions
+
+This tool currently receives both ACCREC and ACCPAY invoices (invoices & bills). I intend to move each resource out into its own table and the Navigation menu would then say "Void Invoices" and "Void Bills" in separate tabs. 
