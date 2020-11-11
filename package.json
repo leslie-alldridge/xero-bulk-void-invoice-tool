@@ -4,6 +4,9 @@
   "description": "A tool to bulk void invoice documents in Xero",
   "main": "server/index.js",
   "type": "module",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "start": "node server",
     "server": "nodemon server",
