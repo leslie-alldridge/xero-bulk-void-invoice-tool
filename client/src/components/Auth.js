@@ -9,18 +9,18 @@ const { Content } = Layout;
 
 export const Auth = (props) => {
   const search = props.search;
-  axios.get(`/api/callback${search}`).then((data) => {
+  axios.get(`/token`).then((data) => {
     // Save users information to localstorage
-    set('oauth_expires_at', data.data.oauth_expires_at);
-    set('oauth_token', data.data.oauth_token);
-    set('oauth_token_secret', data.data.oauth_token_secret);
+    set('oauth_expires_at', data.data.expires_at);
+    set('access_token', data.data.access_token);
+    set('id_token', data.data.id_token);
     props.history.push('/');
   });
   return (
-    <Layout className="layout">
+    <Layout className='layout'>
       <Content style={{ padding: '0 50px' }}>
-        <div className="site-layout-content">
-          <Spin tip="Authenticating..."></Spin>
+        <div className='site-layout-content'>
+          <Spin tip='Authenticating...'></Spin>
         </div>
       </Content>
       <PageFooter />

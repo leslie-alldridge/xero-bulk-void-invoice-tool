@@ -10,9 +10,7 @@ This file should look like the following
 ```
 NODE_ENV=development
 PORT=5000
-consumerKey=yourconsumerkey
-consumerSecret=yourconsumersecret
-callbackDomainTest=http://localhost:3000
-callbackDomainUat=https://herokuurl.herokuapp.com
-callbackDomainProd=https://herokuurl2.herokuapp.com
+CLIENT_ID=myid
+CLIENT_SECRET=shh
+REDIRECT_URI=http://localhost:5000/callback
 ```

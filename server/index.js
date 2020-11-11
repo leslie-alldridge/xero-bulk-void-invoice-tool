@@ -1,11 +1,10 @@
-const dotenv = require('dotenv');
-const server = require('./server');
+import app from './server.js';
+import dotenv from 'dotenv';
+import http from 'http';
 
-dotenv.config({ path: './config/config.env' });
+dotenv.config({ path: './config/.env' });
 
-const http = require('http');
-
-let httpServer = http.createServer(server);
+let httpServer = http.createServer(app);
 
 httpServer.setTimeout(10 * 60 * 1000); // 10 minute timeout for long running calls
 

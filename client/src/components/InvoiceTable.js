@@ -10,35 +10,35 @@ import { remove } from '../utils/localstorage';
 const columns = [
   {
     title: 'Invoice Number',
-    dataIndex: 'InvoiceNumber',
+    dataIndex: 'invoiceNumber',
   },
   {
     title: 'Date',
-    dataIndex: 'DateString',
+    dataIndex: 'date',
     render: (value) => {
       // convert date to human readable format
-      return <Moment format="LL">{value}</Moment>;
+      return <Moment format='LL'>{value}</Moment>;
     },
   },
   {
     title: 'Due Date',
-    dataIndex: 'DueDateString',
+    dataIndex: 'dueDate',
     render: (value) => {
       // convert date to human readable format
-      return <Moment format="LL">{value}</Moment>;
+      return <Moment format='LL'>{value}</Moment>;
     },
   },
   {
     title: 'Contact',
-    dataIndex: ['Contact', 'Name'],
+    dataIndex: ['contact', 'name'],
   },
   {
     title: 'Total',
-    dataIndex: 'Total',
+    dataIndex: 'total',
   },
   {
     title: 'Currency',
-    dataIndex: 'CurrencyCode',
+    dataIndex: 'currencyCode',
   },
 ];
 
@@ -47,10 +47,11 @@ class InvoiceTable extends Component {
     selectedRowKeys: [],
     loading: false,
     invoiceData: [],
-    invoiceMonth: '2020-01',
+    invoiceMonth: new Date().getFullYear() + '-' + (new Date().getMonth() + 1),
     error: false,
     voidLoading: false,
     voidErrors: [],
+    pagination: 100,
   };
 
   start = () => {
@@ -63,20 +64,25 @@ class InvoiceTable extends Component {
       })
       .catch((exc) => {
         this.setState({ loading: false, error: true });
-        remove('oauth_token_secret');
+        remove('access_token');
       });
   };
 
   disconnect = () => {
     // removes users information from their cache
-    remove('oauth_token');
+    remove('id_token');
     remove('oauth_expires_at');
-    remove('oauth_token_secret');
+    remove('access_token');
   };
 
   onSelectChange = (selectedRowKeys) => {
-    // fires when user selects a row in the table
     this.setState({ selectedRowKeys });
+  };
+
+  handleTableChange = (pagination, filters, sorter) => {
+    this.setState({
+      pagination,
+    });
   };
 
   onDateChange = (date, dateString) => {
@@ -86,7 +92,14 @@ class InvoiceTable extends Component {
 
   void = () => {
     // Send void api call to server with an array of invoice ids
-    this.setState({ voidLoading: true });
+    // This is less than ideal but we need to send the SDK our entire invoice object now, not just the invoiceID
+    let res = this.state.invoiceData.filter((id, idx) =>
+      this.state.selectedRowKeys.includes(this.state.invoiceData[idx].invoiceID)
+    );
+    this.setState({
+      voidLoading: true,
+      selectedRowKeys: res,
+    });
 
     const api = axios.create({
       timeout: 10 * 60 * 1000, // extended API call duration to 10 minutes max for local development only
@@ -94,13 +107,12 @@ class InvoiceTable extends Component {
 
     const interval = 1200; // prevents us from hitting Xero API rate limit 60 calls / min
     var promise = Promise.resolve();
-    this.state.selectedRowKeys.forEach((el, idx) => {
+
+    res.forEach((el, idx) => {
       promise = promise.then(() => {
         // Update state with progress information that'll be displayed to the user
         this.setState({
-          msg: `Voiding ${idx + 1} out of ${
-            this.state.selectedRowKeys.length
-          } invoices`,
+          msg: `Voiding ${idx + 1} out of ${res.length} invoices`,
         });
         // make the api call to void an invoice
         api
@@ -119,7 +131,7 @@ class InvoiceTable extends Component {
           .catch((exc) => {
             console.log(exc);
             this.setState({ voidLoading: false, error: true });
-            remove('oauth_token_secret');
+            remove('access_token');
           });
 
         return new Promise((resolve) => {
@@ -168,7 +180,7 @@ class InvoiceTable extends Component {
       <div>
         <div style={{ marginBottom: 16 }}>
           <Button
-            type="primary"
+            type='primary'
             onClick={this.start}
             disabled={false}
             loading={loading}
@@ -178,7 +190,7 @@ class InvoiceTable extends Component {
           <Button
             style={{ marginLeft: 8 }}
             danger
-            type="secondary"
+            type='secondary'
             onClick={() => {
               this.disconnect();
               window.location.reload();
@@ -189,10 +201,10 @@ class InvoiceTable extends Component {
           </Button>
           <DatePicker
             autoFocus={true}
-            placeholder={'2020-01'}
+            placeholder={this.state.invoiceMonth}
             style={{ marginLeft: 8 }}
             onChange={this.onDateChange}
-            picker="month"
+            picker='month'
           />
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
@@ -202,7 +214,7 @@ class InvoiceTable extends Component {
             <Button
               style={{ marginLeft: 8 }}
               danger
-              type="primary"
+              type='primary'
               onClick={this.void}
               loading={voidLoading}
             >
@@ -218,11 +230,12 @@ class InvoiceTable extends Component {
           <Error />
         ) : (
           <Table
-            rowKey="InvoiceID"
+            rowKey='invoiceID'
             rowSelection={rowSelection}
             columns={columns}
             dataSource={this.state.invoiceData}
-            pagination={{ pageSize: 100 }}
+            onChange={this.handleTableChange}
+            pagination={this.state.pagination}
           />
         )}
       </div>
