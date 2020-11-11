@@ -9,6 +9,7 @@
 - Questions or feature requests are welcome
 - Uses OAuth2.0 and the latest Node SDK
 - You can view the progress of a void job in your web browser dev tools console - I left some logs there for those interested
+- I have tested voiding 124 invoices with date ranges from the first of the month all the way to the 31st before deployment
 
 ## Technology
 
