@@ -7,16 +7,16 @@
 - Not affiliated with Xero in any way shape or form
 - This was built to suit my personal needs but if it helps you, you're welcome to use it
 - Questions or feature requests are welcome
-- Uses OAuth1.0 which will deprecate in December 2020 - Undecided whether I'll upgrade it or not
+- Uses OAuth2.0 and the latest Node SDK
 - You can view the progress of a void job in your web browser dev tools console - I left some logs there for those interested
 
 ## Technology
 
 - React/Redux
-- Node backend
-- Xero Node SDK (for all API calls and authentication)
+- NodeJS backend
+- Xero Node SDK OAuth2 (for all API calls and authentication)
 - NO data persistence or database (I don't want users information or tokens) and that's why every time you need to re-auth manually
-- [Localstorage](https://stackoverflow.com/questions/17139519/what-is-localstorage) to hold your API key (expires after 30 minutes and deletes on error / disconnect from Xero button click)
+- [Localstorage](https://stackoverflow.com/questions/17139519/what-is-localstorage) to hold your API key (expires after 30 minutes and automatically deletes on error / disconnect from Xero button click)
 
 ## Use cases
 
@@ -28,11 +28,13 @@ Can I unvoid an invoice - NO (so be careful please)
 
 Does this functionality exist in Xero - NO
 
-Can I distribute this software/code - NO
+Can I distribute this software/code to my clients - NO
 
 Am I able to build on top of what you already have - YES as long as it's NOT later sold / charged out. You should be promoting open source. If you want to profit, make your own thing from scratch.
 
-The code broke - Raise an issue, pull request or contact me
+The code broke - Raise an issue, pull request or contact me. My email is on the help page.
+
+Can I unvoid an invoice - Not possible! However, you can view voided invoices in the Xero UI and go to Invoice settings > Copy to and copy it to a new invoice.
 
 ## Running this locally
 
@@ -44,6 +46,3 @@ Please see [my local environment documentation](/docs/localenv.md)
 
 Please see [the documentation](/docs/deployment.md)
 
-## Notes to self
-
-- Migrate to OAuth2

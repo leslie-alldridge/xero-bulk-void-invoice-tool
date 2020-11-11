@@ -10,7 +10,6 @@ const { Content } = Layout;
 export const Auth = (props) => {
   const search = props.search;
   axios.get(`/token`).then((data) => {
-    console.log(data);
     // Save users information to localstorage
     set('oauth_expires_at', data.data.expires_at);
     set('access_token', data.data.access_token);

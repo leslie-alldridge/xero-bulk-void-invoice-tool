@@ -2,7 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { XeroClient } from 'xero-node';
+import { XeroClient, Invoice, Invoices } from 'xero-node';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import session from 'express-session';
@@ -36,23 +36,6 @@ const xero = new XeroClient({
   httpTimeout: 2000,
 });
 
-// let cbDomain =
-//   process.env.NODE_ENV === 'development'
-//     ? process.env.callbackDomainTest
-//     : process.env.NODE_ENV === 'uat'
-//     ? process.env.callbackDomainUat
-//     : process.env.callbackDomainProd;
-
-// // Create Xero OAuth1.0 Client
-// let xeroClient = new XeroClient({
-//   appType: 'public',
-//   callbackUrl: `${cbDomain}/callback`,
-//   consumerKey: process.env.consumerKey,
-//   consumerSecret: process.env.consumerSecret,
-//   userAgent: 'Tester (PUBLIC) - Application for testing Xero',
-//   redirectOnError: true,
-// });
-
 // Configuration using production build
 const root = path.join(__dirname, '/../client', 'build');
 app.use(express.static(root));
@@ -72,7 +55,6 @@ app.use(
 app.get('/connect', async (req, res) => {
   try {
     const consentUrl = await xero.buildConsentUrl();
-    console.log(consentUrl);
     res.send(consentUrl);
   } catch (err) {
     console.log(err);
@@ -84,12 +66,8 @@ app.get('/connect', async (req, res) => {
 app.get('/callback', async (req, res) => {
   try {
     const consentUrl = await xero.buildConsentUrl();
-    console.log(consentUrl);
-    console.log(req.url);
     const tokenSet = await xero.apiCallback(req.url);
     await xero.updateTenants(false);
-    console.log(tokenSet);
-    console.log('xero.config.state: ', xero.config.state);
     req.session.tokenSet = tokenSet;
     req.session.activeTenant = xero.tenants[0];
     res.redirect('/auth');
@@ -156,35 +134,33 @@ app.get('/invoices', async function (req, res) {
   }
 });
 
-async function voidInvoice(invoiceID, req) {
+async function voidInvoice(invoice, req) {
   // Uses SDK to void invoices, returns a promise with fail or success which will be checked later on
   try {
-    // xero.accountingApi.updateInvoice({
-    //   InvoiceID: invoiceID,
-    //   Status: 'VOIDED',
-    // });
-    const getInvoice = await xero.accountingApi.getInvoice(
+    // first we want to set the invoice object status to voided
+    invoice.status = 'VOIDED';
+    // next we need to parse all the date strings to date objects or the node SDK fails
+    invoice.date = new Date(invoice.date);
+    invoice.dueDate = new Date(invoice.dueDate);
+    invoice.updatedDateUTC = new Date(invoice.updatedDateUTC);
+    // create blueprints for invoices array and invoice object (we are creating an array of objects)
+    const newInvoices = new Invoices();
+    const newInvoice = new Invoice();
+    // copy our invoice data into the blueprint
+    Object.assign(newInvoice, invoice);
+    newInvoices.invoices = [newInvoice];
+
+    // Now we send the SDK method our tenant id, invoice id, and the structured invoice payload
+    let res = await xero.accountingApi.updateInvoice(
       req.session.activeTenant.tenantId,
-      invoiceID
-    );
-    getInvoice.body.invoices[0].status = 'VOIDED';
-    // let partialInvoice = {
-    //   InvoiceNumber: invoiceID,
-    //   Status: 'VOIDED',
-    // };
-    // let updateInvoices = {};
-    // updateInvoices.invoices = [partialInvoice];
-    // console.log(updateInvoices);
-    const result = await xero.accountingApi.updateInvoice(
-      req.session.activeTenant.tenantId,
-      invoiceID,
-      getInvoice.body
+      invoice.invoiceID,
+      newInvoices
     );
 
-    return `Success ${invoiceID}`;
+    return `Success ${invoice.invoiceID}`;
   } catch (exc) {
     console.log(exc);
-    return `Failed ${invoiceID}`;
+    return `Failed ${invoice.invoiceID}`;
   }
 }
 
@@ -198,9 +174,9 @@ app.post('/void', async function (req, res) {
     // but I'm leaving it here in case folks want to use this endpoint and send an array of invoice IDs locally
     // without worrying about long running HTTP calls
     const promises = invoicesToVoid.map(
-      (invoiceID, idx) =>
+      (invoice, idx) =>
         new Promise((resolve, reject) => {
-          voidInvoice(invoiceID, req, idx).then((data) => {
+          voidInvoice(invoice, req, idx).then((data) => {
             // check to see if api call success/fail
             if (data.includes('Success')) {
               resolve(data);

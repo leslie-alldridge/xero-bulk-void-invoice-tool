@@ -92,7 +92,14 @@ class InvoiceTable extends Component {
 
   void = () => {
     // Send void api call to server with an array of invoice ids
-    this.setState({ voidLoading: true });
+    // This is less than ideal but we need to send the SDK our entire invoice object now, not just the invoiceID
+    let res = this.state.invoiceData.filter((id, idx) =>
+      this.state.selectedRowKeys.includes(this.state.invoiceData[idx].invoiceID)
+    );
+    this.setState({
+      voidLoading: true,
+      selectedRowKeys: res,
+    });
 
     const api = axios.create({
       timeout: 10 * 60 * 1000, // extended API call duration to 10 minutes max for local development only
@@ -100,13 +107,12 @@ class InvoiceTable extends Component {
 
     const interval = 1200; // prevents us from hitting Xero API rate limit 60 calls / min
     var promise = Promise.resolve();
-    this.state.selectedRowKeys.forEach((el, idx) => {
+
+    res.forEach((el, idx) => {
       promise = promise.then(() => {
         // Update state with progress information that'll be displayed to the user
         this.setState({
-          msg: `Voiding ${idx + 1} out of ${
-            this.state.selectedRowKeys.length
-          } invoices`,
+          msg: `Voiding ${idx + 1} out of ${res.length} invoices`,
         });
         // make the api call to void an invoice
         api
@@ -125,7 +131,7 @@ class InvoiceTable extends Component {
           .catch((exc) => {
             console.log(exc);
             this.setState({ voidLoading: false, error: true });
-            remove('oauth_token_secret');
+            remove('access_token');
           });
 
         return new Promise((resolve) => {
