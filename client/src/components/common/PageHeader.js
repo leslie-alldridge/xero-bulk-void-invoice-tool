@@ -7,22 +7,22 @@ const { Header } = Layout;
 export const PageHeader = (props) => {
   const currentPath = props.currentPath;
   return (
-    <Layout className="layout">
+    <Layout className='layout'>
       <Header>
-        <div className="logo" />
+        <div className='logo' />
         <Menu
-          theme="dark"
-          mode="horizontal"
+          theme='dark'
+          mode='horizontal'
           defaultSelectedKeys={[currentPath]}
         >
-          <Menu.Item key="/void">
-            <Link to="/void">Void Invoices</Link>
+          <Menu.Item key='/void'>
+            <Link to='/'>Void Invoices</Link>
           </Menu.Item>
-          <Menu.Item key="/about">
-            <Link to="/about">About</Link>
+          <Menu.Item key='/about'>
+            <Link to='/about'>About</Link>
           </Menu.Item>
-          <Menu.Item key="/help">
-            <Link to="/help">Help</Link>
+          <Menu.Item key='/help'>
+            <Link to='/help'>Help</Link>
           </Menu.Item>
         </Menu>
       </Header>

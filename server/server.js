@@ -23,8 +23,7 @@ function daysInMonth(month, year) {
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
 const redirectUrl = process.env.REDIRECT_URI;
-const scopes =
-  'offline_access openid profile email accounting.transactions accounting.transactions.read accounting.reports.read accounting.journals.read accounting.settings accounting.settings.read accounting.contacts accounting.contacts.read accounting.attachments accounting.attachments.read files files.read assets assets.read projects projects.read payroll.employees payroll.payruns payroll.payslip payroll.timesheets payroll.settings';
+const scopes = 'openid,profile,email,accounting.transactions';
 
 // Create OAuth2 Client
 const xero = new XeroClient({
@@ -85,10 +84,11 @@ app.get('/token', async (req, res) => {
 app.get('/invoices', async function (req, res) {
   try {
     const { date } = req.query;
-    // To get invoices for the month we need the first and last days
-    const year = date.substring(0, 4);
-    const month = date.substring(5, 7);
-    const finalDay = daysInMonth(month, year);
+
+    // To get invoices between the users date range
+    // We convert from 2021-03-24,2021-03-27 to DateTime(2021, 03, 24)
+    const initialDateString = date.substring(0, 10).split('-');
+    const endDateString = date.substring(11).split('-');
 
     // Paginate and fill a list of invoices to return
     let page = 1;
@@ -97,7 +97,7 @@ app.get('/invoices', async function (req, res) {
       let invoices = await xero.accountingApi.getInvoices(
         req.session.activeTenant.tenantId,
         undefined,
-        `Date >= DateTime(${year}, ${month}, 01) && Date <= DateTime(${year}, ${month}, ${finalDay})`,
+        `Date >= DateTime(${initialDateString[0]}, ${initialDateString[1]}, ${initialDateString[2]}) && Date <= DateTime(${endDateString[0]}, ${endDateString[1]}, ${endDateString[2]})`,
         'reference DESC',
         undefined,
         undefined,

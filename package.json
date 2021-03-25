@@ -1,6 +1,6 @@
 {
   "name": "bulkvoidtoolxero",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "A tool to bulk void invoice documents in Xero",
   "main": "server/index.js",
   "type": "module",
