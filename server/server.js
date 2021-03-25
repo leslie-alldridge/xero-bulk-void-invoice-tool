@@ -84,10 +84,11 @@ app.get('/token', async (req, res) => {
 app.get('/invoices', async function (req, res) {
   try {
     const { date } = req.query;
-    // To get invoices for the month we need the first and last days
-    const year = date.substring(0, 4);
-    const month = date.substring(5, 7);
-    const finalDay = daysInMonth(month, year);
+
+    // To get invoices between the users date range
+    // We convert from 2021-03-24,2021-03-27 to DateTime(2021, 03, 24)
+    const initialDateString = date.substring(0, 10).split('-');
+    const endDateString = date.substring(11).split('-');
 
     // Paginate and fill a list of invoices to return
     let page = 1;
@@ -96,7 +97,7 @@ app.get('/invoices', async function (req, res) {
       let invoices = await xero.accountingApi.getInvoices(
         req.session.activeTenant.tenantId,
         undefined,
-        `Date >= DateTime(${year}, ${month}, 01) && Date <= DateTime(${year}, ${month}, ${finalDay})`,
+        `Date >= DateTime(${initialDateString[0]}, ${initialDateString[1]}, ${initialDateString[2]}) && Date <= DateTime(${endDateString[0]}, ${endDateString[1]}, ${endDateString[2]})`,
         'reference DESC',
         undefined,
         undefined,

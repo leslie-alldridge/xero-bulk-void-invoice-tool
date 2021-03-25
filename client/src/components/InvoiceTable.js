@@ -7,6 +7,8 @@ import { SmileOutlined, FrownOutlined } from '@ant-design/icons';
 import { Error } from './common/Error';
 import { remove } from '../utils/localstorage';
 
+const { RangePicker } = DatePicker;
+
 const columns = [
   {
     title: 'Invoice Number',
@@ -47,7 +49,18 @@ class InvoiceTable extends Component {
     selectedRowKeys: [],
     loading: false,
     invoiceData: [],
-    invoiceMonth: new Date().getFullYear() + '-' + (new Date().getMonth() + 1),
+    invoiceMonth: [
+      new Date().getFullYear() +
+        '-' +
+        ('0' + new Date().getMonth()).slice(-2) +
+        '-' +
+        ('0' + new Date().getDate()).slice(-2),
+      new Date().getFullYear() +
+        '-' +
+        ('0' + (new Date().getMonth() + 1)).slice(-2) +
+        '-' +
+        ('0' + new Date().getDate()).slice(-2),
+    ],
     error: false,
     voidLoading: false,
     voidErrors: [],
@@ -199,12 +212,11 @@ class InvoiceTable extends Component {
           >
             Disconnect from Xero
           </Button>
-          <DatePicker
+          <RangePicker
             autoFocus={true}
             placeholder={this.state.invoiceMonth}
             style={{ marginLeft: 8 }}
             onChange={this.onDateChange}
-            picker='month'
           />
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}

@@ -21,7 +21,7 @@ function App() {
           exact
           path='/'
           component={() => {
-            window.location.href = 'http://localhost:3000/void';
+            window.location.href = 'https://bulkvoidxero.herokuapp.com/void';
             return null;
           }}
         ></Route>
