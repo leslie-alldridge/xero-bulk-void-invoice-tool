@@ -1,4 +1,4 @@
-# xero-bulk-void-invoice-tool (Updated Nov 2020)
+# xero-bulk-void-invoice-tool (Updated Mar 2021)
 
 ## Things to note
 
