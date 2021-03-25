@@ -1,8 +1,5 @@
 import React from 'react';
-import axios from 'axios';
-import { Layout, Button } from 'antd';
-import { LoginOutlined } from '@ant-design/icons';
-
+import { Layout } from 'antd';
 import { get } from '../utils/localstorage';
 import InvoiceTable from './InvoiceTable';
 import { PageFooter } from './common/PageFooter';
@@ -11,7 +8,6 @@ const { Content } = Layout;
 
 export const Void = () => {
   const hasAuth = get('access_token');
-
   return (
     <Layout className='layout'>
       <Content style={{ padding: '0 50px' }}>
@@ -20,19 +16,7 @@ export const Void = () => {
           {hasAuth === null ? (
             <div>
               <h3>Please click below to connect with your Xero organisation</h3>
-
-              <span
-                onClick={() =>
-                  axios
-                    .get('/connect')
-                    .then((data) => window.location.assign(data.data))
-                }
-              >
-                <Button type='primary' shape='round' size={'large'}>
-                  <LoginOutlined />
-                  Sign in to Xero
-                </Button>
-              </span>
+              <span data-xero-sso data-label='Sign in with Xero'></span>
             </div>
           ) : (
             <div>

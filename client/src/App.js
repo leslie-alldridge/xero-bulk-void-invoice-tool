@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Switch,
-  Route,
-  Redirect,
-  useLocation,
-  useHistory,
-} from 'react-router-dom';
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import './App.css';
 import { PageHeader } from './components/common/PageHeader';
 import { Void } from './components/Void';
@@ -17,11 +11,20 @@ import { NotFound } from './components/common/NotFound';
 function App() {
   let location = useLocation();
   let history = useHistory();
+
   return (
     <div>
       <PageHeader currentPath={location.pathname} />
       <Switch>
-        <Redirect exact from='/' to='/void' />
+        {/* <Redirect exact from='/' to='/void' /> */}
+        <Route
+          exact
+          path='/'
+          component={() => {
+            window.location.href = 'http://localhost:3000/void';
+            return null;
+          }}
+        ></Route>
         <Route path='/void'>
           <Void />
         </Route>
