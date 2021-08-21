@@ -2,6 +2,8 @@
 
 Link: https://bulkvoidxero.herokuapp.com/
 
+I also have a more udpated version hosted on <a href="voidly.app">voidly.app</a>
+
 ## Things to note
 
 - This application runs on a free Heroku instance so the first load will take ~30 seconds
