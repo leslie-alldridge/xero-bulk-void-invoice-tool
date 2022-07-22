@@ -1,4 +1,8 @@
-# xero-bulk-void-invoice-tool (Updated Mar 2021)
+# xero-bulk-void-invoice-tool (Deprecated)
+
+## Notice
+
+Due to hitting many walls trying to get this app certified I've decided to mark it as deprecated. 
 
 Link: https://bulkvoidxero.herokuapp.com/
 
