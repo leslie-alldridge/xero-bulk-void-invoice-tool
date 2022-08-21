@@ -1,5 +1,7 @@
 # xero-bulk-void-invoice-tool (Deprecated)
 
+Replacement app using Xero API Custom Connections: https://github.com/leslie-alldridge/xero-bulk-void-tool-replacement
+
 ## Notice
 
 Due to hitting many walls trying to get this app certified I've decided to mark it as deprecated. 
